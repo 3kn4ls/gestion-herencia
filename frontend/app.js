@@ -8,6 +8,7 @@ class CatastroApp {
         this.data = [];
         this.filteredData = [];
         this.valoraciones = null;
+        this.vistaActual = 'tabla'; // tabla o tarjetas
         this.filters = {
             clase: 'all',
             provincia: 'all',
@@ -102,6 +103,15 @@ class CatastroApp {
         // Botón exportar a Excel
         document.getElementById('btnExportarExcel')?.addEventListener('click', () => {
             this.exportarAExcel();
+        });
+
+        // Botones de cambio de vista
+        document.getElementById('btnVistaTabla')?.addEventListener('click', () => {
+            this.cambiarVista('tabla');
+        });
+
+        document.getElementById('btnVistaTarjetas')?.addEventListener('click', () => {
+            this.cambiarVista('tarjetas');
         });
 
         // Buscador general
@@ -406,7 +416,7 @@ class CatastroApp {
             return true;
         });
 
-        this.renderProperties();
+        this.renderCurrentView();
         this.updateFilteredCount();
     }
 
@@ -431,7 +441,7 @@ class CatastroApp {
     updateUI() {
         this.showSections();
         this.updateSummary();
-        this.renderProperties();
+        this.renderCurrentView();
         this.updateFilteredCount();
     }
 
@@ -493,6 +503,21 @@ class CatastroApp {
     }
 
     /**
+     * Renderiza la vista actual (tabla o tarjetas)
+     */
+    renderCurrentView() {
+        if (this.vistaActual === 'tabla') {
+            document.getElementById('propertiesList').style.display = 'none';
+            document.getElementById('propertiesTable').style.display = 'block';
+            this.renderTable();
+        } else {
+            document.getElementById('propertiesList').style.display = 'grid';
+            document.getElementById('propertiesTable').style.display = 'none';
+            this.renderProperties();
+        }
+    }
+
+    /**
      * Renderiza la lista de propiedades
      */
     renderProperties() {
@@ -508,6 +533,233 @@ class CatastroApp {
             const card = this.createPropertyCard(property);
             container.appendChild(card);
         });
+    }
+
+    /**
+     * Cambia entre vista de tabla y tarjetas
+     */
+    cambiarVista(vista) {
+        this.vistaActual = vista;
+
+        // Actualizar botones activos
+        document.querySelectorAll('.btn-vista').forEach(btn => {
+            if (btn.dataset.vista === vista) {
+                btn.style.background = 'var(--primary-color)';
+                btn.style.color = 'white';
+            } else {
+                btn.style.background = 'transparent';
+                btn.style.color = 'var(--text-primary)';
+            }
+        });
+
+        // Renderizar la vista correspondiente
+        this.renderCurrentView();
+    }
+
+    /**
+     * Renderiza la vista de tabla
+     */
+    renderTable() {
+        const container = document.getElementById('propertiesTable');
+
+        if (this.filteredData.length === 0) {
+            container.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 2rem;">No se encontraron propiedades con los filtros seleccionados</p>';
+            return;
+        }
+
+        let tableHTML = `
+            <table class="properties-data-table">
+                <thead>
+                    <tr>
+                        <th>Ref. Catastral</th>
+                        <th>Provincia</th>
+                        <th>Municipio</th>
+                        <th>Partida</th>
+                        <th>Polígono</th>
+                        <th>Parcela</th>
+                        <th>Clase</th>
+                        <th>Uso</th>
+                        <th>Sup. Total (m²)</th>
+                        <th>Subparcela</th>
+                        <th>Cultivo/Aprovechamiento</th>
+                        <th>Intensidad</th>
+                        <th>Sup. Subp. (m²)</th>
+                        <th>Cultivo Valorado</th>
+                        <th>Sup. (ha)</th>
+                        <th>Precio €/ha</th>
+                        <th>Valor €</th>
+                        <th>Valor Total €</th>
+                        <th>Valor Catastral €</th>
+                        <th>Valor Oficial €</th>
+                        <th>Diferencia €</th>
+                        <th>Diferencia %</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        for (const property of this.filteredData) {
+            const loc = property.localizacion || {};
+            const inmueble = property.datos_inmueble || {};
+            const catastrales = property.datos_catastrales || property._original?.datos_catastrales;
+            const subparcelas = property.cultivos || [];
+
+            // Buscar valoración y valor oficial
+            const valoracion = this.valoraciones?.valoraciones?.find(
+                v => v.referencia_catastral === property.referencia_catastral
+            );
+            const valorRefOficial = property._original?.valor_referencia_oficial;
+
+            // Calcular totales
+            const valorCalculadoTotal = valoracion?.valor_estimado_euros || 0;
+            const valorCatastral = catastrales?.valor_catastral || 0;
+            const valorOficial = valorRefOficial?.valor_referencia || 0;
+            const diferencia = valorOficial > 0 ? (valorCalculadoTotal - valorOficial) : 0;
+            const diferenciaPct = valorOficial > 0 ? ((diferencia / valorOficial) * 100) : 0;
+
+            // Datos comunes
+            const datosComunes = {
+                referencia: property.referencia_catastral || '',
+                provincia: loc.provincia || '',
+                municipio: loc.municipio || '',
+                partida: loc.partida || '',
+                poligono: loc.poligono || '',
+                parcela: loc.parcela || '',
+                clase: inmueble.clase || '',
+                uso: inmueble.uso_principal || '',
+                superficie: inmueble.superficie_construida || 0
+            };
+
+            // Si tiene subparcelas, crear una fila por cada subparcela
+            if (subparcelas && subparcelas.length > 0) {
+                const detallesDisponibles = [...(valoracion?.detalles_cultivos || [])];
+
+                for (let i = 0; i < subparcelas.length; i++) {
+                    const subparcela = subparcelas[i];
+                    const superficieHa = (parseFloat(subparcela.superficie_m2) || 0) / 10000;
+
+                    // Buscar detalle de valoración por superficie
+                    let detalleValoracion = null;
+                    let detalleIndex = -1;
+
+                    if (detallesDisponibles.length > 0) {
+                        detalleIndex = detallesDisponibles.findIndex(d =>
+                            Math.abs((d.superficie_ha || 0) - superficieHa) < 0.0001
+                        );
+
+                        if (detalleIndex === -1 && i < detallesDisponibles.length) {
+                            detalleIndex = 0;
+                        }
+
+                        if (detalleIndex >= 0) {
+                            detalleValoracion = detallesDisponibles[detalleIndex];
+                            detallesDisponibles.splice(detalleIndex, 1);
+                        }
+                    }
+
+                    const rowClass = i === 0 ? 'first-row' : 'subparcela-row';
+                    const difClass = diferencia > 0 ? 'positivo' : diferencia < 0 ? 'negativo' : '';
+
+                    tableHTML += `
+                        <tr class="${rowClass}">
+                            <td class="ref-catastral">${datosComunes.referencia}</td>
+                            <td>${datosComunes.provincia}</td>
+                            <td>${datosComunes.municipio}</td>
+                            <td>${datosComunes.partida}</td>
+                            <td>${datosComunes.poligono}</td>
+                            <td>${datosComunes.parcela}</td>
+                            <td>${datosComunes.clase}</td>
+                            <td>${datosComunes.uso}</td>
+                            <td class="numeric">${this.formatNumber(datosComunes.superficie)}</td>
+                            <td>${subparcela.subparcela || ''}</td>
+                            <td class="cultivo">${subparcela.cultivo_aprovechamiento || ''}</td>
+                            <td>${subparcela.intensidad_productiva || ''}</td>
+                            <td class="numeric">${subparcela.superficie_m2 || ''}</td>
+                            <td class="cultivo">${detalleValoracion?.cultivo || ''}</td>
+                            <td class="numeric">${detalleValoracion?.superficie_ha || ''}</td>
+                            <td class="numeric">${detalleValoracion?.precio_ha ? this.formatNumber(detalleValoracion.precio_ha) : ''}</td>
+                            <td class="numeric">${detalleValoracion?.valor_estimado ? this.formatNumber(detalleValoracion.valor_estimado) : ''}</td>
+                            <td class="numeric">${i === 0 ? this.formatNumber(valorCalculadoTotal) : ''}</td>
+                            <td class="numeric">${i === 0 ? this.formatNumber(valorCatastral) : ''}</td>
+                            <td class="numeric">${i === 0 ? this.formatNumber(valorOficial) : ''}</td>
+                            <td class="numeric ${difClass}">${i === 0 ? this.formatNumber(diferencia) : ''}</td>
+                            <td class="numeric ${difClass}">${i === 0 ? diferenciaPct.toFixed(2) + '%' : ''}</td>
+                        </tr>
+                    `;
+                }
+            } else if (valoracion?.detalles_cultivos && valoracion.detalles_cultivos.length > 0) {
+                // Sin subparcelas pero con detalles de valoración
+                for (let i = 0; i < valoracion.detalles_cultivos.length; i++) {
+                    const cultivo = valoracion.detalles_cultivos[i];
+                    const rowClass = i === 0 ? 'first-row' : '';
+                    const difClass = diferencia > 0 ? 'positivo' : diferencia < 0 ? 'negativo' : '';
+
+                    tableHTML += `
+                        <tr class="${rowClass}">
+                            <td class="ref-catastral">${datosComunes.referencia}</td>
+                            <td>${datosComunes.provincia}</td>
+                            <td>${datosComunes.municipio}</td>
+                            <td>${datosComunes.partida}</td>
+                            <td>${datosComunes.poligono}</td>
+                            <td>${datosComunes.parcela}</td>
+                            <td>${datosComunes.clase}</td>
+                            <td>${datosComunes.uso}</td>
+                            <td class="numeric">${this.formatNumber(datosComunes.superficie)}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="cultivo">${cultivo.cultivo || ''}</td>
+                            <td class="numeric">${cultivo.superficie_ha || ''}</td>
+                            <td class="numeric">${cultivo.precio_ha ? this.formatNumber(cultivo.precio_ha) : ''}</td>
+                            <td class="numeric">${cultivo.valor_estimado ? this.formatNumber(cultivo.valor_estimado) : ''}</td>
+                            <td class="numeric">${i === 0 ? this.formatNumber(valorCalculadoTotal) : ''}</td>
+                            <td class="numeric">${i === 0 ? this.formatNumber(valorCatastral) : ''}</td>
+                            <td class="numeric">${i === 0 ? this.formatNumber(valorOficial) : ''}</td>
+                            <td class="numeric ${difClass}">${i === 0 ? this.formatNumber(diferencia) : ''}</td>
+                            <td class="numeric ${difClass}">${i === 0 ? diferenciaPct.toFixed(2) + '%' : ''}</td>
+                        </tr>
+                    `;
+                }
+            } else {
+                // Sin subparcelas ni cultivos
+                const difClass = diferencia > 0 ? 'positivo' : diferencia < 0 ? 'negativo' : '';
+
+                tableHTML += `
+                    <tr class="first-row">
+                        <td class="ref-catastral">${datosComunes.referencia}</td>
+                        <td>${datosComunes.provincia}</td>
+                        <td>${datosComunes.municipio}</td>
+                        <td>${datosComunes.partida}</td>
+                        <td>${datosComunes.poligono}</td>
+                        <td>${datosComunes.parcela}</td>
+                        <td>${datosComunes.clase}</td>
+                        <td>${datosComunes.uso}</td>
+                        <td class="numeric">${this.formatNumber(datosComunes.superficie)}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="numeric">${this.formatNumber(valorCalculadoTotal)}</td>
+                        <td class="numeric">${this.formatNumber(valorCatastral)}</td>
+                        <td class="numeric">${this.formatNumber(valorOficial)}</td>
+                        <td class="numeric ${difClass}">${this.formatNumber(diferencia)}</td>
+                        <td class="numeric ${difClass}">${diferenciaPct.toFixed(2)}%</td>
+                    </tr>
+                `;
+            }
+        }
+
+        tableHTML += `
+                </tbody>
+            </table>
+        `;
+
+        container.innerHTML = tableHTML;
     }
 
     /**
@@ -923,7 +1175,7 @@ class CatastroApp {
                 uso.includes(searchTerm);
         });
 
-        this.renderProperties();
+        this.renderCurrentView();
         this.updateFilteredCount();
     }
 

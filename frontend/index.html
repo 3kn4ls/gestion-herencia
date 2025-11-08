@@ -87,13 +87,24 @@
 
         <!-- Lista de propiedades -->
         <section id="propertiesSection" class="properties-section hidden">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
                 <h2 style="margin: 0;">Propiedades</h2>
-                <button id="btnExportarExcel" class="btn btn-sec" style="background: #059669; color: white;">
-                    📋 Copiar para Excel
-                </button>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <div style="display: flex; gap: 0.25rem; background: var(--background-secondary); padding: 0.25rem; border-radius: 8px;">
+                        <button id="btnVistaTabla" class="btn-vista" data-vista="tabla" style="padding: 0.5rem 1rem; border: none; background: var(--primary-color); color: white; border-radius: 6px; cursor: pointer;">
+                            📊 Tabla
+                        </button>
+                        <button id="btnVistaTarjetas" class="btn-vista" data-vista="tarjetas" style="padding: 0.5rem 1rem; border: none; background: transparent; color: var(--text-primary); border-radius: 6px; cursor: pointer;">
+                            🗂️ Tarjetas
+                        </button>
+                    </div>
+                    <button id="btnExportarExcel" class="btn btn-sec" style="background: #059669; color: white;">
+                        📋 Copiar para Excel
+                    </button>
+                </div>
             </div>
             <div id="propertiesList" class="properties-list"></div>
+            <div id="propertiesTable" class="properties-table-container" style="display: none;"></div>
         </section>
 
         <!-- Modal de detalle -->

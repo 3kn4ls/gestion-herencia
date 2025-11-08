@@ -608,3 +608,123 @@ section h2 {
         grid-template-columns: 1fr;
     }
 }
+
+/* ============================================================================ */
+/* VISTA DE TABLA */
+/* ============================================================================ */
+
+.properties-table-container {
+    width: 100%;
+    overflow-x: auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+.properties-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    min-width: 1400px;
+}
+
+.properties-data-table thead {
+    background: linear-gradient(135deg, var(--primary-color), #3b82f6);
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.properties-data-table th {
+    padding: 0.75rem 0.5rem;
+    text-align: left;
+    font-weight: 600;
+    white-space: nowrap;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.properties-data-table th:last-child {
+    border-right: none;
+}
+
+.properties-data-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.15s ease;
+}
+
+.properties-data-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.properties-data-table tbody tr.subparcela-row {
+    background-color: #fafbfc;
+}
+
+.properties-data-table tbody tr.subparcela-row:hover {
+    background-color: #f3f4f6;
+}
+
+.properties-data-table td {
+    padding: 0.5rem;
+    text-align: left;
+    border-right: 1px solid var(--border-color);
+}
+
+.properties-data-table td:last-child {
+    border-right: none;
+}
+
+.properties-data-table td.numeric {
+    text-align: right;
+    font-family: 'Courier New', monospace;
+}
+
+.properties-data-table td.ref-catastral {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.properties-data-table td.cultivo {
+    font-weight: 500;
+}
+
+.properties-data-table td.positivo {
+    color: var(--success-color);
+    font-weight: 600;
+}
+
+.properties-data-table td.negativo {
+    color: var(--danger-color);
+    font-weight: 600;
+}
+
+/* Destacar primera fila de cada propiedad */
+.properties-data-table tbody tr.first-row {
+    border-top: 2px solid var(--primary-color);
+}
+
+.properties-data-table tbody tr.first-row td {
+    font-weight: 500;
+}
+
+/* Scroll horizontal mejorado */
+.properties-table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.properties-table-container::-webkit-scrollbar-track {
+    background: var(--background-secondary);
+    border-radius: 4px;
+}
+
+.properties-table-container::-webkit-scrollbar-thumb {
+    background: var(--secondary-color);
+    border-radius: 4px;
+}
+
+.properties-table-container::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+}
