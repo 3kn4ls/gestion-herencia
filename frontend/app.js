@@ -162,7 +162,14 @@ class CatastroApp {
      */
     async loadSampleData() {
         try {
-            const response = await fetch('../data/datos_catastrales_consolidados.json');
+            // Intentar cargar datos consolidados completos primero
+            let response = await fetch('../data/datos_catastrales_consolidados_completo.json');
+
+            if (!response.ok) {
+                // Si no existe, cargar los datos normales
+                response = await fetch('../data/datos_catastrales_consolidados.json');
+            }
+
             if (!response.ok) throw new Error('No se encontró el archivo');
 
             const data = await response.json();
@@ -191,8 +198,46 @@ class CatastroApp {
 
         this.filteredData = [...this.data];
         this.valoraciones = null; // Reset valoraciones al cargar nuevos datos
+
+        // Verificar si hay valoraciones incorporadas en los datos
+        this.checkEmbeddedValuations();
+
         this.updateUI();
         this.buildFilters();
+    }
+
+    /**
+     * Verifica si los datos tienen valoraciones incorporadas
+     */
+    checkEmbeddedValuations() {
+        // Buscar si algún registro tiene valoración_calculada
+        const conValoraciones = this.data.some(p =>
+            p._original?.valoracion_calculada
+        );
+
+        if (conValoraciones) {
+            // Crear objeto de valoraciones a partir de los datos incorporados
+            const valoraciones = this.data
+                .filter(p => p._original?.valoracion_calculada)
+                .map(p => p._original.valoracion_calculada);
+
+            if (valoraciones.length > 0) {
+                const valorTotal = valoraciones.reduce((sum, v) =>
+                    sum + (v.valor_estimado_euros || 0), 0
+                );
+
+                this.valoraciones = {
+                    resumen: {
+                        total_propiedades: valoraciones.length,
+                        valor_total_estimado: valorTotal,
+                        fecha_valoracion: new Date().toISOString()
+                    },
+                    valoraciones: valoraciones
+                };
+
+                console.log('✓ Valoraciones incorporadas detectadas');
+            }
+        }
     }
 
     /**
@@ -437,17 +482,50 @@ class CatastroApp {
         const uso = inmueble.uso_principal || 'N/A';
         const superficie = inmueble.superficie_construida || 0;
 
-        // Buscar valoración de esta propiedad
+        // Buscar valoración y valor de referencia
         let valoracionHTML = '';
-        if (this.valoraciones && this.valoraciones.valoraciones) {
-            const valoracion = this.valoraciones.valoraciones.find(
-                v => v.referencia_catastral === property.referencia_catastral
-            );
-            if (valoracion && valoracion.valor_estimado_euros) {
-                valoracionHTML = `
-                    <div class="detail-item" style="background: var(--success-bg); padding: 0.5rem; border-radius: 4px; grid-column: 1 / -1;">
-                        <span class="detail-label" style="color: var(--success);">💰 Valor Estimado</span>
-                        <span class="detail-value" style="color: var(--success); font-weight: bold;">${this.formatCurrency(valoracion.valor_estimado_euros)}</span>
+
+        // Valor calculado
+        const valorCalculado = this.valoraciones?.valoraciones?.find(
+            v => v.referencia_catastral === property.referencia_catastral
+        )?.valor_estimado_euros;
+
+        // Valor de referencia oficial
+        const valorRefOficial = property._original?.valor_referencia_oficial?.valor_referencia;
+
+        // Comparación
+        const comparacion = property._original?.comparacion;
+
+        if (valorCalculado || valorRefOficial) {
+            valoracionHTML = '<div style="grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.5rem;">';
+
+            if (valorCalculado) {
+                valoracionHTML += `
+                    <div style="background: var(--success-bg); padding: 0.5rem; border-radius: 4px; text-align: center;">
+                        <div style="font-size: 0.75rem; color: var(--success);">💰 Valor Calculado</div>
+                        <div style="font-weight: bold; color: var(--success);">${this.formatCurrency(valorCalculado)}</div>
+                    </div>
+                `;
+            }
+
+            if (valorRefOficial) {
+                valoracionHTML += `
+                    <div style="background: #e0f2fe; padding: 0.5rem; border-radius: 4px; text-align: center;">
+                        <div style="font-size: 0.75rem; color: #0369a1;">📊 Valor Oficial</div>
+                        <div style="font-weight: bold; color: #0369a1;">${this.formatCurrency(valorRefOficial)}</div>
+                    </div>
+                `;
+            }
+
+            valoracionHTML += '</div>';
+
+            // Mostrar diferencia si existe comparación
+            if (comparacion) {
+                const colorDif = comparacion.diferencia_euros >= 0 ? 'var(--success)' : 'var(--danger-color)';
+                const signo = comparacion.diferencia_euros >= 0 ? '+' : '';
+                valoracionHTML += `
+                    <div style="grid-column: 1 / -1; text-align: center; font-size: 0.8rem; color: ${colorDif}; margin-top: 0.25rem;">
+                        Diferencia: ${signo}${this.formatCurrency(comparacion.diferencia_euros)} (${signo}${comparacion.diferencia_porcentaje.toFixed(1)}%)
                     </div>
                 `;
             }
@@ -573,16 +651,53 @@ class CatastroApp {
             `;
         }
 
-        // Valoración (si existe)
-        if (this.valoraciones && this.valoraciones.valoraciones) {
-            const valoracion = this.valoraciones.valoraciones.find(
-                v => v.referencia_catastral === property.referencia_catastral
-            );
+        // Valoración calculada y valor de referencia oficial
+        const valoracion = this.valoraciones?.valoraciones?.find(
+            v => v.referencia_catastral === property.referencia_catastral
+        );
+        const valorRefOficial = property._original?.valor_referencia_oficial;
+        const comparacion = property._original?.comparacion;
+
+        if (valoracion || valorRefOficial) {
+            html += `<h3>💰 Valoraciones</h3>`;
+
+            // Comparación visual si hay ambos valores
+            if (comparacion) {
+                const colorDif = comparacion.diferencia_euros >= 0 ? 'var(--success)' : 'var(--danger-color)';
+                const signo = comparacion.diferencia_euros >= 0 ? '+' : '';
+                const bgColor = comparacion.diferencia_euros >= 0 ? 'var(--success-bg)' : '#fee2e2';
+
+                html += `
+                    <div style="background: ${bgColor}; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 0.9rem; color: var(--text-secondary);">💰 Valor Calculado</div>
+                                <div style="font-size: 1.5rem; font-weight: bold; color: var(--success);">${this.formatCurrency(comparacion.valor_calculado)}</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 0.9rem; color: var(--text-secondary);">📊 Valor Oficial (Catastro)</div>
+                                <div style="font-size: 1.5rem; font-weight: bold; color: #0369a1;">${this.formatCurrency(comparacion.valor_oficial)}</div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; padding-top: 0.5rem; border-top: 1px solid rgba(0,0,0,0.1);">
+                            <div style="font-size: 0.9rem; color: var(--text-secondary);">Diferencia</div>
+                            <div style="font-size: 1.2rem; font-weight: bold; color: ${colorDif};">
+                                ${signo}${this.formatCurrency(comparacion.diferencia_euros)} (${signo}${comparacion.diferencia_porcentaje.toFixed(2)}%)
+                            </div>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                                ${comparacion.mayor === 'calculado' ? 'El valor calculado es mayor' : comparacion.mayor === 'oficial' ? 'El valor oficial es mayor' : 'Los valores coinciden'}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Detalles de valoración calculada
             if (valoracion) {
                 html += `
-                    <h3>📊 Valoración de Mercado 2026</h3>
+                    <h4>📊 Detalle de Valoración Calculada</h4>
                     <div class="modal-detail-grid">
-                        ${this.createDetailItem('Valor Estimado', `<strong style="color: var(--success); font-size: 1.2em;">${this.formatCurrency(valoracion.valor_estimado_euros)}</strong>`)}
+                        ${!comparacion ? this.createDetailItem('Valor Estimado', `<strong style="color: var(--success); font-size: 1.2em;">${this.formatCurrency(valoracion.valor_estimado_euros)}</strong>`) : ''}
                         ${this.createDetailItem('Tipo Valoración', valoracion.tipo_valoracion === 'rustico' ? 'Rústico' : 'Urbano')}
                         ${this.createDetailItem('Método', valoracion.metodo)}
                         ${valoracion.valor_catastral ? this.createDetailItem('Valor Catastral', this.formatCurrency(valoracion.valor_catastral)) : ''}
@@ -640,6 +755,23 @@ class CatastroApp {
                         </div>
                     `;
                 }
+            }
+
+            // Detalles del valor de referencia oficial
+            if (valorRefOficial) {
+                html += `
+                    <h4 style="margin-top: 1.5rem;">📊 Valor de Referencia Oficial (Catastro)</h4>
+                    <div class="modal-detail-grid">
+                        ${!comparacion ? this.createDetailItem('Valor de Referencia', `<strong style="color: #0369a1; font-size: 1.2em;">${this.formatCurrency(valorRefOficial.valor_referencia)}</strong>`) : ''}
+                        ${this.createDetailItem('Ejercicio', valorRefOficial.ejercicio || '2025')}
+                        ${this.createDetailItem('Fecha Consulta', valorRefOficial.fecha_consulta || 'N/A')}
+                        ${this.createDetailItem('Finalidad', valorRefOficial.finalidad || 'N/A')}
+                    </div>
+                    <div style="margin-top: 0.5rem; padding: 0.75rem; background: #e0f2fe; border-radius: 8px; font-size: 0.85rem; color: #0369a1;">
+                        <strong>ℹ️ Nota:</strong> Este es el valor de referencia oficial publicado por el Catastro para el ejercicio ${valorRefOficial.ejercicio || '2025'}.
+                        Se utiliza como base para la tributación de transmisiones inmobiliarias.
+                    </div>
+                `;
             }
         }
 
