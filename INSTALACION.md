@@ -62,6 +62,24 @@ Antes de comenzar, necesitarás:
 
 ### 3️⃣ Ejecutar la aplicación
 
+#### ⭐ Forma más fácil: Script automático
+
+1. **Ubicar el archivo:**
+   - Navega a la carpeta `gestion-herencia` en el Explorador de archivos
+
+2. **Ejecutar:**
+   - Haz doble clic en `iniciar.bat`
+   - El script hará todo automáticamente:
+     - Verifica Python ✓
+     - Instala dependencias si faltan ✓
+     - Genera datos de ejemplo ✓
+     - Inicia el servidor ✓
+     - Abre el navegador ✓
+
+**Nota importante:** Debes hacer doble clic directamente en el archivo `iniciar.bat` dentro de la carpeta del proyecto. Si lo copias a otro lugar o lo ejecutas de otra forma, puede no funcionar.
+
+#### Forma manual:
+
 1. **Generar los datos de ejemplo:**
    ```bash
    python catastro_scraper_service.py

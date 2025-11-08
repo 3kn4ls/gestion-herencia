@@ -2,10 +2,15 @@
 REM Script de inicio para Windows
 REM Ejecuta este archivo para iniciar la aplicacion
 
+REM Cambiar al directorio donde esta el script
+cd /d "%~dp0"
+
 echo.
 echo ============================================================
 echo   SISTEMA DE GESTION DE DATOS CATASTRALES
 echo ============================================================
+echo.
+echo Directorio de trabajo: %CD%
 echo.
 
 REM Verificar si Python esta instalado
