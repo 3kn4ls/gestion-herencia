@@ -38,6 +38,7 @@ Thumbs.db
 
 # Project specific
 data/*.json
+!data/valores_gva_2025_template.json
 *.xml
 response.html
 error_response.html

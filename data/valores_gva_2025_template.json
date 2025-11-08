@@ -1,0 +1,575 @@
+{
+  "fuente": {
+    "documento": "NNTT_2025_Urbana y Rústica.pdf",
+    "organismo": "Generalitat Valenciana - Agencia Tributaria Valenciana",
+    "url": "https://atv.gva.es/auto/ValorDictamen/01%20Normas%20T%E9cnicas%20de%20Valoraci%F3n/Devengos%20desde%2001_01_2025%20hasta%2031_12_2025/NNTT_2025_Urbana%20y%20R%FAstica.pdf",
+    "vigencia": {
+      "desde": "2025-01-01",
+      "hasta": "2025-12-31"
+    },
+    "version": "2025",
+    "fecha_extraccion": null
+  },
+  "metadatos": {
+    "descripcion": "Valores oficiales de referencia para valoración de inmuebles rústicos y urbanos",
+    "ambito_territorial": "Comunidad Valenciana",
+    "aplicacion": "Impuesto sobre Transmisiones Patrimoniales, Sucesiones y Donaciones",
+    "municipios_incluidos": []
+  },
+  "municipios": {
+    "oliva": {
+      "nombre_oficial": "Oliva",
+      "provincia": "Alicante/Alacant",
+      "codigo_ine": null,
+      "rustico": {
+        "descripcion": "Valores por tipo de cultivo en euros por hectárea",
+        "unidad": "€/ha",
+        "valores": {
+          "olivar_secano": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "olivar_regadio": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "almendro_secano": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "almendro_regadio": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "vina_secano": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "vina_regadio": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "frutal_secano": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "frutal_regadio": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "citricos_regadio": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "cereal_secano": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "cereal_regadio": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "horticola_secano": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "horticola_regadio": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "pastos": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "prado": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "forestal": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "monte_bajo": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "erial": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "improductivo": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "otros": []
+        },
+        "zonificacion": {
+          "descripcion": "Si el municipio tiene diferentes zonas con valores distintos",
+          "zonas": []
+        }
+      },
+      "urbano": {
+        "descripcion": "Coeficientes multiplicadores del valor catastral",
+        "formula": "Valor Mercado = Valor Catastral × Coeficiente",
+        "valores": {
+          "vivienda": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "local_comercial": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "oficina": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "industrial": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "almacen": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "garaje": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "trastero": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "solar": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "otros": []
+        },
+        "zonificacion": {
+          "descripcion": "Si el municipio tiene diferentes zonas urbanas con coeficientes distintos",
+          "zonas": []
+        }
+      }
+    },
+    "planes": {
+      "nombre_oficial": "Planes",
+      "provincia": "Alicante/Alacant",
+      "codigo_ine": null,
+      "rustico": {
+        "descripcion": "Valores por tipo de cultivo en euros por hectárea",
+        "unidad": "€/ha",
+        "valores": {
+          "olivar_secano": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "olivar_regadio": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "almendro_secano": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "almendro_regadio": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "vina_secano": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "vina_regadio": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "frutal_secano": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "frutal_regadio": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "citricos_regadio": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "cereal_secano": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "cereal_regadio": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "horticola_secano": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "horticola_regadio": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "pastos": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "prado": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "forestal": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "monte_bajo": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "erial": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "improductivo": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "otros": []
+        },
+        "zonificacion": {
+          "descripcion": "Si el municipio tiene diferentes zonas con valores distintos",
+          "zonas": []
+        }
+      },
+      "urbano": {
+        "descripcion": "Coeficientes multiplicadores del valor catastral",
+        "formula": "Valor Mercado = Valor Catastral × Coeficiente",
+        "valores": {
+          "vivienda": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "local_comercial": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "oficina": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "industrial": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "almacen": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "garaje": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "trastero": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "solar": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "otros": []
+        },
+        "zonificacion": {
+          "descripcion": "Si el municipio tiene diferentes zonas urbanas con coeficientes distintos",
+          "zonas": []
+        }
+      }
+    },
+    "vall_de_gallinera": {
+      "nombre_oficial": "Vall de Gallinera",
+      "provincia": "Alicante/Alacant",
+      "codigo_ine": null,
+      "rustico": {
+        "descripcion": "Valores por tipo de cultivo en euros por hectárea",
+        "unidad": "€/ha",
+        "valores": {
+          "olivar_secano": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "olivar_regadio": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "almendro_secano": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "almendro_regadio": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "vina_secano": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "vina_regadio": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "frutal_secano": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "frutal_regadio": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "citricos_regadio": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "cereal_secano": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "cereal_regadio": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "horticola_secano": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "horticola_regadio": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "pastos": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "prado": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "forestal": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "monte_bajo": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "erial": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "improductivo": {
+            "valor": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "otros": []
+        },
+        "zonificacion": {
+          "descripcion": "Si el municipio tiene diferentes zonas con valores distintos",
+          "zonas": []
+        }
+      },
+      "urbano": {
+        "descripcion": "Coeficientes multiplicadores del valor catastral",
+        "formula": "Valor Mercado = Valor Catastral × Coeficiente",
+        "valores": {
+          "vivienda": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "local_comercial": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "oficina": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "industrial": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "almacen": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "garaje": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "trastero": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "notas": ""
+          },
+          "solar": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "zonificacion": [],
+            "notas": ""
+          },
+          "otros": []
+        },
+        "zonificacion": {
+          "descripcion": "Si el municipio tiene diferentes zonas urbanas con coeficientes distintos",
+          "zonas": []
+        }
+      }
+    }
+  },
+  "criterios_generales": {
+    "rustico": {
+      "descripcion": "Metodología general para suelo rústico",
+      "formula": "Valor = Superficie (ha) × Valor unitario cultivo (€/ha)",
+      "factores_correccion": {
+        "calidad_tierra": {
+          "descripcion": "Ajuste por calidad del terreno",
+          "valores": []
+        },
+        "accesibilidad": {
+          "descripcion": "Ajuste por acceso al terreno",
+          "valores": []
+        },
+        "pendiente": {
+          "descripcion": "Ajuste por pendiente del terreno",
+          "valores": []
+        },
+        "otros": []
+      }
+    },
+    "urbano": {
+      "descripcion": "Metodología general para suelo urbano",
+      "formula": "Valor Mercado = Valor Catastral × Coeficiente",
+      "factores_correccion": {
+        "antiguedad": {
+          "descripcion": "Ajuste por antigüedad del inmueble",
+          "valores": []
+        },
+        "estado_conservacion": {
+          "descripcion": "Ajuste por estado de conservación",
+          "valores": []
+        },
+        "ubicacion": {
+          "descripcion": "Ajuste por ubicación dentro del municipio",
+          "valores": []
+        },
+        "otros": []
+      }
+    }
+  },
+  "notas": {
+    "metodologia": "Los valores unitarios deben multiplicarse por la superficie para obtener el valor total",
+    "actualizacion": "Valores actualizados anualmente por la Generalitat Valenciana",
+    "aplicacion": "Estos valores son de aplicación obligatoria para ITP, ISD y AJD en la Comunidad Valenciana",
+    "observaciones": []
+  }
+}
