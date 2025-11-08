@@ -7,6 +7,7 @@ class CatastroApp {
     constructor() {
         this.data = [];
         this.filteredData = [];
+        this.valoraciones = null;
         this.filters = {
             clase: 'all',
             provincia: 'all',
@@ -91,6 +92,11 @@ class CatastroApp {
         // Cargar datos de ejemplo
         document.getElementById('loadSampleData').addEventListener('click', () => {
             this.loadSampleData();
+        });
+
+        // Botón valorar propiedades
+        document.getElementById('btnValorar')?.addEventListener('click', () => {
+            this.valorarPropiedades();
         });
 
         // Buscador general
@@ -184,8 +190,57 @@ class CatastroApp {
         this.data = this.data.map(p => this.normalizeProperty(p));
 
         this.filteredData = [...this.data];
+        this.valoraciones = null; // Reset valoraciones al cargar nuevos datos
         this.updateUI();
         this.buildFilters();
+    }
+
+    /**
+     * Valora las propiedades usando la API del backend
+     */
+    async valorarPropiedades() {
+        if (!this.data || this.data.length === 0) {
+            alert('No hay propiedades cargadas para valorar');
+            return;
+        }
+
+        const btnValorar = document.getElementById('btnValorar');
+        const originalText = btnValorar.textContent;
+
+        try {
+            btnValorar.textContent = '⏳ Valorando...';
+            btnValorar.disabled = true;
+
+            // Enviar datos originales (sin normalización) a la API
+            const propiedadesOriginales = this.data.map(p => p._original || p);
+
+            const response = await fetch('/api/valorar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(propiedadesOriginales)
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al valorar las propiedades');
+            }
+
+            this.valoraciones = await response.json();
+            console.log('Valoraciones recibidas:', this.valoraciones);
+
+            // Actualizar UI con las valoraciones
+            this.updateUI();
+
+            alert(`✅ Valoración completada\n\nValor total estimado: ${this.formatCurrency(this.valoraciones.resumen.valor_total_estimado)}`);
+
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error al valorar las propiedades. Asegúrate de que el servidor está corriendo.');
+        } finally {
+            btnValorar.textContent = originalText;
+            btnValorar.disabled = false;
+        }
     }
 
     /**
@@ -319,11 +374,18 @@ class CatastroApp {
         document.getElementById('totalPropiedades').textContent = totalPropiedades;
         document.getElementById('superficieTotal').textContent = this.formatNumber(superficieTotal) + ' m²';
 
-        // Mostrar distribución por clase
-        const claseText = Object.entries(claseCounts)
-            .map(([clase, count]) => `${clase}: ${count}`)
-            .join(', ');
-        document.getElementById('distribucionClase').textContent = claseText;
+        // Mostrar distribución por clase o valor total si hay valoraciones
+        if (this.valoraciones && this.valoraciones.resumen) {
+            const valorTotal = this.formatCurrency(this.valoraciones.resumen.valor_total_estimado);
+            document.getElementById('distribucionClase').innerHTML = `<strong>${valorTotal}</strong>`;
+            document.getElementById('distribucionClase').parentElement.querySelector('.stat-label').textContent = 'Valor Estimado Total';
+        } else {
+            const claseText = Object.entries(claseCounts)
+                .map(([clase, count]) => `${clase}: ${count}`)
+                .join(', ');
+            document.getElementById('distribucionClase').textContent = claseText;
+            document.getElementById('distribucionClase').parentElement.querySelector('.stat-label').textContent = 'Distribución';
+        }
 
         // Fecha de última actualización
         const fechas = this.data
@@ -375,6 +437,22 @@ class CatastroApp {
         const uso = inmueble.uso_principal || 'N/A';
         const superficie = inmueble.superficie_construida || 0;
 
+        // Buscar valoración de esta propiedad
+        let valoracionHTML = '';
+        if (this.valoraciones && this.valoraciones.valoraciones) {
+            const valoracion = this.valoraciones.valoraciones.find(
+                v => v.referencia_catastral === property.referencia_catastral
+            );
+            if (valoracion && valoracion.valor_estimado_euros) {
+                valoracionHTML = `
+                    <div class="detail-item" style="background: var(--success-bg); padding: 0.5rem; border-radius: 4px; grid-column: 1 / -1;">
+                        <span class="detail-label" style="color: var(--success);">💰 Valor Estimado</span>
+                        <span class="detail-value" style="color: var(--success); font-weight: bold;">${this.formatCurrency(valoracion.valor_estimado_euros)}</span>
+                    </div>
+                `;
+            }
+        }
+
         card.innerHTML = `
             <div class="property-header">
                 <div>
@@ -400,6 +478,7 @@ class CatastroApp {
                     <span class="detail-label">Municipio</span>
                     <span class="detail-value">${loc.municipio || 'N/A'}</span>
                 </div>
+                ${valoracionHTML}
             </div>
         `;
 
@@ -492,6 +571,76 @@ class CatastroApp {
                     ${this.createDetailItem('Valor Construcción', this.formatCurrency(catastrales.valor_construccion))}
                 </div>
             `;
+        }
+
+        // Valoración (si existe)
+        if (this.valoraciones && this.valoraciones.valoraciones) {
+            const valoracion = this.valoraciones.valoraciones.find(
+                v => v.referencia_catastral === property.referencia_catastral
+            );
+            if (valoracion) {
+                html += `
+                    <h3>📊 Valoración de Mercado 2026</h3>
+                    <div class="modal-detail-grid">
+                        ${this.createDetailItem('Valor Estimado', `<strong style="color: var(--success); font-size: 1.2em;">${this.formatCurrency(valoracion.valor_estimado_euros)}</strong>`)}
+                        ${this.createDetailItem('Tipo Valoración', valoracion.tipo_valoracion === 'rustico' ? 'Rústico' : 'Urbano')}
+                        ${this.createDetailItem('Método', valoracion.metodo)}
+                        ${valoracion.valor_catastral ? this.createDetailItem('Valor Catastral', this.formatCurrency(valoracion.valor_catastral)) : ''}
+                        ${valoracion.coeficiente ? this.createDetailItem('Coeficiente Aplicado', valoracion.coeficiente) : ''}
+                        ${valoracion.superficie_total_ha ? this.createDetailItem('Superficie Total', `${valoracion.superficie_total_ha} ha (${this.formatNumber(valoracion.superficie_total_m2)} m²)`) : ''}
+                        ${valoracion.valor_por_ha ? this.createDetailItem('Precio por Hectárea', this.formatCurrency(valoracion.valor_por_ha)) : ''}
+                    </div>
+                `;
+
+                // Detalles de cultivos si es rústico
+                if (valoracion.detalles_cultivos && valoracion.detalles_cultivos.length > 0) {
+                    html += `
+                        <h4 style="margin-top: 1rem;">🌾 Desglose por Cultivos</h4>
+                        <div class="table-responsive" style="margin-top: 1rem;">
+                            <table class="cultivos-table">
+                                <thead>
+                                    <tr>
+                                        <th>Cultivo</th>
+                                        <th>Superficie (ha)</th>
+                                        <th>Precio/ha</th>
+                                        <th>Valor Estimado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${valoracion.detalles_cultivos.map(c => `
+                                        <tr>
+                                            <td>${c.cultivo}</td>
+                                            <td>${c.superficie_ha} ha</td>
+                                            <td>${this.formatCurrency(c.precio_ha)}</td>
+                                            <td><strong>${this.formatCurrency(c.valor_estimado)}</strong></td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                }
+
+                // Advertencias
+                if (valoracion.advertencias && valoracion.advertencias.length > 0) {
+                    html += `
+                        <div style="margin-top: 1rem; padding: 1rem; background: var(--warning-bg); border-radius: 8px; font-size: 0.85rem;">
+                            <strong>⚠️ Advertencias:</strong>
+                            <ul style="margin: 0.5rem 0 0 1.5rem; padding: 0;">
+                                ${valoracion.advertencias.map(adv => `<li>${adv}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+
+                if (valoracion.fuente_criterios || valoracion.fuente_precios) {
+                    html += `
+                        <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-secondary);">
+                            <em>Fuente: ${valoracion.fuente_criterios || valoracion.fuente_precios}</em>
+                        </div>
+                    `;
+                }
+            }
         }
 
         // Enlace a catastro

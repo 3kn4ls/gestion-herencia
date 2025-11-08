@@ -6,7 +6,9 @@ Servidor HTTP simple para servir el frontend
 import http.server
 import socketserver
 import os
+import json
 from functools import partial
+from urllib.parse import urlparse
 
 PORT = 8000
 # Usar el directorio donde está ubicado este script (funciona en Windows, macOS y Linux)
@@ -14,7 +16,7 @@ DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 
 
 class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
-    """Handler personalizado con CORS habilitado"""
+    """Handler personalizado con CORS habilitado y API para valoraciones"""
 
     def end_headers(self):
         # Habilitar CORS
@@ -22,6 +24,55 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'Content-Type')
         super().end_headers()
+
+    def do_OPTIONS(self):
+        """Manejar peticiones OPTIONS (CORS preflight)"""
+        self.send_response(200)
+        self.end_headers()
+
+    def do_POST(self):
+        """Manejar peticiones POST"""
+        parsed_path = urlparse(self.path)
+
+        # Endpoint de valoración
+        if parsed_path.path == '/api/valorar':
+            self.handle_valoracion()
+        else:
+            self.send_error(404, "Endpoint no encontrado")
+
+    def handle_valoracion(self):
+        """Maneja la valoración de propiedades"""
+        try:
+            # Leer el cuerpo de la petición
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length)
+            propiedades = json.loads(post_data.decode('utf-8'))
+
+            # Importar el valorador
+            import sys
+            sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+            from valorador_inmuebles import ValoradorInmuebles
+
+            # Crear valorador y valorar propiedades
+            valorador = ValoradorInmuebles()
+            resultado = valorador.valorar_multiples(propiedades)
+
+            # Enviar respuesta
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json; charset=utf-8')
+            self.end_headers()
+            self.wfile.write(json.dumps(resultado, ensure_ascii=False).encode('utf-8'))
+
+        except Exception as e:
+            # Error al valorar
+            self.send_response(500)
+            self.send_header('Content-Type', 'application/json; charset=utf-8')
+            self.end_headers()
+            error_response = {
+                "error": str(e),
+                "mensaje": "Error al valorar las propiedades"
+            }
+            self.wfile.write(json.dumps(error_response, ensure_ascii=False).encode('utf-8'))
 
     def log_message(self, format, *args):
         """Personalizar mensajes de log"""

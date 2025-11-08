@@ -2,9 +2,12 @@
 :root {
     --primary-color: #2563eb;
     --secondary-color: #64748b;
+    --success: #10b981;
     --success-color: #10b981;
+    --success-bg: #d1fae5;
     --danger-color: #ef4444;
     --warning-color: #f59e0b;
+    --warning-bg: #fef3c7;
     --bg-color: #f8fafc;
     --card-bg: #ffffff;
     --text-primary: #1e293b;
