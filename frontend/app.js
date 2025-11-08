@@ -99,6 +99,11 @@ class CatastroApp {
             this.valorarPropiedades();
         });
 
+        // Botón exportar a Excel
+        document.getElementById('btnExportarExcel')?.addEventListener('click', () => {
+            this.exportarAExcel();
+        });
+
         // Buscador general
         document.getElementById('searchInput').addEventListener('input', (e) => {
             this.handleSearch(e.target.value);
@@ -920,6 +925,135 @@ class CatastroApp {
 
         this.renderProperties();
         this.updateFilteredCount();
+    }
+
+    /**
+     * Exporta los datos a formato compatible con Excel (TSV)
+     * Cada cultivo del desglose genera una fila independiente
+     */
+    async exportarAExcel() {
+        if (!this.filteredData || this.filteredData.length === 0) {
+            alert('No hay datos para exportar');
+            return;
+        }
+
+        try {
+            // Encabezados de las columnas
+            const headers = [
+                'Referencia Catastral',
+                'Provincia',
+                'Municipio',
+                'Partida',
+                'Polígono',
+                'Parcela',
+                'Clase',
+                'Uso Principal',
+                'Superficie Total (m²)',
+                'Cultivo',
+                'Superficie Cultivo (ha)',
+                'Precio €/ha',
+                'Valor Cultivo (€)',
+                'Valor Total Calculado (€)',
+                'Valor Catastral (€)',
+                'Valor Oficial Referencia (€)',
+                'Diferencia vs Oficial (€)',
+                'Diferencia vs Oficial (%)'
+            ];
+
+            // Generar filas de datos
+            const rows = [];
+
+            for (const property of this.filteredData) {
+                const loc = property.localizacion || {};
+                const inmueble = property.datos_inmueble || {};
+                const catastrales = property.datos_catastrales || property._original?.datos_catastrales;
+
+                // Buscar valoración y valor oficial
+                const valoracion = this.valoraciones?.valoraciones?.find(
+                    v => v.referencia_catastral === property.referencia_catastral
+                );
+                const valorRefOficial = property._original?.valor_referencia_oficial;
+
+                // Calcular totales
+                const valorCalculadoTotal = valoracion?.valor_estimado_euros || 0;
+                const valorCatastral = catastrales?.valor_catastral || 0;
+                const valorOficial = valorRefOficial?.valor_referencia || 0;
+                const diferencia = valorOficial > 0 ? (valorCalculadoTotal - valorOficial) : 0;
+                const diferenciaPct = valorOficial > 0 ? ((diferencia / valorOficial) * 100) : 0;
+
+                // Datos comunes de la propiedad
+                const datosComunes = [
+                    property.referencia_catastral || '',
+                    loc.provincia || '',
+                    loc.municipio || '',
+                    loc.partida || '',
+                    loc.poligono || '',
+                    loc.parcela || '',
+                    inmueble.clase || '',
+                    inmueble.uso_principal || '',
+                    inmueble.superficie_construida || 0
+                ];
+
+                // Si tiene detalles de cultivos en la valoración, crear una fila por cultivo
+                if (valoracion?.detalles_cultivos && valoracion.detalles_cultivos.length > 0) {
+                    for (let i = 0; i < valoracion.detalles_cultivos.length; i++) {
+                        const cultivo = valoracion.detalles_cultivos[i];
+                        const row = [
+                            ...datosComunes,
+                            cultivo.cultivo || '',
+                            cultivo.superficie_ha || 0,
+                            cultivo.precio_hectarea || 0,
+                            cultivo.valor_euros || 0,
+                            // Solo mostrar totales en la primera fila de cada propiedad
+                            i === 0 ? valorCalculadoTotal : '',
+                            i === 0 ? valorCatastral : '',
+                            i === 0 ? valorOficial : '',
+                            i === 0 ? diferencia : '',
+                            i === 0 ? diferenciaPct.toFixed(2) : ''
+                        ];
+                        rows.push(row);
+                    }
+                } else {
+                    // Si no tiene cultivos, crear una sola fila con los datos generales
+                    const row = [
+                        ...datosComunes,
+                        '', // Cultivo
+                        '', // Superficie Cultivo
+                        '', // Precio
+                        '', // Valor Cultivo
+                        valorCalculadoTotal,
+                        valorCatastral,
+                        valorOficial,
+                        diferencia,
+                        diferenciaPct.toFixed(2)
+                    ];
+                    rows.push(row);
+                }
+            }
+
+            // Generar TSV (Tab-Separated Values)
+            const tsvContent = [
+                headers.join('\t'),
+                ...rows.map(row => row.join('\t'))
+            ].join('\n');
+
+            // Copiar al portapapeles
+            await navigator.clipboard.writeText(tsvContent);
+
+            // Notificar éxito
+            const totalFilas = rows.length;
+            const totalPropiedades = this.filteredData.length;
+            alert(`✅ ¡Datos copiados al portapapeles!\n\n` +
+                  `${totalPropiedades} propiedades\n` +
+                  `${totalFilas} filas (incluyendo cultivos desglosados)\n\n` +
+                  `Ahora puedes pegar (Ctrl+V) en Excel`);
+
+            console.log(`✅ Exportación completada: ${totalFilas} filas, ${totalPropiedades} propiedades`);
+
+        } catch (error) {
+            console.error('Error al exportar:', error);
+            alert('❌ Error al copiar los datos. Verifica que tu navegador permita acceso al portapapeles.');
+        }
     }
 
     /**
