@@ -34,42 +34,42 @@ class ConfiguracionValoracion {
     getCriteriosDefault() {
         return {
             PRECIOS_RUSTICO: {
-                // Ámbito 13: Safor-Litoral (Oliva, Piles)
+                // Ámbito 13: Safor-Litoral (Oliva, Piles) - ATH 1603
                 ambito_13_safor_litoral: {
-                    olivar_secano: { valor: 12200, nombre: "Olivar Secano", unidad: "€/ha" },
+                    olivar_secano: { valor: 0, nombre: "Olivar Secano (O-)", unidad: "€/ha" },
                     olivar_regadio: { valor: 24400, nombre: "Olivar Regadío", unidad: "€/ha" },
-                    almendro_secano: { valor: 6100, nombre: "Frutos Secos Secano", unidad: "€/ha" },
+                    almendro_secano: { valor: 0, nombre: "Frutos Secos Secano (F-)", unidad: "€/ha" },
                     almendro_regadio: { valor: 18300, nombre: "Frutos Secos Regadío", unidad: "€/ha" },
                     vina_secano: { valor: 9200, nombre: "Viñedo Secano", unidad: "€/ha" },
                     vina_regadio: { valor: 18300, nombre: "Viñedo Regadío", unidad: "€/ha" },
                     frutal_regadio: { valor: 30500, nombre: "Frutales Regadío", unidad: "€/ha" },
-                    citricos_regadio: { valor: 50800, nombre: "Agrios/Cítricos Regadío", unidad: "€/ha" },
+                    citricos_regadio: { valor: 33783, nombre: "Agrios/Cítricos Regadío (NR)", unidad: "€/ha" },
                     horticola_regadio: { valor: 30500, nombre: "Hortícolas Regadío", unidad: "€/ha" },
                     arroz_regadio: { valor: 18300, nombre: "Arroz Regadío", unidad: "€/ha" },
-                    labor_secano: { valor: 4900, nombre: "Labor/Labradío Secano", unidad: "€/ha" },
-                    labor_regadio: { valor: 27800, nombre: "Labor/Labradío Regadío", unidad: "€/ha" },
-                    pastos: { valor: 3000, nombre: "Pastos", unidad: "€/ha" },
+                    labor_secano: { valor: 0, nombre: "Labor/Labradío Secano (CL)", unidad: "€/ha" },
+                    labor_regadio: { valor: 24379, nombre: "Labor/Labradío Regadío (CR)", unidad: "€/ha" },
+                    pastos: { valor: 0, nombre: "Pastos (E-)", unidad: "€/ha" },
                     pinar_maderable: { valor: 1800, nombre: "Pinar Maderable (MM)", unidad: "€/ha" },
-                    matorral: { valor: 1000, nombre: "Matorral (MT)", unidad: "€/ha" },
-                    improductivo: { valor: 1000, nombre: "Improductivo (I-)", unidad: "€/ha" }
+                    matorral: { valor: 600, nombre: "Matorral (MT)", unidad: "€/ha" },
+                    improductivo: { valor: 600, nombre: "Improductivo (I-)", unidad: "€/ha" }
                 },
-                // Ámbito 17: Marina Alta-Interior (Vall de Gallinera, Planes)
+                // Ámbito 17: Marina Alta-Interior (Vall de Gallinera, Planes) - ATH 1613
                 ambito_17_marina_alta_interior: {
-                    olivar_secano: { valor: 15600, nombre: "Olivar Secano", unidad: "€/ha" },
+                    olivar_secano: { valor: 13289, nombre: "Olivar Secano (O-)", unidad: "€/ha" },
                     olivar_regadio: { valor: 19500, nombre: "Olivar Regadío", unidad: "€/ha" },
-                    almendro_secano: { valor: 7800, nombre: "Frutos Secos Secano", unidad: "€/ha" },
+                    almendro_secano: { valor: 9230, nombre: "Frutos Secos Secano (F-)", unidad: "€/ha" },
                     almendro_regadio: { valor: 19500, nombre: "Frutos Secos Regadío", unidad: "€/ha" },
                     vina_secano: { valor: 7800, nombre: "Viñedo Secano", unidad: "€/ha" },
                     vina_regadio: { valor: 15600, nombre: "Viñedo Regadío", unidad: "€/ha" },
                     frutal_regadio: { valor: 26000, nombre: "Frutales Regadío", unidad: "€/ha" },
-                    citricos_regadio: { valor: 39000, nombre: "Agrios/Cítricos Regadío", unidad: "€/ha" },
+                    citricos_regadio: { valor: 13698, nombre: "Agrios/Cítricos Regadío (NR)", unidad: "€/ha" },
                     horticola_regadio: { valor: 26000, nombre: "Hortícolas Regadío", unidad: "€/ha" },
-                    labor_secano: { valor: 6200, nombre: "Labor/Labradío Secano", unidad: "€/ha" },
-                    labor_regadio: { valor: 20800, nombre: "Labor/Labradío Regadío", unidad: "€/ha" },
-                    pastos: { valor: 3100, nombre: "Pastos", unidad: "€/ha" },
-                    pinar_maderable: { valor: 1900, nombre: "Pinar Maderable (MM)", unidad: "€/ha" },
-                    matorral: { valor: 1000, nombre: "Matorral (MT)", unidad: "€/ha" },
-                    improductivo: { valor: 1000, nombre: "Improductivo (I-)", unidad: "€/ha" }
+                    labor_secano: { valor: 6633, nombre: "Labor/Labradío Secano (CL)", unidad: "€/ha" },
+                    labor_regadio: { valor: 13801, nombre: "Labor/Labradío Regadío (CR)", unidad: "€/ha" },
+                    pastos: { valor: 0, nombre: "Pastos (E-)", unidad: "€/ha" },
+                    pinar_maderable: { valor: 1800, nombre: "Pinar Maderable (MM)", unidad: "€/ha" },
+                    matorral: { valor: 600, nombre: "Matorral (MT)", unidad: "€/ha" },
+                    improductivo: { valor: 600, nombre: "Improductivo (I-)", unidad: "€/ha" }
                 }
             },
             COEFICIENTES_URBANO: {

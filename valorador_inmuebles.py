@@ -38,78 +38,78 @@ class CriteriosValoracion:
     # Fuente: NNTT_2025 GVA - Anejo II
     PRECIOS_RUSTICO = {
         # Ámbito 13: Safor-Litoral (Oliva, Piles)
-        # Fuente: NNTT_2025 GVA - Anejo II
+        # Fuente: ATH 1603 - Módulos de Valor Recalculados
         "ambito_13_safor_litoral": {
-            "olivar_secano": 12200,
+            "olivar_secano": 0,        # O- Olivos Secano: No valorable en esta zona (ATH 1603)
             "olivar_regadio": 24400,
-            "almendro_secano": 6100,
+            "almendro_secano": 0,      # F- Frutales Secano: No valorable en esta zona (ATH 1603)
             "almendro_regadio": 18300,
             "vina_secano": 9200,
             "vina_regadio": 18300,
             "frutal_secano": 0,
             "frutal_regadio": 30500,
-            "citricos_regadio": 50800,
+            "citricos_regadio": 33783,  # NR Agrios Regadío (ATH 1603)
             "cereal_secano": 0,
             "cereal_regadio": 0,
             "horticola_regadio": 30500,
             "arroz_regadio": 18300,
-            "pastos": 3000,
+            "pastos": 0,               # E- Pastos: No valorable en esta zona (ATH 1603)
             "forestal": 0,
-            "labor_secano": 4900,
-            "labor_regadio": 27800,
-            "pinar_maderable": 1800,
-            "matorral": 1000,
-            "improductivo": 1000,
+            "labor_secano": 0,         # CL Labor Secano: No valorable en esta zona (ATH 1603)
+            "labor_regadio": 24379,    # CR Labor Regadío (ATH 1603)
+            "pinar_maderable": 1800,   # MM Pinar Maderable (ATH 1603)
+            "matorral": 600,           # MT Matorral (ATH 1603)
+            "improductivo": 600,       # I- Improductivo (ATH 1603)
             "default": 10000,
         },
 
-        # Ámbito 17: Marina Alta-Interior (Vall de Gallinera)
-        # Fuente: NNTT_2025 GVA - Anejo II
+        # Ámbito 17: Marina Alta-Interior (Vall de Gallinera, Planes)
+        # Fuente: ATH 1613 - Módulos de Valor Recalculados
         "ambito_17_marina_alta_interior": {
-            "olivar_secano": 15600,
+            "olivar_secano": 13289,    # O- Olivos Secano (ATH 1613)
             "olivar_regadio": 19500,
-            "almendro_secano": 7800,
+            "almendro_secano": 9230,   # F- Frutales Secano (ATH 1613)
             "almendro_regadio": 19500,
             "vina_secano": 7800,
             "vina_regadio": 15600,
             "frutal_secano": 0,
             "frutal_regadio": 26000,
-            "citricos_regadio": 39000,
+            "citricos_regadio": 13698,  # NR Agrios Regadío (ATH 1613)
             "cereal_secano": 0,
             "cereal_regadio": 0,
             "horticola_regadio": 26000,
-            "pastos": 3100,
+            "pastos": 0,               # E- Pastos: No valorable en esta zona (ATH 1613)
             "forestal": 0,
-            "labor_secano": 6200,
-            "labor_regadio": 20800,
-            "pinar_maderable": 1900,
-            "matorral": 1000,
-            "improductivo": 1000,
+            "labor_secano": 6633,      # CL Labor Secano (ATH 1613)
+            "labor_regadio": 13801,    # CR Labor Regadío (ATH 1613)
+            "pinar_maderable": 1800,   # MM Pinar Maderable (ATH 1613)
+            "matorral": 600,           # MT Matorral (ATH 1613)
+            "improductivo": 600,       # I- Improductivo (ATH 1613)
             "default": 10000,
         },
 
-        # Comunidad Valenciana (fallback general - usa Ámbito 13)
+        # Comunidad Valenciana (fallback general - usa Ámbito 13 ATH 1603)
         "valencia": {
-            "olivar_secano": 12200,
+            "olivar_secano": 0,        # O- No valorable (ATH 1603)
             "olivar_regadio": 24400,
-            "almendro_secano": 6100,
+            "almendro_secano": 0,      # F- No valorable (ATH 1603)
             "almendro_regadio": 18300,
             "vina_secano": 9200,
             "vina_regadio": 18300,
             "frutal_secano": 0,
             "frutal_regadio": 30500,
-            "citricos_regadio": 50800,
+            "citricos_regadio": 33783,  # NR Agrios Regadío (ATH 1603)
             "cereal_secano": 0,
             "cereal_regadio": 0,
             "horticola_regadio": 30500,
             "arroz_regadio": 18300,
-            "pastos": 3000,
+            "pastos": 0,               # E- No valorable (ATH 1603)
             "forestal": 0,
-            "labor_secano": 4900,
-            "labor_regadio": 27800,
-            "pinar_maderable": 1800,
-            "matorral": 1000,
-            "improductivo": 1000,
+            "labor_secano": 0,         # CL No valorable (ATH 1603)
+            "labor_regadio": 24379,    # CR Labor Regadío (ATH 1603)
+            "pinar_maderable": 1800,   # MM Pinar Maderable (ATH 1603)
+            "matorral": 600,           # MT Matorral (ATH 1603)
+            "improductivo": 600,       # I- Improductivo (ATH 1603)
             "default": 10000,
         },
 
