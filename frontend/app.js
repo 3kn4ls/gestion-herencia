@@ -1040,8 +1040,8 @@ class CatastroApp {
                             // Datos de valoración (calculados)
                             detalleValoracion?.cultivo || '',
                             detalleValoracion?.superficie_ha || '',
-                            detalleValoracion?.precio_hectarea || '',
-                            detalleValoracion?.valor_euros || '',
+                            detalleValoracion?.precio_ha || '',
+                            detalleValoracion?.valor_estimado || '',
                             // Totales (solo en la primera fila)
                             i === 0 ? valorCalculadoTotal : '',
                             i === 0 ? valorCatastral : '',
@@ -1062,8 +1062,8 @@ class CatastroApp {
                             // Datos de valoración
                             cultivo.cultivo || '',
                             cultivo.superficie_ha || 0,
-                            cultivo.precio_hectarea || 0,
-                            cultivo.valor_euros || 0,
+                            cultivo.precio_ha || 0,
+                            cultivo.valor_estimado || 0,
                             // Totales (solo en la primera fila)
                             i === 0 ? valorCalculadoTotal : '',
                             i === 0 ? valorCatastral : '',
