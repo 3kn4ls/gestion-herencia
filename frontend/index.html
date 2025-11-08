@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Datos Catastrales</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 Gestor de Datos Catastrales</h1>
+            <p class="subtitle">Sistema de consulta y visualización de referencias catastrales</p>
+        </header>
+
+        <!-- Sección de carga de datos -->
+        <section class="upload-section">
+            <h2>Cargar Datos</h2>
+            <div class="upload-controls">
+                <input type="file" id="fileInput" accept=".json" />
+                <button id="loadSampleData" class="btn btn-primary">Cargar Datos de Ejemplo</button>
+            </div>
+            <p class="help-text">Carga un archivo JSON con datos catastrales o usa los datos de ejemplo</p>
+        </section>
+
+        <!-- Resumen general -->
+        <section id="summarySection" class="summary-section hidden">
+            <h2>Resumen General</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalPropiedades">0</div>
+                    <div class="stat-label">Propiedades</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="valorTotal">0 €</div>
+                    <div class="stat-label">Valor Catastral Total</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="superficieTotal">0 m²</div>
+                    <div class="stat-label">Superficie Total</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="fechaActualizacion">-</div>
+                    <div class="stat-label">Última Actualización</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Buscador -->
+        <section id="searchSection" class="search-section hidden">
+            <h2>Buscar Propiedades</h2>
+            <input type="text" id="searchInput" placeholder="Buscar por referencia catastral, dirección, municipio...">
+        </section>
+
+        <!-- Lista de propiedades -->
+        <section id="propertiesSection" class="properties-section hidden">
+            <h2>Propiedades</h2>
+            <div id="propertiesList" class="properties-list"></div>
+        </section>
+
+        <!-- Modal de detalle -->
+        <div id="detailModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div id="modalBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -38,11 +38,11 @@ Thumbs.db
 
 # Project specific
 data/*.json
-*.html
 *.xml
 response.html
 error_response.html
 catastro_response.xml
+test*.html
 
 # Logs
 *.log
