@@ -41,20 +41,36 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.send_error(404, "Endpoint no encontrado")
 
     def handle_valoracion(self):
-        """Maneja la valoración de propiedades"""
+        """Maneja la valoración de propiedades con criterios opcionales"""
         try:
             # Leer el cuerpo de la petición
             content_length = int(self.headers['Content-Length'])
             post_data = self.rfile.read(content_length)
-            propiedades = json.loads(post_data.decode('utf-8'))
+            data = json.loads(post_data.decode('utf-8'))
 
             # Importar el valorador
             import sys
             sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-            from valorador_inmuebles import ValoradorInmuebles
+            from valorador_inmuebles import ValoradorInmuebles, CriteriosValoracion
 
-            # Crear valorador y valorar propiedades
+            # Extraer propiedades y criterios personalizados
+            if isinstance(data, list):
+                # Formato antiguo: array de propiedades
+                propiedades = data
+                criterios_personalizados = None
+            else:
+                # Formato nuevo: {propiedades: [...], criterios: {...}}
+                propiedades = data.get('propiedades', [])
+                criterios_personalizados = data.get('criterios')
+
+            # Crear valorador
             valorador = ValoradorInmuebles()
+
+            # Si hay criterios personalizados, aplicarlos
+            if criterios_personalizados:
+                self.aplicar_criterios_personalizados(valorador.criterios, criterios_personalizados)
+
+            # Valorar propiedades
             resultado = valorador.valorar_multiples(propiedades)
 
             # Enviar respuesta
@@ -73,6 +89,20 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                 "mensaje": "Error al valorar las propiedades"
             }
             self.wfile.write(json.dumps(error_response, ensure_ascii=False).encode('utf-8'))
+
+    def aplicar_criterios_personalizados(self, criterios, personalizados):
+        """Aplica criterios personalizados al objeto de criterios"""
+        # Actualizar precios rústico
+        if 'PRECIOS_RUSTICO' in personalizados:
+            if 'valencia' in personalizados['PRECIOS_RUSTICO']:
+                for key, valor in personalizados['PRECIOS_RUSTICO']['valencia'].items():
+                    criterios.PRECIOS_RUSTICO['valencia'][key] = valor
+
+        # Actualizar coeficientes urbano
+        if 'COEFICIENTES_URBANO' in personalizados:
+            if 'valencia' in personalizados['COEFICIENTES_URBANO']:
+                for key, valor in personalizados['COEFICIENTES_URBANO']['valencia'].items():
+                    criterios.COEFICIENTES_URBANO['valencia'][key] = valor
 
     def log_message(self, format, *args):
         """Personalizar mensajes de log"""

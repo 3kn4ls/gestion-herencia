@@ -98,8 +98,50 @@
                 <div id="modalBody"></div>
             </div>
         </div>
+
+        <!-- Modal de configuración de valoración -->
+        <div id="configModal" class="modal">
+            <div class="modal-content" style="max-width: 900px;">
+                <span class="close-config">&times;</span>
+                <div id="configModalBody">
+                    <h2>⚙️ Configuración de Valoración</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                        Ajusta los precios de mercado y coeficientes que se usarán para valorar las propiedades.
+                    </p>
+
+                    <div class="config-tabs">
+                        <button class="tab-btn active" data-tab="rustico">🌾 Rústico</button>
+                        <button class="tab-btn" data-tab="urbano">🏠 Urbano</button>
+                    </div>
+
+                    <div class="tab-content" id="tab-rustico">
+                        <h3>Precios de Terrenos Rústicos (€/hectárea)</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+                            Comunidad Valenciana (Alicante, Valencia, Castellón)
+                        </p>
+
+                        <div id="preciosRustico" class="config-grid"></div>
+                    </div>
+
+                    <div class="tab-content hidden" id="tab-urbano">
+                        <h3>Coeficientes Multiplicadores Urbanos</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+                            Valor de Mercado = Valor Catastral × Coeficiente
+                        </p>
+
+                        <div id="coeficientesUrbano" class="config-grid"></div>
+                    </div>
+
+                    <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: flex-end;">
+                        <button id="btnRestaurarDefecto" class="btn btn-sec">🔄 Restaurar Valores por Defecto</button>
+                        <button id="btnValorarConConfig" class="btn btn-primary">💰 Valorar con Estos Parámetros</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="app.js"></script>
+    <script src="config-valoracion.js"></script>
 </body>
 </html>

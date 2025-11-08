@@ -181,6 +181,34 @@ class CatastroApp {
     }
 
     /**
+     * Intenta cargar datos automáticamente al iniciar
+     */
+    async autoLoadData() {
+        try {
+            // Intentar cargar archivo consolidado completo silenciosamente
+            const response = await fetch('../data/datos_catastrales_consolidados_completo.json');
+
+            if (response.ok) {
+                const data = await response.json();
+                this.loadData(data);
+                console.log('✓ Datos cargados automáticamente');
+                return;
+            }
+
+            // Si no existe el completo, intentar con el normal
+            const response2 = await fetch('../data/datos_catastrales_consolidados.json');
+            if (response2.ok) {
+                const data = await response2.json();
+                this.loadData(data);
+                console.log('✓ Datos cargados automáticamente (archivo básico)');
+            }
+        } catch (error) {
+            // Fallo silencioso - no hay datos que cargar
+            console.log('ℹ️  No hay datos para cargar automáticamente');
+        }
+    }
+
+    /**
      * Carga y procesa los datos
      */
     loadData(data) {
@@ -897,4 +925,7 @@ class CatastroApp {
 // Inicializar la aplicación cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
     window.app = new CatastroApp();
+
+    // Intentar cargar datos consolidados automáticamente
+    window.app.autoLoadData();
 });
