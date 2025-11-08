@@ -1,6 +1,34 @@
 # 🚀 Guía Rápida - Sistema de Gestión Catastral
 
-## ⚡ Inicio en 3 pasos
+## ⚡ Inicio SÚPER Rápido
+
+### 🎯 Si NO tienes Python instalado
+👉 **Lee primero:** [INSTALACION.md](INSTALACION.md) - Guía completa paso a paso
+
+### 🎯 Si YA tienes Python instalado
+
+#### Opción 1: Script automático (Recomendado) ⭐
+
+**Windows:**
+- Haz doble clic en `iniciar.bat`
+- ¡Listo! El navegador se abrirá automáticamente
+
+**macOS/Linux:**
+```bash
+./iniciar.sh
+```
+- ¡Listo! El navegador se abrirá automáticamente
+
+Los scripts hacen todo automáticamente:
+- ✅ Verifican Python
+- ✅ Instalan dependencias si faltan
+- ✅ Generan datos de ejemplo
+- ✅ Inician el servidor
+- ✅ Abren el navegador
+
+---
+
+#### Opción 2: Manualmente en 3 pasos
 
 ### 1️⃣ Instalar dependencias
 ```bash
