@@ -227,14 +227,13 @@ class CatastroApp {
         this.filteredData = [...this.data];
         this.valoraciones = null; // Reset valoraciones al cargar nuevos datos
 
-        // Verificar si hay valoraciones incorporadas en los datos
-        this.checkEmbeddedValuations();
+        // TEMPORAL: Ignorar valoraciones incorporadas y SIEMPRE recalcular con código actualizado
+        // Para que "MM Pinar maderable" y "F- Frutales secano" usen las reglas correctas
+        // this.checkEmbeddedValuations();  ← COMENTADO para forzar recálculo
 
-        // Valorar automáticamente si no hay valoraciones incorporadas
-        if (!this.valoraciones) {
-            console.log('ℹ️  Valorando propiedades automáticamente...');
-            await this.valorarPropiedades(true); // true = silencioso (sin alert)
-        }
+        // Valorar automáticamente SIEMPRE para usar código actualizado del backend
+        console.log('🔄 Recalculando valoraciones con código actualizado del backend...');
+        await this.valorarPropiedades(true); // true = silencioso (sin alert)
 
         // Actualizar UI DESPUÉS de que se completen las valoraciones
         this.updateUI();

@@ -336,18 +336,12 @@ class ValoradorInmuebles:
                 cultivo_texto = cultivo.get("cultivo_aprovechamiento", "")
                 tipo_cultivo = self.identificar_tipo_cultivo(cultivo_texto)
 
-                # DEBUG: Log para depuración
-                print(f"DEBUG Cultivo: '{cultivo_texto}' → tipo: '{tipo_cultivo}' | Región: '{region}'")
-
                 # Obtener precio por hectárea
                 precios_region = self.criterios.PRECIOS_RUSTICO.get(
                     region,
                     self.criterios.PRECIOS_RUSTICO["default"]
                 )
                 precio_ha = precios_region.get(tipo_cultivo, precios_region.get("default", 5000))
-
-                # DEBUG: Log del precio obtenido
-                print(f"DEBUG Precio: {precio_ha} €/ha para '{tipo_cultivo}' en región '{region}'")
 
                 # Calcular valor del cultivo
                 valor_cultivo = sup_cultivo_ha * precio_ha
