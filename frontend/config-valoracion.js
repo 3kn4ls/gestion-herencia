@@ -49,7 +49,9 @@ class ConfiguracionValoracion {
                     labor_secano: { valor: 4900, nombre: "Labor/Labradío Secano", unidad: "€/ha" },
                     labor_regadio: { valor: 27800, nombre: "Labor/Labradío Regadío", unidad: "€/ha" },
                     pastos: { valor: 3000, nombre: "Pastos", unidad: "€/ha" },
-                    improductivo: { valor: 600, nombre: "Improductivo/Matorral", unidad: "€/ha" }
+                    pinar_maderable: { valor: 1800, nombre: "Pinar Maderable (MM)", unidad: "€/ha" },
+                    matorral: { valor: 1000, nombre: "Matorral (MT)", unidad: "€/ha" },
+                    improductivo: { valor: 1000, nombre: "Improductivo (I-)", unidad: "€/ha" }
                 },
                 // Ámbito 17: Marina Alta-Interior (Vall de Gallinera, Planes)
                 ambito_17_marina_alta_interior: {
@@ -65,7 +67,9 @@ class ConfiguracionValoracion {
                     labor_secano: { valor: 6200, nombre: "Labor/Labradío Secano", unidad: "€/ha" },
                     labor_regadio: { valor: 20800, nombre: "Labor/Labradío Regadío", unidad: "€/ha" },
                     pastos: { valor: 3100, nombre: "Pastos", unidad: "€/ha" },
-                    improductivo: { valor: 600, nombre: "Improductivo/Matorral", unidad: "€/ha" }
+                    pinar_maderable: { valor: 1900, nombre: "Pinar Maderable (MM)", unidad: "€/ha" },
+                    matorral: { valor: 1000, nombre: "Matorral (MT)", unidad: "€/ha" },
+                    improductivo: { valor: 1000, nombre: "Improductivo (I-)", unidad: "€/ha" }
                 }
             },
             COEFICIENTES_URBANO: {

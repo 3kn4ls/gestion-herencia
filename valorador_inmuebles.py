@@ -57,7 +57,9 @@ class CriteriosValoracion:
             "forestal": 0,
             "labor_secano": 4900,
             "labor_regadio": 27800,
-            "improductivo": 600,
+            "pinar_maderable": 1800,
+            "matorral": 1000,
+            "improductivo": 1000,
             "default": 10000,
         },
 
@@ -80,7 +82,9 @@ class CriteriosValoracion:
             "forestal": 0,
             "labor_secano": 6200,
             "labor_regadio": 20800,
-            "improductivo": 600,
+            "pinar_maderable": 1900,
+            "matorral": 1000,
+            "improductivo": 1000,
             "default": 10000,
         },
 
@@ -103,7 +107,9 @@ class CriteriosValoracion:
             "forestal": 0,
             "labor_secano": 4900,
             "labor_regadio": 27800,
-            "improductivo": 600,
+            "pinar_maderable": 1800,
+            "matorral": 1000,
+            "improductivo": 1000,
             "default": 10000,
         },
 
@@ -248,11 +254,19 @@ class ValoradorInmuebles:
                 return "labor_regadio"
             return "labor_secano"
 
-        if "past" in texto or "prado" in texto:
+        if "past" in texto or "prado" in texto or "e-" in texto:
             return "pastos"
 
-        # Improductivo, matorral, pinar maderable (MM)
-        if "improductivo" in texto or "erial" in texto or "pinar" in texto or "mm" in texto or "maderable" in texto:
+        # MM - Pinar maderable (código específico MM)
+        if "mm" in texto or ("pinar" in texto and "maderable" in texto):
+            return "pinar_maderable"
+
+        # MT - Matorral (código específico MT)
+        if "mt" in texto or ("matorral" in texto and "maderable" not in texto):
+            return "matorral"
+
+        # I- - Improductivo
+        if "i-" in texto or "improductivo" in texto or "erial" in texto:
             return "improductivo"
 
         if "forestal" in texto:
