@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
-Extractor REAL de datos del catastro usando Selenium
-Este script SÍ extrae datos reales de la web del catastro
+Extractor REAL de datos del catastro español usando Selenium
+Extrae datos reales accediendo al formulario de búsqueda oficial
 """
 
 import time
 import json
 import os
+import re
 from datetime import datetime
 from typing import Dict, Optional, List
 
@@ -15,7 +16,6 @@ try:
     from selenium.webdriver.common.by import By
     from selenium.webdriver.support.ui import WebDriverWait
     from selenium.webdriver.support import expected_conditions as EC
-    from selenium.webdriver.chrome.service import Service
     from selenium.webdriver.chrome.options import Options
     from selenium.common.exceptions import TimeoutException, NoSuchElementException
 except ImportError:
@@ -63,11 +63,11 @@ class CatastroRealScraper:
 
         try:
             self.driver = webdriver.Chrome(options=chrome_options)
+            self.driver.maximize_window()
             print("✓ Navegador iniciado correctamente\n")
         except Exception as e:
             print(f"❌ Error al iniciar Chrome: {e}")
             print("\nAsegúrate de tener Chrome instalado.")
-            print("Chrome se descarga automáticamente, pero puede tardar la primera vez.\n")
             raise
 
     def cerrar_navegador(self):
@@ -75,6 +75,63 @@ class CatastroRealScraper:
         if self.driver:
             self.driver.quit()
             self.driver = None
+
+    def parsear_localizacion(self, texto_localizacion: str) -> Dict:
+        """
+        Parsea el texto de localización y extrae: Polígono, Parcela, Partida, Municipio, Provincia
+
+        Ejemplo: "Polígono 2 Parcela 9\nEL LLOMBO. PLANES (ALICANTE)"
+        """
+        resultado = {
+            "poligono": "",
+            "parcela": "",
+            "partida": "",
+            "municipio": "",
+            "provincia": ""
+        }
+
+        try:
+            # Dividir por saltos de línea
+            lineas = texto_localizacion.strip().split('\n')
+
+            # Primera línea: Polígono X Parcela Y
+            if len(lineas) > 0:
+                primera = lineas[0]
+
+                # Extraer Polígono
+                match_pol = re.search(r'Polígono\s+(\d+)', primera, re.IGNORECASE)
+                if match_pol:
+                    resultado["poligono"] = match_pol.group(1)
+
+                # Extraer Parcela
+                match_par = re.search(r'Parcela\s+(\d+)', primera, re.IGNORECASE)
+                if match_par:
+                    resultado["parcela"] = match_par.group(1)
+
+            # Segunda línea: PARTIDA. MUNICIPIO (PROVINCIA)
+            if len(lineas) > 1:
+                segunda = lineas[1]
+
+                # Extraer Provincia (entre paréntesis)
+                match_prov = re.search(r'\(([^)]+)\)', segunda)
+                if match_prov:
+                    resultado["provincia"] = match_prov.group(1).strip()
+                    # Quitar la provincia del texto
+                    segunda = re.sub(r'\([^)]+\)', '', segunda).strip()
+
+                # Lo que queda: PARTIDA. MUNICIPIO
+                partes = segunda.split('.')
+                if len(partes) >= 2:
+                    resultado["partida"] = partes[0].strip()
+                    resultado["municipio"] = partes[1].strip()
+                elif len(partes) == 1:
+                    # Si solo hay una parte, asumir que es municipio
+                    resultado["municipio"] = partes[0].strip()
+
+        except Exception as e:
+            print(f"      ⚠️  Error parseando localización: {e}")
+
+        return resultado
 
     def extraer_datos_catastro(self, referencia: str) -> Optional[Dict]:
         """
@@ -86,83 +143,185 @@ class CatastroRealScraper:
         Returns:
             Diccionario con los datos extraídos o None si hay error
         """
-        url = f"https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?RefC={referencia}"
+        # URL del formulario de búsqueda
+        url = "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCBusqueda.aspx"
 
         try:
-            print(f"📡 Accediendo a la página del catastro...")
+            print(f"  📡 Accediendo al formulario de búsqueda...")
             self.driver.get(url)
 
-            # Esperar a que cargue la página
+            # Esperar a que cargue el formulario
+            wait = WebDriverWait(self.driver, 15)
+
+            # Buscar el input de referencia catastral: ctl00_Contenido_txtRC2
+            print(f"  ✏️  Introduciendo referencia catastral...")
+            input_ref = wait.until(
+                EC.presence_of_element_located((By.ID, "ctl00_Contenido_txtRC2"))
+            )
+
+            # Limpiar y escribir la referencia
+            input_ref.clear()
+            input_ref.send_keys(referencia)
+
+            time.sleep(1)
+
+            # Hacer clic en el botón DATOS: ctl00_Contenido_btnDatos
+            print(f"  🔍 Buscando datos...")
+            boton_datos = wait.until(
+                EC.element_to_be_clickable((By.ID, "ctl00_Contenido_btnDatos"))
+            )
+            boton_datos.click()
+
+            # Esperar a que cargue la página de resultados
             time.sleep(3)
 
-            # Verificar si hay error o acceso denegado
-            page_source = self.driver.page_source.lower()
-            if 'access denied' in page_source or 'acceso denegado' in page_source:
-                print(f"  ⚠️  Acceso denegado por el catastro")
-                return None
+            # Verificar si hay error
+            try:
+                error = self.driver.find_element(By.ID, "DivErrorRC")
+                if error.is_displayed():
+                    print(f"  ❌ Error: Referencia catastral no encontrada")
+                    return None
+            except NoSuchElementException:
+                pass  # No hay error, continuamos
 
-            # Extraer datos
+            print(f"  📊 Extrayendo datos del inmueble...")
+
+            # Inicializar estructura de datos
             datos = {
                 "referencia_catastral": referencia,
                 "fecha_extraccion": datetime.now().isoformat(),
-                "url_consultada": url,
-                "localizacion": {},
-                "datos_inmueble": {},
-                "datos_catastrales": {},
-                "coordenadas": {}
+                "url_consultada": self.driver.current_url,
+                "datos_descriptivos": {},
+                "parcela_catastral": {},
+                "cultivos": []
             }
 
-            # Intentar extraer datos con diferentes selectores
-            print(f"  🔍 Extrayendo datos...")
-
-            # Extraer usando los IDs y estructuras reales de la página del catastro
-            # Estos selectores pueden cambiar con el tiempo
+            # === EXTRAER DATOS DESCRIPTIVOS DEL INMUEBLE ===
             try:
-                # Buscar elementos de forma general
-                labels = self.driver.find_elements(By.TAG_NAME, "label")
-                spans = self.driver.find_elements(By.TAG_NAME, "span")
+                # Buscar el contenedor: ctl00_Contenido_tblInmueble
+                tabla_inmueble = self.driver.find_element(By.ID, "ctl00_Contenido_tblInmueble")
 
-                # Crear un mapa de etiqueta -> valor
-                datos_extraidos = {}
+                # Extraer todos los form-group
+                grupos = tabla_inmueble.find_elements(By.CLASS_NAME, "form-group")
 
-                for i, label in enumerate(labels):
-                    texto_label = label.text.strip()
-                    if texto_label:
-                        # Buscar el valor asociado (normalmente está en el siguiente elemento)
-                        try:
-                            siguiente = label.find_element(By.XPATH, "./following-sibling::*[1]")
-                            valor = siguiente.text.strip()
-                            if valor:
-                                datos_extraidos[texto_label] = valor
-                        except:
-                            pass
+                for grupo in grupos:
+                    try:
+                        # Buscar label (col-md-4) y valor (col-md-8)
+                        label_elem = grupo.find_element(By.CLASS_NAME, "col-md-4")
+                        valor_elem = grupo.find_element(By.CLASS_NAME, "col-md-8")
 
-                # Mapear los datos extraídos a nuestra estructura
-                print(f"  📊 Datos encontrados: {len(datos_extraidos)} campos")
+                        label = label_elem.text.strip()
+                        valor = valor_elem.text.strip()
 
-                # Localización
-                if 'Provincia' in datos_extraidos or 'PROVINCIA' in datos_extraidos:
-                    datos["localizacion"]["provincia"] = datos_extraidos.get('Provincia') or datos_extraidos.get('PROVINCIA')
+                        if label and valor:
+                            # Procesar según el campo
+                            if "Referencia catastral" in label:
+                                # Limpiar iconos y espacios extras
+                                valor_limpio = re.sub(r'copiar|código de barras', '', valor, flags=re.IGNORECASE).strip()
+                                datos["datos_descriptivos"]["referencia_catastral"] = valor_limpio
 
-                if 'Municipio' in datos_extraidos or 'MUNICIPIO' in datos_extraidos:
-                    datos["localizacion"]["municipio"] = datos_extraidos.get('Municipio') or datos_extraidos.get('MUNICIPIO')
+                            elif "Localización" in label or "Localizacion" in label:
+                                # Parsear localización
+                                loc_parseada = self.parsear_localizacion(valor)
+                                datos["datos_descriptivos"]["localizacion"] = {
+                                    "texto_completo": valor,
+                                    "poligono": loc_parseada["poligono"],
+                                    "parcela": loc_parseada["parcela"],
+                                    "partida": loc_parseada["partida"],
+                                    "municipio": loc_parseada["municipio"],
+                                    "provincia": loc_parseada["provincia"]
+                                }
 
-                # Añadir todos los datos extraídos como raw data
-                datos["datos_raw"] = datos_extraidos
+                            elif "Clase" in label:
+                                datos["datos_descriptivos"]["clase"] = valor
 
-                print(f"  ✓ Extracción completada")
+                            elif "Uso principal" in label:
+                                datos["datos_descriptivos"]["uso_principal"] = valor
+
+                            else:
+                                # Cualquier otro campo
+                                datos["datos_descriptivos"][label.lower().replace(" ", "_")] = valor
+
+                    except Exception as e:
+                        continue
+
+                print(f"      ✓ Datos descriptivos extraídos")
 
             except Exception as e:
-                print(f"  ⚠️  Error extrayendo datos específicos: {e}")
-                # Guardar HTML para análisis
-                with open(f'{self.data_dir}/debug_{referencia}.html', 'w', encoding='utf-8') as f:
-                    f.write(self.driver.page_source)
-                print(f"  💾 HTML guardado para análisis en: {self.data_dir}/debug_{referencia}.html")
+                print(f"      ⚠️  Error extrayendo datos descriptivos: {e}")
+
+            # === EXTRAER PARCELA CATASTRAL ===
+            try:
+                # Buscar el contenedor: ctl00_Contenido_tblFinca
+                tabla_finca = self.driver.find_element(By.ID, "ctl00_Contenido_tblFinca")
+
+                grupos = tabla_finca.find_elements(By.CLASS_NAME, "form-group")
+
+                for grupo in grupos:
+                    try:
+                        label_elem = grupo.find_element(By.CLASS_NAME, "col-md-3")
+                        valor_elem = grupo.find_element(By.CLASS_NAME, "col-md-9")
+
+                        label = label_elem.text.strip()
+                        valor = valor_elem.text.strip()
+
+                        if label and valor:
+                            # Saltar Localización (ya la tenemos)
+                            if "Localización" in label or "Localizacion" in label:
+                                continue
+
+                            # Limpiar etiquetas HTML del valor
+                            valor_limpio = re.sub(r'<[^>]+>', '', valor)
+
+                            datos["parcela_catastral"][label.lower().replace(" ", "_")] = valor_limpio
+
+                    except Exception as e:
+                        continue
+
+                print(f"      ✓ Parcela catastral extraída")
+
+            except Exception as e:
+                print(f"      ⚠️  Error extrayendo parcela catastral: {e}")
+
+            # === EXTRAER CULTIVOS ===
+            try:
+                # Buscar la tabla de cultivos: ctl00_Contenido_tblCultivos
+                tabla_cultivos = self.driver.find_element(By.ID, "ctl00_Contenido_tblCultivos")
+
+                # Extraer filas (saltando el header)
+                filas = tabla_cultivos.find_elements(By.TAG_NAME, "tr")[1:]  # Saltar header
+
+                for fila in filas:
+                    celdas = fila.find_elements(By.TAG_NAME, "td")
+
+                    if len(celdas) >= 4:
+                        cultivo = {
+                            "subparcela": celdas[0].text.strip(),
+                            "cultivo_aprovechamiento": celdas[1].text.strip(),
+                            "intensidad_productiva": celdas[2].text.strip(),
+                            "superficie_m2": celdas[3].text.strip()
+                        }
+                        datos["cultivos"].append(cultivo)
+
+                if datos["cultivos"]:
+                    print(f"      ✓ {len(datos['cultivos'])} cultivo(s) extraído(s)")
+
+            except NoSuchElementException:
+                print(f"      ℹ️  No hay datos de cultivos (puede ser normal para urbanos)")
+            except Exception as e:
+                print(f"      ⚠️  Error extrayendo cultivos: {e}")
+
+            print(f"  ✅ Extracción completada para: {referencia}")
 
             return datos
 
+        except TimeoutException:
+            print(f"  ❌ Timeout: La página tardó demasiado en cargar")
+            return None
         except Exception as e:
             print(f"  ❌ Error: {e}")
+            import traceback
+            traceback.print_exc()
             return None
 
     def procesar_referencias(self, archivo_referencias: str = "referencias.txt") -> List[Dict]:
@@ -221,8 +380,8 @@ class CatastroRealScraper:
 
                 # Pausa entre peticiones
                 if i < len(referencias):
-                    print(f"\n  ⏳ Esperando 5 segundos antes de la siguiente petición...")
-                    time.sleep(5)
+                    print(f"\n  ⏳ Esperando 3 segundos antes de la siguiente petición...")
+                    time.sleep(3)
 
         finally:
             self.cerrar_navegador()
@@ -261,7 +420,7 @@ def main():
 
     # Preguntar modo
     print("¿Quieres ver el navegador mientras extrae los datos?")
-    print("  1. Sí, mostrar navegador (más lento pero ves el proceso)")
+    print("  1. Sí, mostrar navegador (recomendado para ver el proceso)")
     print("  2. No, modo oculto (más rápido)")
 
     opcion = input("\nElige opción (1/2) [1]: ").strip() or "1"
@@ -280,7 +439,13 @@ def main():
     print("  RESUMEN")
     print("=" * 60)
     print(f"\nReferencias procesadas: {len(resultados)}")
-    print(f"Archivos generados en: {scraper.data_dir}/")
+
+    if resultados:
+        print(f"\n✅ DATOS EXTRAÍDOS CORRECTAMENTE")
+        print(f"\nArchivos generados:")
+        print(f"  - Individuales: data/[referencia].json")
+        print(f"  - Consolidado: data/datos_catastrales_consolidados.json")
+
     print()
     print("Próximos pasos:")
     print("  1. Ejecuta: python server.py")
