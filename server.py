@@ -9,7 +9,8 @@ import os
 from functools import partial
 
 PORT = 8000
-DIRECTORY = "/home/user/gestion-herencia"
+# Usar el directorio donde está ubicado este script (funciona en Windows, macOS y Linux)
+DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 
 
 class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
@@ -29,7 +30,12 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
 def main():
     """Inicia el servidor HTTP"""
+    # Cambiar al directorio del script
     os.chdir(DIRECTORY)
+
+    # Verificar que los directorios existen
+    frontend_exists = os.path.exists('frontend')
+    data_exists = os.path.exists('data')
 
     handler = partial(MyHTTPRequestHandler)
 
@@ -38,11 +44,25 @@ def main():
         print("🚀 SERVIDOR HTTP INICIADO")
         print("=" * 60)
         print(f"\nServidor corriendo en: http://localhost:{PORT}")
-        print(f"Directorio: {DIRECTORY}")
-        print(f"\n📋 Accede al frontend en:")
-        print(f"   http://localhost:{PORT}/frontend/")
-        print(f"\n📄 Archivos JSON disponibles en:")
-        print(f"   http://localhost:{PORT}/data/")
+        print(f"Directorio: {os.getcwd()}")
+        print(f"\nDirectorios encontrados:")
+        print(f"  - frontend/: {'✓ SÍ' if frontend_exists else '✗ NO'}")
+        print(f"  - data/: {'✓ SÍ' if data_exists else '✗ NO'}")
+
+        if frontend_exists:
+            print(f"\n📋 Accede al frontend en:")
+            print(f"   http://localhost:{PORT}/frontend/")
+            print(f"   http://localhost:{PORT}/frontend/index.html")
+        else:
+            print(f"\n⚠️  ADVERTENCIA: No se encontró el directorio 'frontend/'")
+
+        if data_exists:
+            print(f"\n📄 Archivos JSON disponibles en:")
+            print(f"   http://localhost:{PORT}/data/")
+        else:
+            print(f"\n⚠️  ADVERTENCIA: No se encontró el directorio 'data/'")
+            print(f"   Ejecuta: python catastro_scraper_service.py")
+
         print(f"\nPresiona Ctrl+C para detener el servidor\n")
         print("=" * 60)
 
