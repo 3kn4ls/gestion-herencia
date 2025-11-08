@@ -20,28 +20,109 @@ class CriteriosValoracion:
     Basados en datos de mercado 2024/2025
     """
 
-    # Precios medios de terrenos rústicos por hectárea (€/ha)
-    # Fuente: Cocampo, MAPA 2022-2024
+
+    # ============================================================================
+    # VALORES OFICIALES GVA 2025 - SISTEMA DE ÁMBITOS TERRITORIALES
+    # ============================================================================
+    # Fuente: NNTT_2025_Urbana y Rústica.pdf - Anejo II: Módulos de valor de los bienes inmuebles de naturaleza rústica
+    # Organismo: Generalitat Valenciana - Agència Tributària Valenciana (ATV)
+    # Vigencia: 2025-01-01 → 2025-12-31
+    # Aplicado: 2025-11-08 17:37:20
+    #
+    # Ámbitos Territoriales:
+    # - Ámbito 13 (Safor-Litoral): Oliva, Piles
+    # - Ámbito 17 (Marina Alta-Interior): Vall de Gallinera
+    # ============================================================================
+
+    # Módulos de valor por ámbito territorial (€/hectárea)
+    # Fuente: NNTT_2025 GVA - Anejo II
     PRECIOS_RUSTICO = {
-        # Comunidad Valenciana (Alicante, Valencia, Castellón)
+        # Ámbito 13: Safor-Litoral (Oliva, Piles)
+        # Fuente: NNTT_2025 GVA - Anejo II
+        "ambito_13_safor_litoral": {
+            "olivar_secano": 12200,
+            "olivar_regadio": 24400,
+            "almendro_secano": 6100,
+            "almendro_regadio": 18300,
+            "vina_secano": 9200,
+            "vina_regadio": 18300,
+            "frutal_secano": 0,
+            "frutal_regadio": 30500,
+            "citricos_regadio": 50800,
+            "cereal_secano": 0,
+            "cereal_regadio": 0,
+            "horticola_regadio": 30500,
+            "arroz_regadio": 18300,
+            "pastos": 3000,
+            "forestal": 0,
+            "labor_secano": 4900,
+            "improductivo": 600,
+            "default": 10000,
+        },
+
+        # Ámbito 17: Marina Alta-Interior (Vall de Gallinera)
+        # Fuente: NNTT_2025 GVA - Anejo II
+        "ambito_17_marina_alta_interior": {
+            "olivar_secano": 15600,
+            "olivar_regadio": 19500,
+            "almendro_secano": 7800,
+            "almendro_regadio": 19500,
+            "vina_secano": 7800,
+            "vina_regadio": 15600,
+            "frutal_secano": 0,
+            "frutal_regadio": 26000,
+            "citricos_regadio": 39000,
+            "cereal_secano": 0,
+            "cereal_regadio": 0,
+            "horticola_regadio": 26000,
+            "pastos": 3100,
+            "forestal": 0,
+            "labor_secano": 6200,
+            "improductivo": 600,
+            "default": 10000,
+        },
+
+        # Comunidad Valenciana (fallback general - usa Ámbito 13)
         "valencia": {
-            "olivar_secano": 35000,      # Media 2024: 10.000-16.000 €/ha
-            "olivar_regadio": 65000,     # Media 2024: 20.000-30.000 €/ha
-            "almendr_secano": 20000,      # Estimado
-            "almendr_regadio": 35000,    # Estimado
-            "vina_secano": 25000,        # Estimado
-            "vina_regadio": 45000,       # Estimado
-            "frutal_secano": 28000,      # Estimado
-            "frutal_regadio": 55000,     # Estimado
-            "cereal_secano": 8000,       # Estimado
-            "cereal_regadio": 18000,     # Estimado
-            "pastos": 5000,              # Estimado
-            "forestal": 6000,            # Estimado
-            "improductivo": 2000,        # Estimado
-            "default": 10000              # Por defecto si no se identifica el tipo
+            "olivar_secano": 12200,
+            "olivar_regadio": 24400,
+            "almendro_secano": 6100,
+            "almendro_regadio": 18300,
+            "vina_secano": 9200,
+            "vina_regadio": 18300,
+            "frutal_secano": 0,
+            "frutal_regadio": 30500,
+            "citricos_regadio": 50800,
+            "cereal_secano": 0,
+            "cereal_regadio": 0,
+            "horticola_regadio": 30500,
+            "arroz_regadio": 18300,
+            "pastos": 3000,
+            "forestal": 0,
+            "labor_secano": 4900,
+            "improductivo": 600,
+            "default": 10000,
         },
 
         # Nacional (media España)
+        "nacional": {
+            "olivar_secano": 18905,
+            "olivar_regadio": 38027,
+            "default": 10200,
+        },
+
+        # Default
+        "default": {
+            "olivar_secano": 18905,
+            "olivar_regadio": 38027,
+            "default": 10200,
+        }
+    }
+
+    # Nacional (media España)
+    # NOTA: Estos valores se mantienen como referencia histórica
+    # pero NO se usan para Oliva, Piles y Vall de Gallinera
+    PRECIOS_RUSTICO_OLD = {
         "nacional": {
             "olivar_secano": 18905,      # MAPA 2022
             "olivar_regadio": 38027,     # MAPA 2022
@@ -169,32 +250,34 @@ class ValoradorInmuebles:
 
     def identificar_region(self, provincia: str, municipio: str = "") -> str:
         """
-        Identifica la región para aplicar precios correctos
+        Identifica el ámbito territorial para aplicar módulos de valor correctos
 
-        Prioriza municipios específicos con valores oficiales GVA,
-        luego usa la provincia como fallback.
+        Usa el sistema de ámbitos territoriales de la GVA que agrupa municipios
+        con características agronómicas similares.
 
         Args:
             provincia: Nombre de la provincia
-            municipio: Nombre del municipio (opcional)
+            municipio: Nombre del municipio (opcional, más preciso)
 
         Returns:
-            Clave de región/municipio
+            Clave de ámbito territorial o región
         """
-        # Primero intentar identificar municipio específico
+        # Primero intentar identificar por municipio (ámbitos territoriales GVA)
         if municipio:
             municipio_lower = municipio.lower().strip()
 
-            # Municipios con valores oficiales GVA 2025
-            MAPEO_MUNICIPIOS = {
-                'oliva': 'oliva',
-                'planes': 'planes',
-                'vall de gallinera': 'vall_de_gallinera',
-                'vall_de_gallinera': 'vall_de_gallinera',
-            }
+            # Ámbito 13: Safor-Litoral (Oliva, Piles)
+            if municipio_lower in ['oliva', 'piles']:
+                return 'ambito_13_safor_litoral'
 
-            if municipio_lower in MAPEO_MUNICIPIOS:
-                return MAPEO_MUNICIPIOS[municipio_lower]
+            # Ámbito 17: Marina Alta-Interior (Vall de Gallinera)
+            if municipio_lower in ['vall de gallinera', 'vall_de_gallinera']:
+                return 'ambito_17_marina_alta_interior'
+
+            # Planes - pendiente de identificar ámbito
+            if municipio_lower == 'planes':
+                # Por ahora usar valencia genérico
+                return 'valencia'
 
         # Fallback a identificación por provincia
         provincia_lower = provincia.lower()
