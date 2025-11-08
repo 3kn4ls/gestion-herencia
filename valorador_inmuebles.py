@@ -56,6 +56,7 @@ class CriteriosValoracion:
             "pastos": 3000,
             "forestal": 0,
             "labor_secano": 4900,
+            "labor_regadio": 27800,
             "improductivo": 600,
             "default": 10000,
         },
@@ -78,6 +79,7 @@ class CriteriosValoracion:
             "pastos": 3100,
             "forestal": 0,
             "labor_secano": 6200,
+            "labor_regadio": 20800,
             "improductivo": 600,
             "default": 10000,
         },
@@ -100,6 +102,7 @@ class CriteriosValoracion:
             "pastos": 3000,
             "forestal": 0,
             "labor_secano": 4900,
+            "labor_regadio": 27800,
             "improductivo": 600,
             "default": 10000,
         },
@@ -238,6 +241,12 @@ class ValoradorInmuebles:
             if "secano" in texto:
                 return "cereal_secano"
             return "cereal_regadio"
+
+        # Labor o labradío (CR en catastro)
+        if "labor" in texto or "labradio" in texto or "labradío" in texto or "cr" in texto:
+            if "regadio" in texto or "regadío" in texto:
+                return "labor_regadio"
+            return "labor_secano"
 
         if "past" in texto or "prado" in texto:
             return "pastos"

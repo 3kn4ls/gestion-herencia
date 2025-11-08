@@ -47,6 +47,7 @@ class ConfiguracionValoracion {
                     horticola_regadio: { valor: 30500, nombre: "Hortícolas Regadío", unidad: "€/ha" },
                     arroz_regadio: { valor: 18300, nombre: "Arroz Regadío", unidad: "€/ha" },
                     labor_secano: { valor: 4900, nombre: "Labor/Labradío Secano", unidad: "€/ha" },
+                    labor_regadio: { valor: 27800, nombre: "Labor/Labradío Regadío", unidad: "€/ha" },
                     pastos: { valor: 3000, nombre: "Pastos", unidad: "€/ha" },
                     improductivo: { valor: 600, nombre: "Improductivo/Matorral", unidad: "€/ha" }
                 },
@@ -62,6 +63,7 @@ class ConfiguracionValoracion {
                     citricos_regadio: { valor: 39000, nombre: "Agrios/Cítricos Regadío", unidad: "€/ha" },
                     horticola_regadio: { valor: 26000, nombre: "Hortícolas Regadío", unidad: "€/ha" },
                     labor_secano: { valor: 6200, nombre: "Labor/Labradío Secano", unidad: "€/ha" },
+                    labor_regadio: { valor: 20800, nombre: "Labor/Labradío Regadío", unidad: "€/ha" },
                     pastos: { valor: 3100, nombre: "Pastos", unidad: "€/ha" },
                     improductivo: { valor: 600, nombre: "Improductivo/Matorral", unidad: "€/ha" }
                 }
