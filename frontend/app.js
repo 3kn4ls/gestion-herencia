@@ -929,7 +929,7 @@ class CatastroApp {
 
     /**
      * Exporta los datos a formato compatible con Excel (TSV)
-     * Cada cultivo del desglose genera una fila independiente
+     * Cada subparcela/cultivo genera una fila independiente
      */
     async exportarAExcel() {
         if (!this.filteredData || this.filteredData.length === 0) {
@@ -949,7 +949,11 @@ class CatastroApp {
                 'Clase',
                 'Uso Principal',
                 'Superficie Total (m²)',
-                'Cultivo',
+                'Subparcela',
+                'Cultivo/Aprovechamiento',
+                'Intensidad',
+                'Superficie Subparcela (m²)',
+                'Cultivo Valorado',
                 'Superficie Cultivo (ha)',
                 'Precio €/ha',
                 'Valor Cultivo (€)',
@@ -967,6 +971,7 @@ class CatastroApp {
                 const loc = property.localizacion || {};
                 const inmueble = property.datos_inmueble || {};
                 const catastrales = property.datos_catastrales || property._original?.datos_catastrales;
+                const subparcelas = property.cultivos || [];
 
                 // Buscar valoración y valor oficial
                 const valoracion = this.valoraciones?.valoraciones?.find(
@@ -994,17 +999,51 @@ class CatastroApp {
                     inmueble.superficie_construida || 0
                 ];
 
-                // Si tiene detalles de cultivos en la valoración, crear una fila por cultivo
-                if (valoracion?.detalles_cultivos && valoracion.detalles_cultivos.length > 0) {
+                // Si tiene subparcelas, crear una fila por cada subparcela
+                if (subparcelas && subparcelas.length > 0) {
+                    for (let i = 0; i < subparcelas.length; i++) {
+                        const subparcela = subparcelas[i];
+
+                        // Buscar el detalle de valoración correspondiente (si existe)
+                        const detalleValoracion = valoracion?.detalles_cultivos?.find(
+                            d => d.cultivo === subparcela.cultivo_aprovechamiento
+                        ) || null;
+
+                        const row = [
+                            ...datosComunes,
+                            // Datos de subparcela (del catastro)
+                            subparcela.subparcela || '',
+                            subparcela.cultivo_aprovechamiento || '',
+                            subparcela.intensidad_productiva || '',
+                            subparcela.superficie_m2 || '',
+                            // Datos de valoración (calculados)
+                            detalleValoracion?.cultivo || '',
+                            detalleValoracion?.superficie_ha || '',
+                            detalleValoracion?.precio_hectarea || '',
+                            detalleValoracion?.valor_euros || '',
+                            // Totales (solo en la primera fila)
+                            i === 0 ? valorCalculadoTotal : '',
+                            i === 0 ? valorCatastral : '',
+                            i === 0 ? valorOficial : '',
+                            i === 0 ? diferencia : '',
+                            i === 0 ? diferenciaPct.toFixed(2) : ''
+                        ];
+                        rows.push(row);
+                    }
+                } else if (valoracion?.detalles_cultivos && valoracion.detalles_cultivos.length > 0) {
+                    // Si no tiene subparcelas pero sí detalles de valoración
                     for (let i = 0; i < valoracion.detalles_cultivos.length; i++) {
                         const cultivo = valoracion.detalles_cultivos[i];
                         const row = [
                             ...datosComunes,
+                            // Sin datos de subparcela
+                            '', '', '', '',
+                            // Datos de valoración
                             cultivo.cultivo || '',
                             cultivo.superficie_ha || 0,
                             cultivo.precio_hectarea || 0,
                             cultivo.valor_euros || 0,
-                            // Solo mostrar totales en la primera fila de cada propiedad
+                            // Totales (solo en la primera fila)
                             i === 0 ? valorCalculadoTotal : '',
                             i === 0 ? valorCatastral : '',
                             i === 0 ? valorOficial : '',
@@ -1014,13 +1053,11 @@ class CatastroApp {
                         rows.push(row);
                     }
                 } else {
-                    // Si no tiene cultivos, crear una sola fila con los datos generales
+                    // Si no tiene ni subparcelas ni cultivos valorados
                     const row = [
                         ...datosComunes,
-                        '', // Cultivo
-                        '', // Superficie Cultivo
-                        '', // Precio
-                        '', // Valor Cultivo
+                        '', '', '', '', // Subparcela
+                        '', '', '', '', // Valoración
                         valorCalculadoTotal,
                         valorCatastral,
                         valorOficial,
@@ -1045,7 +1082,7 @@ class CatastroApp {
             const totalPropiedades = this.filteredData.length;
             alert(`✅ ¡Datos copiados al portapapeles!\n\n` +
                   `${totalPropiedades} propiedades\n` +
-                  `${totalFilas} filas (incluyendo cultivos desglosados)\n\n` +
+                  `${totalFilas} filas (incluyendo subparcelas desglosadas)\n\n` +
                   `Ahora puedes pegar (Ctrl+V) en Excel`);
 
             console.log(`✅ Exportación completada: ${totalFilas} filas, ${totalPropiedades} propiedades`);
