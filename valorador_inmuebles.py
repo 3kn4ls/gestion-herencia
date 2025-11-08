@@ -209,67 +209,87 @@ class ValoradorInmuebles:
 
     def identificar_tipo_cultivo(self, texto_cultivo: str) -> str:
         """
-        Identifica el tipo de cultivo a partir del texto del catastro
+        Identifica el tipo de cultivo a partir del código catastral oficial
+        Usa mapeo directo de códigos para máxima precisión
 
         Args:
-            texto_cultivo: Texto del cultivo (ej: "O- Olivos secano")
+            texto_cultivo: Texto del cultivo (ej: "O- Olivos secano", "MM Pinar maderable")
 
         Returns:
             Tipo de cultivo normalizado
         """
-        texto = texto_cultivo.lower()
+        texto = texto_cultivo.strip()
+        texto_lower = texto.lower()
 
-        if "olivo" in texto or "oliv" in texto or "o-" in texto:
-            if "secano" in texto:
-                return "olivar_secano"
-            elif "regadio" in texto or "regadío" in texto:
-                return "olivar_regadio"
-            return "olivar_secano"  # Por defecto secano
+        # Extraer código catastral (primeros 2-3 caracteres antes del espacio)
+        codigo = texto.split()[0].upper() if texto else ""
 
-        # Frutos secos (almendro, etc.) - incluye "F-" del catastro
-        if "almendro" in texto or "almendra" in texto or "a-" in texto or "f-" in texto or "fruto" in texto:
-            if "secano" in texto:
-                return "almendro_secano"
-            return "almendro_regadio"
+        # ============================================================================
+        # MAPEO DIRECTO DE CÓDIGOS CATASTRALES OFICIALES
+        # Fuente: Tabla de códigos GVA 2025
+        # ============================================================================
 
-        if "vid" in texto or "viña" in texto or "v-" in texto:
-            if "secano" in texto:
-                return "vina_secano"
-            return "vina_regadio"
+        # Mapeo exacto de códigos (con variantes regadío/secano donde aplique)
+        es_regadio = "regadio" in texto_lower or "regadío" in texto_lower
+        es_secano = "secano" in texto_lower
 
-        # Frutales (no confundir con frutos secos)
-        if "frutal" in texto or "frt" in texto:
-            if "secano" in texto:
-                return "frutal_secano"
-            return "frutal_regadio"
+        # Códigos exactos sin variantes
+        MAPEO_EXACTO = {
+            "MM": "pinar_maderable",  # MM Pinar maderable
+            "MT": "matorral",          # MT Matorral
+            "I-": "improductivo",      # I- Improductivo
+            "E-": "pastos",            # E- Pastos
+            "NR": "citricos_regadio",  # NR Agrios regadío (cítricos)
+        }
 
-        if "cereal" in texto or "cer" in texto or "trigo" in texto or "cebada" in texto:
-            if "secano" in texto:
-                return "cereal_secano"
-            return "cereal_regadio"
+        if codigo in MAPEO_EXACTO:
+            return MAPEO_EXACTO[codigo]
 
-        # Labor o labradío (CR en catastro)
-        if "labor" in texto or "labradio" in texto or "labradío" in texto or "cr" in texto:
-            if "regadio" in texto or "regadío" in texto:
-                return "labor_regadio"
-            return "labor_secano"
+        # Códigos con variantes regadío/secano
+        if codigo == "O-":  # Olivos
+            return "olivar_regadio" if es_regadio else "olivar_secano"
 
-        if "past" in texto or "prado" in texto or "e-" in texto:
+        if codigo == "F-":  # Frutales secos (almendros)
+            return "almendro_regadio" if es_regadio else "almendro_secano"
+
+        if codigo == "CR" or codigo == "CL":  # Labor/Labradío
+            return "labor_regadio" if es_regadio else "labor_secano"
+
+        if codigo == "V-":  # Viñedo
+            return "vina_regadio" if es_regadio else "vina_secano"
+
+        if codigo == "FRT":  # Frutales
+            return "frutal_regadio" if es_regadio else "frutal_secano"
+
+        # ============================================================================
+        # FALLBACK: Búsqueda por palabras clave (para textos sin código)
+        # ============================================================================
+
+        if "olivo" in texto_lower or "oliv" in texto_lower:
+            return "olivar_regadio" if es_regadio else "olivar_secano"
+
+        if "almendro" in texto_lower or "almendra" in texto_lower or "fruto" in texto_lower:
+            return "almendro_regadio" if es_regadio else "almendro_secano"
+
+        if "vid" in texto_lower or "viña" in texto_lower:
+            return "vina_regadio" if es_regadio else "vina_secano"
+
+        if "labor" in texto_lower or "labradio" in texto_lower or "labradío" in texto_lower:
+            return "labor_regadio" if es_regadio else "labor_secano"
+
+        if "cereal" in texto_lower or "trigo" in texto_lower or "cebada" in texto_lower:
+            return "cereal_regadio" if es_regadio else "cereal_secano"
+
+        if "past" in texto_lower or "prado" in texto_lower:
             return "pastos"
 
-        # MM - Pinar maderable (código específico MM)
-        if "mm" in texto or ("pinar" in texto and "maderable" in texto):
-            return "pinar_maderable"
+        if "citrico" in texto_lower or "agrio" in texto_lower or "naranj" in texto_lower:
+            return "citricos_regadio"
 
-        # MT - Matorral (código específico MT)
-        if "mt" in texto or ("matorral" in texto and "maderable" not in texto):
-            return "matorral"
+        if "hortícola" in texto_lower or "horticola" in texto_lower or "huert" in texto_lower:
+            return "horticola_regadio"
 
-        # I- - Improductivo
-        if "i-" in texto or "improductivo" in texto or "erial" in texto:
-            return "improductivo"
-
-        if "forestal" in texto:
+        if "forestal" in texto_lower:
             return "forestal"
 
         return "default"
