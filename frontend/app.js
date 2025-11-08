@@ -232,6 +232,12 @@ class CatastroApp {
 
         this.updateUI();
         this.buildFilters();
+
+        // Valorar automáticamente si no hay valoraciones incorporadas
+        if (!this.valoraciones) {
+            console.log('ℹ️  Valorando propiedades automáticamente...');
+            this.valorarPropiedades();
+        }
     }
 
     /**
