@@ -13,25 +13,41 @@ class ConfiguracionValoracion {
 
     /**
      * Obtiene los criterios de valoración por defecto
+     * Valores oficiales GVA 2025 por ámbitos territoriales
      */
     getCriteriosDefault() {
         return {
             PRECIOS_RUSTICO: {
-                valencia: {
-                    olivar_secano: { valor: 35000, nombre: "Olivar Secano", unidad: "€/ha" },
-                    olivar_regadio: { valor: 65000, nombre: "Olivar Regadío", unidad: "€/ha" },
-                    almendr_secano: { valor: 20000, nombre: "Almendro Secano", unidad: "€/ha" },
-                    almendr_regadio: { valor: 35000, nombre: "Almendro Regadío", unidad: "€/ha" },
-                    vina_secano: { valor: 25000, nombre: "Viña Secano", unidad: "€/ha" },
-                    vina_regadio: { valor: 45000, nombre: "Viña Regadío", unidad: "€/ha" },
-                    frutal_secano: { valor: 28000, nombre: "Frutal Secano", unidad: "€/ha" },
-                    frutal_regadio: { valor: 55000, nombre: "Frutal Regadío", unidad: "€/ha" },
-                    cereal_secano: { valor: 8000, nombre: "Cereal Secano", unidad: "€/ha" },
-                    cereal_regadio: { valor: 18000, nombre: "Cereal Regadío", unidad: "€/ha" },
-                    pastos: { valor: 5000, nombre: "Pastos", unidad: "€/ha" },
-                    forestal: { valor: 6000, nombre: "Forestal", unidad: "€/ha" },
-                    improductivo: { valor: 2000, nombre: "Improductivo", unidad: "€/ha" },
-                    default: { valor: 10000, nombre: "Por Defecto", unidad: "€/ha" }
+                // Ámbito 13: Safor-Litoral (Oliva, Piles)
+                ambito_13_safor_litoral: {
+                    olivar_secano: { valor: 12200, nombre: "Olivar Secano", unidad: "€/ha" },
+                    olivar_regadio: { valor: 24400, nombre: "Olivar Regadío", unidad: "€/ha" },
+                    almendro_secano: { valor: 6100, nombre: "Frutos Secos Secano", unidad: "€/ha" },
+                    almendro_regadio: { valor: 18300, nombre: "Frutos Secos Regadío", unidad: "€/ha" },
+                    vina_secano: { valor: 9200, nombre: "Viñedo Secano", unidad: "€/ha" },
+                    vina_regadio: { valor: 18300, nombre: "Viñedo Regadío", unidad: "€/ha" },
+                    frutal_regadio: { valor: 30500, nombre: "Frutales Regadío", unidad: "€/ha" },
+                    citricos_regadio: { valor: 50800, nombre: "Agrios/Cítricos Regadío", unidad: "€/ha" },
+                    horticola_regadio: { valor: 30500, nombre: "Hortícolas Regadío", unidad: "€/ha" },
+                    arroz_regadio: { valor: 18300, nombre: "Arroz Regadío", unidad: "€/ha" },
+                    labor_secano: { valor: 4900, nombre: "Labor/Labradío Secano", unidad: "€/ha" },
+                    pastos: { valor: 3000, nombre: "Pastos", unidad: "€/ha" },
+                    improductivo: { valor: 600, nombre: "Improductivo/Matorral", unidad: "€/ha" }
+                },
+                // Ámbito 17: Marina Alta-Interior (Vall de Gallinera, Planes)
+                ambito_17_marina_alta_interior: {
+                    olivar_secano: { valor: 15600, nombre: "Olivar Secano", unidad: "€/ha" },
+                    olivar_regadio: { valor: 19500, nombre: "Olivar Regadío", unidad: "€/ha" },
+                    almendro_secano: { valor: 7800, nombre: "Frutos Secos Secano", unidad: "€/ha" },
+                    almendro_regadio: { valor: 19500, nombre: "Frutos Secos Regadío", unidad: "€/ha" },
+                    vina_secano: { valor: 7800, nombre: "Viñedo Secano", unidad: "€/ha" },
+                    vina_regadio: { valor: 15600, nombre: "Viñedo Regadío", unidad: "€/ha" },
+                    frutal_regadio: { valor: 26000, nombre: "Frutales Regadío", unidad: "€/ha" },
+                    citricos_regadio: { valor: 39000, nombre: "Agrios/Cítricos Regadío", unidad: "€/ha" },
+                    horticola_regadio: { valor: 26000, nombre: "Hortícolas Regadío", unidad: "€/ha" },
+                    labor_secano: { valor: 6200, nombre: "Labor/Labradío Secano", unidad: "€/ha" },
+                    pastos: { valor: 3100, nombre: "Pastos", unidad: "€/ha" },
+                    improductivo: { valor: 600, nombre: "Improductivo/Matorral", unidad: "€/ha" }
                 }
             },
             COEFICIENTES_URBANO: {
@@ -130,23 +146,73 @@ class ConfiguracionValoracion {
      * Renderiza los inputs de configuración
      */
     renderConfigInputs() {
-        // Precios rústico
+        // Precios rústico - mostrar por ámbito territorial
         const rusticoContainer = document.getElementById('preciosRustico');
         rusticoContainer.innerHTML = '';
 
-        const preciosRustico = this.criteriosActuales.PRECIOS_RUSTICO.valencia;
-        for (const [key, data] of Object.entries(preciosRustico)) {
+        // Título con explicación
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'config-info';
+        infoDiv.innerHTML = `
+            <p><strong>Valores Oficiales GVA 2025 por Ámbitos Territoriales</strong></p>
+            <p style="font-size: 0.9em; margin: 5px 0;">
+                • Ámbito 13: Oliva, Piles<br>
+                • Ámbito 17: Vall de Gallinera, Planes
+            </p>
+        `;
+        rusticoContainer.appendChild(infoDiv);
+
+        // Ámbito 13: Safor-Litoral
+        const titulo13 = document.createElement('h4');
+        titulo13.textContent = 'Ámbito 13: Safor-Litoral (Oliva, Piles)';
+        titulo13.style.marginTop = '20px';
+        titulo13.style.borderBottom = '2px solid #4CAF50';
+        titulo13.style.paddingBottom = '5px';
+        rusticoContainer.appendChild(titulo13);
+
+        const preciosAmbito13 = this.criteriosActuales.PRECIOS_RUSTICO.ambito_13_safor_litoral;
+        for (const [key, data] of Object.entries(preciosAmbito13)) {
             const div = document.createElement('div');
             div.className = 'config-item';
             div.innerHTML = `
-                <label for="precio_${key}">${data.nombre}</label>
+                <label for="precio_13_${key}">${data.nombre}</label>
                 <input
                     type="number"
-                    id="precio_${key}"
+                    id="precio_13_${key}"
                     value="${data.valor}"
                     min="0"
-                    step="1000"
+                    step="100"
                     data-type="rustico"
+                    data-ambito="ambito_13_safor_litoral"
+                    data-key="${key}"
+                >
+                <span class="help-text">${data.unidad}</span>
+            `;
+            rusticoContainer.appendChild(div);
+        }
+
+        // Ámbito 17: Marina Alta-Interior
+        const titulo17 = document.createElement('h4');
+        titulo17.textContent = 'Ámbito 17: Marina Alta-Interior (Vall de Gallinera, Planes)';
+        titulo17.style.marginTop = '30px';
+        titulo17.style.borderBottom = '2px solid #2196F3';
+        titulo17.style.paddingBottom = '5px';
+        rusticoContainer.appendChild(titulo17);
+
+        const preciosAmbito17 = this.criteriosActuales.PRECIOS_RUSTICO.ambito_17_marina_alta_interior;
+        for (const [key, data] of Object.entries(preciosAmbito17)) {
+            const div = document.createElement('div');
+            div.className = 'config-item';
+            div.innerHTML = `
+                <label for="precio_17_${key}">${data.nombre}</label>
+                <input
+                    type="number"
+                    id="precio_17_${key}"
+                    value="${data.valor}"
+                    min="0"
+                    step="100"
+                    data-type="rustico"
+                    data-ambito="ambito_17_marina_alta_interior"
                     data-key="${key}"
                 >
                 <span class="help-text">${data.unidad}</span>
@@ -184,12 +250,16 @@ class ConfiguracionValoracion {
      * Lee los valores actuales de los inputs
      */
     leerValoresActuales() {
-        // Leer precios rústico
+        // Leer precios rústico por ámbito territorial
         const preciosInputs = document.querySelectorAll('[data-type="rustico"]');
         preciosInputs.forEach(input => {
+            const ambito = input.dataset.ambito;
             const key = input.dataset.key;
             const valor = parseFloat(input.value) || 0;
-            this.criteriosActuales.PRECIOS_RUSTICO.valencia[key].valor = valor;
+            if (this.criteriosActuales.PRECIOS_RUSTICO[ambito] &&
+                this.criteriosActuales.PRECIOS_RUSTICO[ambito][key]) {
+                this.criteriosActuales.PRECIOS_RUSTICO[ambito][key].valor = valor;
+            }
         });
 
         // Leer coeficientes urbano
@@ -214,13 +284,15 @@ class ConfiguracionValoracion {
      * Prepara los criterios para enviar a la API
      */
     prepararCriteriosParaAPI() {
-        const precios = {};
+        const preciosRustico = {};
         const coeficientes = {};
 
-        // Convertir precios rústico
-        const preciosRustico = this.criteriosActuales.PRECIOS_RUSTICO.valencia;
-        for (const [key, data] of Object.entries(preciosRustico)) {
-            precios[key] = data.valor;
+        // Convertir precios rústico por ámbito territorial
+        for (const [ambito, cultivos] of Object.entries(this.criteriosActuales.PRECIOS_RUSTICO)) {
+            preciosRustico[ambito] = {};
+            for (const [key, data] of Object.entries(cultivos)) {
+                preciosRustico[ambito][key] = data.valor;
+            }
         }
 
         // Convertir coeficientes urbano
@@ -230,9 +302,7 @@ class ConfiguracionValoracion {
         }
 
         return {
-            PRECIOS_RUSTICO: {
-                valencia: precios
-            },
+            PRECIOS_RUSTICO: preciosRustico,
             COEFICIENTES_URBANO: {
                 valencia: coeficientes
             }

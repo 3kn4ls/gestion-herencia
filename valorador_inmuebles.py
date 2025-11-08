@@ -217,16 +217,18 @@ class ValoradorInmuebles:
                 return "olivar_regadio"
             return "olivar_secano"  # Por defecto secano
 
-        if "almendro" in texto or "almendra" in texto or "a-" in texto:
+        # Frutos secos (almendro, etc.) - incluye "F-" del catastro
+        if "almendro" in texto or "almendra" in texto or "a-" in texto or "f-" in texto or "fruto" in texto:
             if "secano" in texto:
-                return "almendr_secano"
-            return "almendr_regadio"
+                return "almendro_secano"
+            return "almendro_regadio"
 
         if "vid" in texto or "viña" in texto or "v-" in texto:
             if "secano" in texto:
                 return "vina_secano"
             return "vina_regadio"
 
+        # Frutales (no confundir con frutos secos)
         if "frutal" in texto or "frt" in texto:
             if "secano" in texto:
                 return "frutal_secano"
@@ -240,11 +242,12 @@ class ValoradorInmuebles:
         if "past" in texto or "prado" in texto:
             return "pastos"
 
-        if "forestal" in texto or "pinar" in texto or "mm" in texto:
-            return "forestal"
-
-        if "improductivo" in texto or "erial" in texto:
+        # Improductivo, matorral, pinar maderable (MM)
+        if "improductivo" in texto or "erial" in texto or "pinar" in texto or "mm" in texto or "maderable" in texto:
             return "improductivo"
+
+        if "forestal" in texto:
+            return "forestal"
 
         return "default"
 
@@ -270,14 +273,9 @@ class ValoradorInmuebles:
             if municipio_lower in ['oliva', 'piles']:
                 return 'ambito_13_safor_litoral'
 
-            # Ámbito 17: Marina Alta-Interior (Vall de Gallinera)
-            if municipio_lower in ['vall de gallinera', 'vall_de_gallinera']:
+            # Ámbito 17: Marina Alta-Interior (Vall de Gallinera, Planes)
+            if municipio_lower in ['vall de gallinera', 'vall_de_gallinera', 'planes']:
                 return 'ambito_17_marina_alta_interior'
-
-            # Planes - pendiente de identificar ámbito
-            if municipio_lower == 'planes':
-                # Por ahora usar valencia genérico
-                return 'valencia'
 
         # Fallback a identificación por provincia
         provincia_lower = provincia.lower()
