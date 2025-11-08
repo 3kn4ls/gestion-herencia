@@ -167,16 +167,36 @@ class ValoradorInmuebles:
 
         return "default"
 
-    def identificar_region(self, provincia: str) -> str:
+    def identificar_region(self, provincia: str, municipio: str = "") -> str:
         """
         Identifica la región para aplicar precios correctos
 
+        Prioriza municipios específicos con valores oficiales GVA,
+        luego usa la provincia como fallback.
+
         Args:
             provincia: Nombre de la provincia
+            municipio: Nombre del municipio (opcional)
 
         Returns:
-            Clave de región
+            Clave de región/municipio
         """
+        # Primero intentar identificar municipio específico
+        if municipio:
+            municipio_lower = municipio.lower().strip()
+
+            # Municipios con valores oficiales GVA 2025
+            MAPEO_MUNICIPIOS = {
+                'oliva': 'oliva',
+                'planes': 'planes',
+                'vall de gallinera': 'vall_de_gallinera',
+                'vall_de_gallinera': 'vall_de_gallinera',
+            }
+
+            if municipio_lower in MAPEO_MUNICIPIOS:
+                return MAPEO_MUNICIPIOS[municipio_lower]
+
+        # Fallback a identificación por provincia
         provincia_lower = provincia.lower()
 
         if provincia_lower in ["alicante", "valencia", "castellon", "castellón"]:
@@ -216,9 +236,10 @@ class ValoradorInmuebles:
 
         superficie_ha = superficie_m2 / 10000  # Convertir m² a ha
 
-        # Identificar región
+        # Identificar región (ahora con soporte para municipio)
         provincia = loc.get("provincia", "")
-        region = self.identificar_region(provincia)
+        municipio = loc.get("municipio", "")
+        region = self.identificar_region(provincia, municipio)
 
         # Valorar por cultivos
         valor_total = 0
@@ -325,7 +346,8 @@ class ValoradorInmuebles:
         datos_desc = propiedad.get("datos_descriptivos", {})
         loc = datos_desc.get("localizacion", {}) or propiedad.get("localizacion", {})
         provincia = loc.get("provincia", "")
-        region = self.identificar_region(provincia)
+        municipio = loc.get("municipio", "")
+        region = self.identificar_region(provincia, municipio)
 
         coefs = self.criterios.COEFICIENTES_URBANO.get(
             region,
