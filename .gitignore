@@ -50,3 +50,4 @@ test*.html
 # Temporary files
 tmp/
 temp/
+*.backup

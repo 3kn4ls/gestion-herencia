@@ -25,20 +25,20 @@ class CriteriosValoracion:
     PRECIOS_RUSTICO = {
         # Comunidad Valenciana (Alicante, Valencia, Castellón)
         "valencia": {
-            "olivar_secano": 13063,      # Media 2024: 10.000-16.000 €/ha
-            "olivar_regadio": 25245,     # Media 2024: 20.000-30.000 €/ha
-            "almendr_secano": 8000,      # Estimado
-            "almendr_regadio": 15000,    # Estimado
-            "vina_secano": 10000,        # Estimado
-            "vina_regadio": 20000,       # Estimado
-            "frutal_secano": 12000,      # Estimado
-            "frutal_regadio": 28000,     # Estimado
-            "cereal_secano": 5000,       # Estimado
-            "cereal_regadio": 12000,     # Estimado
-            "pastos": 3000,              # Estimado
-            "forestal": 4000,            # Estimado
-            "improductivo": 1000,        # Estimado
-            "default": 5000              # Por defecto si no se identifica el tipo
+            "olivar_secano": 35000,      # Media 2024: 10.000-16.000 €/ha
+            "olivar_regadio": 65000,     # Media 2024: 20.000-30.000 €/ha
+            "almendr_secano": 20000,      # Estimado
+            "almendr_regadio": 35000,    # Estimado
+            "vina_secano": 25000,        # Estimado
+            "vina_regadio": 45000,       # Estimado
+            "frutal_secano": 28000,      # Estimado
+            "frutal_regadio": 55000,     # Estimado
+            "cereal_secano": 8000,       # Estimado
+            "cereal_regadio": 18000,     # Estimado
+            "pastos": 5000,              # Estimado
+            "forestal": 6000,            # Estimado
+            "improductivo": 2000,        # Estimado
+            "default": 10000              # Por defecto si no se identifica el tipo
         },
 
         # Nacional (media España)
