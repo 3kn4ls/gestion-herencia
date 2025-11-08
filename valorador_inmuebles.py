@@ -68,7 +68,7 @@ class CriteriosValoracion:
         "ambito_17_marina_alta_interior": {
             "olivar_secano": 13289,    # O- Olivos Secano (ATH 1613)
             "olivar_regadio": 19500,
-            "almendro_secano": 9230,   # F- Frutales Secano (ATH 1613)
+            "almendro_secano": 9908,   # F- Frutales Secano (ATH 1613)
             "almendro_regadio": 19500,
             "vina_secano": 7800,
             "vina_regadio": 15600,
