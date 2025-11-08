@@ -411,12 +411,15 @@ class ConfiguracionValoracion {
             }
 
             this.app.valoraciones = await response.json();
-            console.log('Valoraciones recibidas:', this.app.valoraciones);
+            console.log('✅ Valoración completada con parámetros personalizados');
+            console.log('Valor total estimado:', this.app.formatCurrency(this.app.valoraciones.resumen.valor_total_estimado));
+            console.log('Valoraciones:', this.app.valoraciones);
 
             // Actualizar UI con las valoraciones
             this.app.updateUI();
 
-            alert(`✅ Valoración completada con parámetros personalizados\n\nValor total estimado: ${this.app.formatCurrency(this.app.valoraciones.resumen.valor_total_estimado)}`);
+            // Cerrar el modal automáticamente
+            this.closeConfigModal();
 
         } catch (error) {
             console.error('Error:', error);
