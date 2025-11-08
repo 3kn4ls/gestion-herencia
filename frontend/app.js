@@ -211,7 +211,7 @@ class CatastroApp {
     /**
      * Carga y procesa los datos
      */
-    loadData(data) {
+    async loadData(data) {
         // Si es un objeto con propiedades, extraer el array
         if (data.propiedades) {
             this.data = data.propiedades;
@@ -230,14 +230,15 @@ class CatastroApp {
         // Verificar si hay valoraciones incorporadas en los datos
         this.checkEmbeddedValuations();
 
-        this.updateUI();
-        this.buildFilters();
-
         // Valorar automáticamente si no hay valoraciones incorporadas
         if (!this.valoraciones) {
             console.log('ℹ️  Valorando propiedades automáticamente...');
-            this.valorarPropiedades();
+            await this.valorarPropiedades(true); // true = silencioso (sin alert)
         }
+
+        // Actualizar UI DESPUÉS de que se completen las valoraciones
+        this.updateUI();
+        this.buildFilters();
     }
 
     /**
@@ -277,9 +278,9 @@ class CatastroApp {
     /**
      * Valora las propiedades usando la API del backend
      */
-    async valorarPropiedades() {
+    async valorarPropiedades(silent = false) {
         if (!this.data || this.data.length === 0) {
-            alert('No hay propiedades cargadas para valorar');
+            if (!silent) alert('No hay propiedades cargadas para valorar');
             return;
         }
 
@@ -287,8 +288,10 @@ class CatastroApp {
         const originalText = btnValorar.textContent;
 
         try {
-            btnValorar.textContent = '⏳ Valorando...';
-            btnValorar.disabled = true;
+            if (!silent) {
+                btnValorar.textContent = '⏳ Valorando...';
+                btnValorar.disabled = true;
+            }
 
             // Enviar datos originales (sin normalización) a la API
             const propiedadesOriginales = this.data.map(p => p._original || p);
@@ -311,14 +314,20 @@ class CatastroApp {
             // Actualizar UI con las valoraciones
             this.updateUI();
 
-            alert(`✅ Valoración completada\n\nValor total estimado: ${this.formatCurrency(this.valoraciones.resumen.valor_total_estimado)}`);
+            if (!silent) {
+                alert(`✅ Valoración completada\n\nValor total estimado: ${this.formatCurrency(this.valoraciones.resumen.valor_total_estimado)}`);
+            } else {
+                console.log('✅ Valoración automática completada:', this.formatCurrency(this.valoraciones.resumen.valor_total_estimado));
+            }
 
         } catch (error) {
             console.error('Error:', error);
-            alert('Error al valorar las propiedades. Asegúrate de que el servidor está corriendo.');
+            if (!silent) alert('Error al valorar las propiedades. Asegúrate de que el servidor está corriendo.');
         } finally {
-            btnValorar.textContent = originalText;
-            btnValorar.disabled = false;
+            if (!silent) {
+                btnValorar.textContent = originalText;
+                btnValorar.disabled = false;
+            }
         }
     }
 
