@@ -535,8 +535,17 @@ class CatastroApp {
         // Valor de referencia oficial
         const valorRefOficial = property._original?.valor_referencia_oficial?.valor_referencia;
 
-        // Comparación
-        const comparacion = property._original?.comparacion;
+        // Comparación: RECALCULAR con valores actuales (no usar la del JSON viejo)
+        let comparacion = null;
+        if (valorCalculado !== undefined && valorRefOficial !== undefined) {
+            const diferencia = valorCalculado - valorRefOficial;
+            const porcentaje = valorRefOficial !== 0 ? (diferencia / valorRefOficial) * 100 : 0;
+            comparacion = {
+                diferencia_euros: diferencia,
+                diferencia_porcentaje: porcentaje,
+                mayor: diferencia >= 0 ? 'calculado' : 'oficial'
+            };
+        }
 
         if (valorCalculado || valorRefOficial) {
             valoracionHTML = '<div style="grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.5rem;">';
@@ -698,7 +707,22 @@ class CatastroApp {
             v => v.referencia_catastral === property.referencia_catastral
         );
         const valorRefOficial = property._original?.valor_referencia_oficial;
-        const comparacion = property._original?.comparacion;
+
+        // Comparación: RECALCULAR con valores actuales (no usar la del JSON viejo)
+        let comparacion = null;
+        if (valoracion && valorRefOficial) {
+            const valorCalculado = valoracion.valor_estimado_euros;
+            const valorOficial = valorRefOficial.valor_referencia;
+            const diferencia = valorCalculado - valorOficial;
+            const porcentaje = valorOficial !== 0 ? (diferencia / valorOficial) * 100 : 0;
+            comparacion = {
+                valor_calculado: valorCalculado,
+                valor_oficial: valorOficial,
+                diferencia_euros: diferencia,
+                diferencia_porcentaje: porcentaje,
+                mayor: diferencia >= 0 ? 'calculado' : diferencia < 0 ? 'oficial' : 'igual'
+            };
+        }
 
         if (valoracion || valorRefOficial) {
             html += `<h3>💰 Valoraciones</h3>`;
