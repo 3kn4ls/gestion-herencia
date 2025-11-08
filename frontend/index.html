@@ -32,12 +32,12 @@
                     <div class="stat-label">Propiedades</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="valorTotal">0 €</div>
-                    <div class="stat-label">Valor Catastral Total</div>
-                </div>
-                <div class="stat-card">
                     <div class="stat-value" id="superficieTotal">0 m²</div>
                     <div class="stat-label">Superficie Total</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="distribucionClase" style="font-size: 1rem;">-</div>
+                    <div class="stat-label">Distribución</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value" id="fechaActualizacion">-</div>
@@ -46,10 +46,42 @@
             </div>
         </section>
 
+        <!-- Filtros -->
+        <section id="filtersSection" class="filters-section hidden">
+            <h2>Filtros</h2>
+            <div class="filters-grid">
+                <div class="filter-item">
+                    <label for="filterClase">Clase</label>
+                    <select id="filterClase" class="filter-select">
+                        <option value="all">Todos</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="filterUso">Uso Principal</label>
+                    <select id="filterUso" class="filter-select">
+                        <option value="all">Todos</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="filterProvincia">Provincia</label>
+                    <select id="filterProvincia" class="filter-select">
+                        <option value="all">Todos</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="filterMunicipio">Municipio</label>
+                    <select id="filterMunicipio" class="filter-select">
+                        <option value="all">Todos</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
         <!-- Buscador -->
         <section id="searchSection" class="search-section hidden">
-            <h2>Buscar Propiedades</h2>
-            <input type="text" id="searchInput" placeholder="Buscar por referencia catastral, dirección, municipio...">
+            <h2>Buscar</h2>
+            <input type="text" id="searchInput" placeholder="Buscar por referencia catastral, partida, municipio, clase, uso...">
+            <p class="help-text" id="filteredCount"></p>
         </section>
 
         <!-- Lista de propiedades -->
