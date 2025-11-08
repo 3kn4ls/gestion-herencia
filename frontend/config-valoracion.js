@@ -9,6 +9,22 @@ class ConfiguracionValoracion {
         this.criteriosDefault = this.getCriteriosDefault();
         this.criteriosActuales = JSON.parse(JSON.stringify(this.criteriosDefault));
         this.initializeEventListeners();
+
+        // Precargar los valores en el modal al iniciar
+        // Esto hace que estén listos cuando el usuario abra el modal
+        this.precargarValores();
+    }
+
+    /**
+     * Precarga los valores en el modal sin abrirlo
+     */
+    precargarValores() {
+        // Renderizar los inputs para que estén listos
+        // Esto se ejecuta en segundo plano al cargar la página
+        setTimeout(() => {
+            this.renderConfigInputs();
+            console.log('✓ Valores GVA 2025 precargados en el modal de configuración');
+        }, 100);
     }
 
     /**
@@ -146,7 +162,7 @@ class ConfiguracionValoracion {
      * Renderiza los inputs de configuración
      */
     renderConfigInputs() {
-        // Precios rústico - mostrar por ámbito territorial
+        // Precios rústico - mostrar por ámbito territorial en formato tabla
         const rusticoContainer = document.getElementById('preciosRustico');
         rusticoContainer.innerHTML = '';
 
@@ -155,70 +171,112 @@ class ConfiguracionValoracion {
         infoDiv.className = 'config-info';
         infoDiv.innerHTML = `
             <p><strong>Valores Oficiales GVA 2025 por Ámbitos Territoriales</strong></p>
-            <p style="font-size: 0.9em; margin: 5px 0;">
-                • Ámbito 13: Oliva, Piles<br>
-                • Ámbito 17: Vall de Gallinera, Planes
+            <p style="font-size: 0.85em; color: #666; margin: 5px 0;">
+                Cada municipio utiliza los valores de su ámbito territorial correspondiente
             </p>
         `;
         rusticoContainer.appendChild(infoDiv);
 
-        // Ámbito 13: Safor-Litoral
-        const titulo13 = document.createElement('h4');
-        titulo13.textContent = 'Ámbito 13: Safor-Litoral (Oliva, Piles)';
-        titulo13.style.marginTop = '20px';
-        titulo13.style.borderBottom = '2px solid #4CAF50';
-        titulo13.style.paddingBottom = '5px';
-        rusticoContainer.appendChild(titulo13);
+        // Crear tabla comparativa
+        const table = document.createElement('table');
+        table.className = 'config-table';
 
-        const preciosAmbito13 = this.criteriosActuales.PRECIOS_RUSTICO.ambito_13_safor_litoral;
-        for (const [key, data] of Object.entries(preciosAmbito13)) {
-            const div = document.createElement('div');
-            div.className = 'config-item';
-            div.innerHTML = `
-                <label for="precio_13_${key}">${data.nombre}</label>
-                <input
-                    type="number"
-                    id="precio_13_${key}"
-                    value="${data.valor}"
-                    min="0"
-                    step="100"
-                    data-type="rustico"
-                    data-ambito="ambito_13_safor_litoral"
-                    data-key="${key}"
-                >
-                <span class="help-text">${data.unidad}</span>
-            `;
-            rusticoContainer.appendChild(div);
+        // Encabezado
+        const thead = document.createElement('thead');
+        thead.innerHTML = `
+            <tr>
+                <th style="text-align: left; min-width: 180px;">Tipo de Cultivo</th>
+                <th style="background-color: #e8f5e9; min-width: 150px;">
+                    <div style="font-weight: bold;">Ámbito 13</div>
+                    <div style="font-size: 0.85em; font-weight: normal;">Oliva, Piles</div>
+                </th>
+                <th style="background-color: #e3f2fd; min-width: 150px;">
+                    <div style="font-weight: bold;">Ámbito 17</div>
+                    <div style="font-size: 0.85em; font-weight: normal;">Vall de Gallinera, Planes</div>
+                </th>
+            </tr>
+        `;
+        table.appendChild(thead);
+
+        // Cuerpo de la tabla
+        const tbody = document.createElement('tbody');
+
+        // Obtener todos los tipos de cultivo únicos
+        const ambito13 = this.criteriosActuales.PRECIOS_RUSTICO.ambito_13_safor_litoral;
+        const ambito17 = this.criteriosActuales.PRECIOS_RUSTICO.ambito_17_marina_alta_interior;
+
+        // Crear mapa de todos los cultivos con sus nombres
+        const cultivosMap = new Map();
+
+        // Añadir cultivos de ambito 13
+        for (const [key, data] of Object.entries(ambito13)) {
+            cultivosMap.set(key, data.nombre);
         }
 
-        // Ámbito 17: Marina Alta-Interior
-        const titulo17 = document.createElement('h4');
-        titulo17.textContent = 'Ámbito 17: Marina Alta-Interior (Vall de Gallinera, Planes)';
-        titulo17.style.marginTop = '30px';
-        titulo17.style.borderBottom = '2px solid #2196F3';
-        titulo17.style.paddingBottom = '5px';
-        rusticoContainer.appendChild(titulo17);
-
-        const preciosAmbito17 = this.criteriosActuales.PRECIOS_RUSTICO.ambito_17_marina_alta_interior;
-        for (const [key, data] of Object.entries(preciosAmbito17)) {
-            const div = document.createElement('div');
-            div.className = 'config-item';
-            div.innerHTML = `
-                <label for="precio_17_${key}">${data.nombre}</label>
-                <input
-                    type="number"
-                    id="precio_17_${key}"
-                    value="${data.valor}"
-                    min="0"
-                    step="100"
-                    data-type="rustico"
-                    data-ambito="ambito_17_marina_alta_interior"
-                    data-key="${key}"
-                >
-                <span class="help-text">${data.unidad}</span>
-            `;
-            rusticoContainer.appendChild(div);
+        // Añadir cultivos de ambito 17 que no estén
+        for (const [key, data] of Object.entries(ambito17)) {
+            if (!cultivosMap.has(key)) {
+                cultivosMap.set(key, data.nombre);
+            }
         }
+
+        // Renderizar filas
+        for (const [key, nombre] of cultivosMap) {
+            const tr = document.createElement('tr');
+
+            // Columna nombre
+            const tdNombre = document.createElement('td');
+            tdNombre.style.fontWeight = '500';
+            tdNombre.textContent = nombre;
+            tr.appendChild(tdNombre);
+
+            // Columna Ámbito 13
+            const td13 = document.createElement('td');
+            td13.style.backgroundColor = '#f1f8f4';
+            if (ambito13[key]) {
+                td13.innerHTML = `
+                    <input
+                        type="number"
+                        value="${ambito13[key].valor}"
+                        min="0"
+                        step="100"
+                        data-type="rustico"
+                        data-ambito="ambito_13_safor_litoral"
+                        data-key="${key}"
+                        style="width: 100%; padding: 5px; border: 1px solid #4CAF50; border-radius: 3px;"
+                    >
+                `;
+            } else {
+                td13.innerHTML = '<span style="color: #999;">—</span>';
+            }
+            tr.appendChild(td13);
+
+            // Columna Ámbito 17
+            const td17 = document.createElement('td');
+            td17.style.backgroundColor = '#f0f7fd';
+            if (ambito17[key]) {
+                td17.innerHTML = `
+                    <input
+                        type="number"
+                        value="${ambito17[key].valor}"
+                        min="0"
+                        step="100"
+                        data-type="rustico"
+                        data-ambito="ambito_17_marina_alta_interior"
+                        data-key="${key}"
+                        style="width: 100%; padding: 5px; border: 1px solid #2196F3; border-radius: 3px;"
+                    >
+                `;
+            } else {
+                td17.innerHTML = '<span style="color: #999;">—</span>';
+            }
+            tr.appendChild(td17);
+
+            tbody.appendChild(tr);
+        }
+
+        table.appendChild(tbody);
+        rusticoContainer.appendChild(table);
 
         // Coeficientes urbano
         const urbanoContainer = document.getElementById('coeficientesUrbano');

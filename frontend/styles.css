@@ -534,6 +534,61 @@ section h2 {
     color: var(--text-secondary);
 }
 
+/* Tabla comparativa de configuración */
+.config-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.config-table thead {
+    background-color: var(--background-color);
+}
+
+.config-table th {
+    padding: 1rem;
+    text-align: center;
+    font-weight: 600;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.config-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.config-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.config-table tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.config-table td {
+    padding: 0.75rem;
+    text-align: center;
+}
+
+.config-table td:first-child {
+    text-align: left;
+    padding-left: 1rem;
+}
+
+.config-info {
+    background-color: #f8f9fa;
+    border-left: 4px solid var(--primary-color);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+}
+
+.config-info p {
+    margin: 0.25rem 0;
+}
+
 /* Mejorar responsiveness de tabla */
 @media (max-width: 768px) {
     .filters-grid {
