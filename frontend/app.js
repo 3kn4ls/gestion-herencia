@@ -1001,13 +1001,34 @@ class CatastroApp {
 
                 // Si tiene subparcelas, crear una fila por cada subparcela
                 if (subparcelas && subparcelas.length > 0) {
+                    // Crear copia de detalles de cultivos para marcar los usados
+                    const detallesDisponibles = [...(valoracion?.detalles_cultivos || [])];
+
                     for (let i = 0; i < subparcelas.length; i++) {
                         const subparcela = subparcelas[i];
+                        const superficieHa = (parseFloat(subparcela.superficie_m2) || 0) / 10000;
 
-                        // Buscar el detalle de valoración correspondiente (si existe)
-                        const detalleValoracion = valoracion?.detalles_cultivos?.find(
-                            d => d.cultivo === subparcela.cultivo_aprovechamiento
-                        ) || null;
+                        // Buscar el detalle de valoración correspondiente por superficie
+                        let detalleValoracion = null;
+                        let detalleIndex = -1;
+
+                        if (detallesDisponibles.length > 0) {
+                            // Intentar match por superficie (con tolerancia de 0.0001 ha)
+                            detalleIndex = detallesDisponibles.findIndex(d =>
+                                Math.abs((d.superficie_ha || 0) - superficieHa) < 0.0001
+                            );
+
+                            // Si no hay match por superficie, usar el mismo índice secuencial
+                            if (detalleIndex === -1 && i < detallesDisponibles.length) {
+                                detalleIndex = 0; // Usar el primero disponible
+                            }
+
+                            // Si encontramos un detalle, lo usamos y lo removemos de disponibles
+                            if (detalleIndex >= 0) {
+                                detalleValoracion = detallesDisponibles[detalleIndex];
+                                detallesDisponibles.splice(detalleIndex, 1);
+                            }
+                        }
 
                         const row = [
                             ...datosComunes,
