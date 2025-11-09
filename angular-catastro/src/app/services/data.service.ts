@@ -68,21 +68,18 @@ export class DataService {
     const loc = prop.datos_descriptivos?.localizacion || {};
     const parcela = prop.parcela_catastral || {};
 
-    // Extraer superficie numérica
+    // Extraer superficie numérica (en m2) usando parser robusto
     let superficie = 0;
     if (parcela.superficie_gráfica) {
-      const match = parcela.superficie_gráfica.match(/[\d.,]+/);
-      if (match) {
-        superficie = parseFloat(match[0].replace('.', '').replace(',', '.'));
-      }
+      superficie = this.parseAreaToNumber(parcela.superficie_gráfica);
     }
 
-    // Normalizar cultivos: convertir superficie_m2 de string a number
+    // Normalizar cultivos: convertir superficie_m2 de string a number (m2)
     const cultivos = (prop.cultivos || []).map((c: any) => ({
       subparcela: c.subparcela,
       cultivo_aprovechamiento: c.cultivo_aprovechamiento,
       intensidad_productiva: c.intensidad_productiva,
-      superficie_m2: parseFloat(c.superficie_m2 || '0')
+      superficie_m2: this.parseAreaToNumber(c.superficie_m2)
     }));
 
     return {
@@ -109,5 +106,71 @@ export class DataService {
       valor_referencia: prop.valor_referencia,
       escritura: prop.escritura
     };
+  }
+
+  /**
+   * Parsea una cadena con una superficie y devuelve el valor en metros cuadrados (number).
+   * Soporta formatos como:
+   *  - "1.197 m2"  -> 1197
+   *  - "10,5"      -> 10.5
+   *  - "1.234.567,89" -> 1234567.89
+   *  - "1234567.89"   -> 1234567.89
+   * Heurística: si existen ambos separadores (',' y '.') se toma como separador decimal el que aparece más a la derecha.
+   * Si solo aparece un separador, se decide en función del número de dígitos después del separador (3 dígitos -> miles).
+   */
+  private parseAreaToNumber(area?: string | number): number {
+    if (area == null) return 0;
+    if (typeof area === 'number') return area;
+
+  const s = String(area).trim();
+  // Detectar unidad explícita: "ha" -> hectáreas
+  const unitIsHa = /\bha\b|hect/i.test(s);
+    const match = s.match(/[\d.,]+/);
+    if (!match) return 0;
+
+    let num = match[0];
+
+    const hasDot = num.indexOf('.') !== -1;
+    const hasComma = num.indexOf(',') !== -1;
+
+    if (hasDot && hasComma) {
+      // Ambos presentes: el que aparece más a la derecha es decimal
+      const lastDot = num.lastIndexOf('.');
+      const lastComma = num.lastIndexOf(',');
+      if (lastComma > lastDot) {
+        // coma decimal, puntos miles
+        num = num.replace(/\./g, '');
+        num = num.replace(/,/g, '.');
+      } else {
+        // punto decimal, comas miles
+        num = num.replace(/,/g, '');
+      }
+    } else if (hasDot) {
+      // Solo punto: puede ser decimal o separador de miles
+      const parts = num.split('.');
+      const after = parts[parts.length - 1];
+      if (after.length === 3) {
+        // Probablemente miles: eliminar todos los puntos
+        num = num.replace(/\./g, '');
+      } else {
+        // Probablemente decimal, dejar punto como separador decimal
+        // (si hay comas las eliminaríamos, pero no hay comas aquí)
+      }
+    } else if (hasComma) {
+      // Solo coma: similar heurística
+      const parts = num.split(',');
+      const after = parts[parts.length - 1];
+      if (after.length === 3) {
+        // coma como separador de miles
+        num = num.replace(/,/g, '');
+      } else {
+        // coma decimal
+        num = num.replace(/,/g, '.');
+      }
+    }
+
+    const parsed = parseFloat(num.replace(/\s+/g, ''));
+    if (isNaN(parsed)) return 0;
+    return unitIsHa ? parsed * 10000 : parsed;
   }
 }
