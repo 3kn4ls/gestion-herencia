@@ -451,12 +451,65 @@ export class AppComponent implements OnInit {
   }
 
   /**
+   * Obtiene los municipios principales (sin alias) agrupados
+   */
+  getMunicipiosPrincipales(): Array<{nombre: string, municipios: string[], codigoAth: string, provincia: string}> {
+    if (!this.valoresEditables) return [];
+
+    const grupos: Array<{nombre: string, municipios: string[], codigoAth: string, provincia: string}> = [];
+    const procesados = new Set<string>();
+
+    Object.keys(this.valoresEditables.municipios).forEach(municipio => {
+      if (!procesados.has(municipio)) {
+        const config = this.valoresEditables!.municipios[municipio];
+
+        // Si no tiene alias_de, es un municipio principal
+        if (!config.alias_de) {
+          const municipiosGrupo = [municipio];
+          procesados.add(municipio);
+
+          // Buscar municipios que sean alias de este
+          Object.keys(this.valoresEditables!.municipios).forEach(otroMunicipio => {
+            const otraConfig = this.valoresEditables!.municipios[otroMunicipio];
+            if (otraConfig.alias_de === municipio) {
+              municipiosGrupo.push(otroMunicipio);
+              procesados.add(otroMunicipio);
+            }
+          });
+
+          grupos.push({
+            nombre: municipiosGrupo.join(' / '),
+            municipios: municipiosGrupo,
+            codigoAth: config.codigo_ath,
+            provincia: config.provincia
+          });
+        }
+      }
+    });
+
+    return grupos;
+  }
+
+  /**
    * Obtiene los códigos de cultivo de un municipio
    */
   getCodigosCultivo(municipio: string): string[] {
     if (!this.valoresEditables) return [];
     const cultivosMunicipio = this.valoresEditables.municipios[municipio]?.cultivos;
     return cultivosMunicipio ? Object.keys(cultivosMunicipio) : [];
+  }
+
+  /**
+   * Actualiza los valores de todos los municipios de un grupo
+   */
+  actualizarValorCultivo(municipios: string[], codigoCultivo: string, nuevoValor: number): void {
+    if (!this.valoresEditables) return;
+
+    municipios.forEach(municipio => {
+      if (this.valoresEditables!.municipios[municipio]?.cultivos[codigoCultivo]) {
+        this.valoresEditables!.municipios[municipio].cultivos[codigoCultivo].valor_por_hectarea = nuevoValor;
+      }
+    });
   }
 
   /**

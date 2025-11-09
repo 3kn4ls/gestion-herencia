@@ -438,23 +438,24 @@
       </div>
 
       <div *ngIf="valoresEditables" class="config-content">
-        <!-- Por cada municipio -->
-        <div *ngFor="let municipio of municipios" class="municipio-section">
-          <h3>{{ municipio }}</h3>
+        <!-- Por cada grupo de municipios -->
+        <div *ngFor="let grupo of getMunicipiosPrincipales()" class="municipio-section">
+          <h3>{{ grupo.nombre }}</h3>
           <p class="municipio-info">
-            <strong>Provincia:</strong> {{ valoresEditables.municipios[municipio].provincia }} |
-            <strong>Código ATH:</strong> {{ valoresEditables.municipios[municipio].codigo_ath }}
+            <strong>Provincia:</strong> {{ grupo.provincia }} |
+            <strong>Código ATH:</strong> {{ grupo.codigoAth }}
           </p>
 
           <div class="cultivos-grid">
-            <div *ngFor="let codigo of getCodigosCultivo(municipio)" class="cultivo-item">
+            <div *ngFor="let codigo of getCodigosCultivo(grupo.municipios[0])" class="cultivo-item">
               <label>
-                <strong>{{ codigo }}</strong> - {{ valoresEditables.municipios[municipio].cultivos[codigo].uso_catastral }}
+                <strong>{{ codigo }}</strong> - {{ valoresEditables.municipios[grupo.municipios[0]].cultivos[codigo].uso_catastral }}
               </label>
               <div class="input-group">
                 <input
                   type="number"
-                  [(ngModel)]="valoresEditables.municipios[municipio].cultivos[codigo].valor_por_hectarea"
+                  [ngModel]="valoresEditables.municipios[grupo.municipios[0]].cultivos[codigo].valor_por_hectarea"
+                  (ngModelChange)="actualizarValorCultivo(grupo.municipios, codigo, $event)"
                   min="0"
                   step="100"
                   class="input-valor"
@@ -462,7 +463,7 @@
                 <span class="input-suffix">€/ha</span>
               </div>
               <small class="cultivo-descripcion">
-                {{ valoresEditables.municipios[municipio].cultivos[codigo].descripcion }}
+                {{ valoresEditables.municipios[grupo.municipios[0]].cultivos[codigo].descripcion }}
               </small>
             </div>
           </div>
