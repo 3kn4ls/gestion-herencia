@@ -1,0 +1,155 @@
+[
+  {
+    "referencia_catastral": "03136A006001950000ZH",
+    "fecha_extraccion": "2025-01-09",
+    "datos_descriptivos": {
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "localizacion": {
+        "provincia": "Valencia/València",
+        "municipio": "Oliva",
+        "partida": "PARTIDA REBOLLET",
+        "poligono": "6",
+        "parcela": "195",
+        "texto_completo": "PARTIDA REBOLLET, Polígono 6, Parcela 195, Oliva (Valencia)"
+      }
+    },
+    "localizacion": {
+      "provincia": "Valencia/València",
+      "municipio": "Oliva",
+      "partida": "PARTIDA REBOLLET",
+      "poligono": "6",
+      "parcela": "195"
+    },
+    "datos_inmueble": {
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "superficie_construida": 9682
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "9.682 m²"
+    },
+    "cultivos": [
+      {
+        "subparcela": "a",
+        "cultivo_aprovechamiento": "O- Olivos secano",
+        "intensidad_productiva": "02",
+        "superficie_m2": 4992
+      },
+      {
+        "subparcela": "b",
+        "cultivo_aprovechamiento": "MM Pinar maderable",
+        "intensidad_productiva": "02",
+        "superficie_m2": 1124
+      },
+      {
+        "subparcela": "c",
+        "cultivo_aprovechamiento": "O- Olivos secano",
+        "intensidad_productiva": "02",
+        "superficie_m2": 3566
+      }
+    ],
+    "valor_referencia_oficial": {
+      "valor_referencia": 795.01,
+      "fecha_referencia": "2024-12-31"
+    }
+  },
+  {
+    "referencia_catastral": "46190A002000010000XD",
+    "fecha_extraccion": "2025-01-09",
+    "datos_descriptivos": {
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "localizacion": {
+        "provincia": "Valencia/València",
+        "municipio": "Planes",
+        "partida": "DISEMINADO",
+        "poligono": "2",
+        "parcela": "1",
+        "texto_completo": "DISEMINADO, Polígono 2, Parcela 1, Planes (Valencia)"
+      }
+    },
+    "localizacion": {
+      "provincia": "Valencia/València",
+      "municipio": "Planes",
+      "partida": "DISEMINADO",
+      "poligono": "2",
+      "parcela": "1"
+    },
+    "datos_inmueble": {
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "superficie_construida": 125400
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "125.400 m²"
+    },
+    "cultivos": [
+      {
+        "subparcela": "a",
+        "cultivo_aprovechamiento": "O- Olivos secano",
+        "intensidad_productiva": "02",
+        "superficie_m2": 88500
+      },
+      {
+        "subparcela": "b",
+        "cultivo_aprovechamiento": "F- Frutales secano",
+        "intensidad_productiva": "02",
+        "superficie_m2": 35400
+      },
+      {
+        "subparcela": "c",
+        "cultivo_aprovechamiento": "I- Improductivo",
+        "intensidad_productiva": "00",
+        "superficie_m2": 1500
+      }
+    ],
+    "valor_referencia_oficial": {
+      "valor_referencia": 15234.50,
+      "fecha_referencia": "2024-12-31"
+    }
+  },
+  {
+    "referencia_catastral": "03105A008000230000YJ",
+    "fecha_extraccion": "2025-01-09",
+    "datos_descriptivos": {
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "localizacion": {
+        "provincia": "Valencia/València",
+        "municipio": "Oliva",
+        "partida": "PARTIDA BOVALAR",
+        "poligono": "8",
+        "parcela": "23",
+        "texto_completo": "PARTIDA BOVALAR, Polígono 8, Parcela 23, Oliva (Valencia)"
+      }
+    },
+    "localizacion": {
+      "provincia": "Valencia/València",
+      "municipio": "Oliva",
+      "partida": "PARTIDA BOVALAR",
+      "poligono": "8",
+      "parcela": "23"
+    },
+    "datos_inmueble": {
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "superficie_construida": 15200
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "15.200 m²"
+    },
+    "cultivos": [
+      {
+        "subparcela": "a",
+        "cultivo_aprovechamiento": "NR Agrios regadío",
+        "intensidad_productiva": "04",
+        "superficie_m2": 15200
+      }
+    ],
+    "valor_referencia_oficial": {
+      "valor_referencia": 48500.00,
+      "fecha_referencia": "2024-12-31"
+    }
+  }
+]
