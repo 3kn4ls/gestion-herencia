@@ -1,0 +1,64 @@
+{
+  "version": "2025.1",
+  "fecha_actualizacion": "2025-01-09",
+  "fuente": "NNTT 2025 GVA - ATH 1603 y ATH 1613",
+  "ambitos": [
+    {
+      "nombre": "Ámbito 13 - Safor-Litoral",
+      "codigo": "ambito_13",
+      "municipios": ["oliva", "piles"],
+      "ath": "1603",
+      "precios_rustico": {
+        "olivar_secano": 0,
+        "olivar_regadio": 24400,
+        "almendro_secano": 0,
+        "almendro_regadio": 18300,
+        "vina_secano": 9200,
+        "vina_regadio": 18300,
+        "frutal_secano": 0,
+        "frutal_regadio": 30500,
+        "citricos_regadio": 33783,
+        "cereal_secano": 0,
+        "cereal_regadio": 0,
+        "horticola_regadio": 30500,
+        "arroz_regadio": 18300,
+        "pastos": 0,
+        "forestal": 0,
+        "labor_secano": 0,
+        "labor_regadio": 24379,
+        "pinar_maderable": 1800,
+        "matorral": 600,
+        "improductivo": 600,
+        "default": 10000
+      }
+    },
+    {
+      "nombre": "Ámbito 17 - Marina Alta-Interior",
+      "codigo": "ambito_17",
+      "municipios": ["vall de gallinera", "vall_de_gallinera", "planes"],
+      "ath": "1613",
+      "precios_rustico": {
+        "olivar_secano": 13289,
+        "olivar_regadio": 19500,
+        "almendro_secano": 9230,
+        "almendro_regadio": 19500,
+        "vina_secano": 7800,
+        "vina_regadio": 15600,
+        "frutal_secano": 0,
+        "frutal_regadio": 26000,
+        "citricos_regadio": 13698,
+        "cereal_secano": 0,
+        "cereal_regadio": 0,
+        "horticola_regadio": 26000,
+        "pastos": 0,
+        "forestal": 0,
+        "labor_secano": 6633,
+        "labor_regadio": 13801,
+        "pinar_maderable": 1800,
+        "matorral": 600,
+        "improductivo": 600,
+        "default": 10000
+      }
+    }
+  ]
+}
