@@ -220,7 +220,8 @@ export class AppComponent implements OnInit {
   /**
    * Obtiene la valoración de una propiedad
    */
-  getValoracion(refCatastral: string): Valoracion | undefined {
+  getValoracion(refCatastral: string | undefined): Valoracion | undefined {
+    if (!refCatastral) return undefined;
     return this.resultadoValoracion?.valoraciones.find(
       v => v.referencia_catastral === refCatastral
     );
@@ -272,7 +273,7 @@ export class AppComponent implements OnInit {
 
           for (let i = 0; i < propiedad.cultivos.length; i++) {
             const cultivo = propiedad.cultivos[i];
-            const superficieHa = parseFloat(cultivo.superficie_m2.toString()) / 10000;
+            const superficieHa = parseFloat((cultivo.superficie_m2 || 0).toString()) / 10000;
 
             let detalle = null;
             const idx = detallesDisponibles.findIndex(d =>
