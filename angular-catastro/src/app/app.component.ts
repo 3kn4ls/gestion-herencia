@@ -54,6 +54,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarCriterios();
+    this.cargarDatosMuestra();
   }
 
   /**
@@ -66,6 +67,10 @@ export class AppComponent implements OnInit {
         this.criterios = criterios;
         this.cargandoCriterios = false;
         console.log('✅ Criterios cargados:', criterios);
+        // Valorar si ya hay propiedades cargadas
+        if (this.propiedades.length > 0) {
+          this.valorarAutomaticamente();
+        }
       },
       error: (error) => {
         console.error('❌ Error al cargar criterios:', error);
@@ -86,9 +91,12 @@ export class AppComponent implements OnInit {
           this.propiedades = propiedades;
           this.aplicarFiltros();
           this.construirFiltros();
-          this.valorarAutomaticamente();
           this.cargandoDatos = false;
           console.log(`✅ ${propiedades.length} propiedades cargadas`);
+          // Valorar si ya hay criterios cargados
+          if (this.criterios) {
+            this.valorarAutomaticamente();
+          }
         },
         (error) => {
           console.error('❌ Error al cargar archivo:', error);
@@ -109,9 +117,12 @@ export class AppComponent implements OnInit {
         this.propiedades = propiedades;
         this.aplicarFiltros();
         this.construirFiltros();
-        this.valorarAutomaticamente();
         this.cargandoDatos = false;
         console.log(`✅ ${propiedades.length} propiedades de muestra cargadas`);
+        // Valorar si ya hay criterios cargados
+        if (this.criterios) {
+          this.valorarAutomaticamente();
+        }
       },
       error: (error) => {
         console.error('❌ Error al cargar datos de muestra:', error);
