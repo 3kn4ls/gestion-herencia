@@ -1,6 +1,49 @@
 /* Estilos específicos del componente */
 /* Los estilos globales están en styles.css */
 
+/* Botón de Catastro en tabla */
+.btn-catastro {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: background 0.3s;
+  white-space: nowrap;
+}
+
+.btn-catastro:hover {
+  background: #2563eb;
+  transform: scale(1.1);
+}
+
+.btn-cell {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Botón de Catastro en tarjetas */
+.btn-catastro-card {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.btn-catastro-card:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+}
+
 /* Botón de configuración */
 .btn-config {
   background: #3b82f6;
@@ -254,7 +297,16 @@
   background: #d97706;
 }
 
-/* Responsive */
+/* Tabla Resumen Styling */
+.table-resumen .resumen-row {
+  font-weight: 500;
+}
+
+.table-resumen .resumen-row:hover {
+  background: #f3f4f6;
+}
+
+/* Responsive Mejorado */
 @media (max-width: 768px) {
   .modal-content {
     max-width: 100%;
@@ -273,5 +325,92 @@
 
   .modal-footer .btn {
     width: 100%;
+  }
+
+  .btn-config {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .btn-catastro-card {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Pantallas grandes (1920px+) */
+@media (min-width: 1920px) {
+  .app-header {
+    padding: 2rem 3rem;
+  }
+
+  .container {
+    max-width: 1800px;
+    margin: 0 auto;
+  }
+
+  .properties-data-table {
+    font-size: 1rem;
+  }
+
+  .properties-data-table th,
+  .properties-data-table td {
+    padding: 1rem;
+  }
+
+  .stat-card {
+    padding: 2rem;
+  }
+
+  .stat-value {
+    font-size: 2.5rem;
+  }
+}
+
+/* Pantallas medianas */
+@media (min-width: 769px) and (max-width: 1919px) {
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+  .app-header h1 {
+    font-size: 1.2rem;
+  }
+
+  .subtitle {
+    font-size: 0.8rem;
+  }
+
+  .btn-config {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+  }
+
+  .view-toggle {
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .btn-vista {
+    width: 100%;
+    font-size: 0.8rem;
+  }
+
+  .properties-controls {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
   }
 }
