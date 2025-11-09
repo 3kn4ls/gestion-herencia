@@ -66,13 +66,13 @@ export class ValoracionService {
     // Si tiene cultivos definidos, valorar cada uno
     if (propiedad.cultivos && propiedad.cultivos.length > 0) {
       for (const cultivo of propiedad.cultivos) {
-        const tipoCultivo = this.identificarTipoCultivo(cultivo.cultivo_aprovechamiento);
-        const superficieHa = parseFloat(cultivo.superficie_m2.toString()) / 10000;
+        const tipoCultivo = this.identificarTipoCultivo(cultivo.cultivo_aprovechamiento || '');
+        const superficieHa = parseFloat((cultivo.superficie_m2 || 0).toString()) / 10000;
         const precioHa = (preciosRustico as any)[tipoCultivo] || preciosRustico.default;
         const valorCultivo = superficieHa * precioHa;
 
         detallesCultivos.push({
-          cultivo: cultivo.cultivo_aprovechamiento,
+          cultivo: cultivo.cultivo_aprovechamiento || '',
           superficie_ha: parseFloat(superficieHa.toFixed(4)),
           precio_ha: precioHa,
           valor_estimado: parseFloat(valorCultivo.toFixed(2))
@@ -91,7 +91,7 @@ export class ValoracionService {
     }
 
     return {
-      referencia_catastral: propiedad.referencia_catastral,
+      referencia_catastral: propiedad.referencia_catastral || '',
       tipo_inmueble: 'rústico',
       valor_estimado_euros: parseFloat(valorTotal.toFixed(2)),
       metodo_valoracion: 'superficie_x_precio_hectarea',
@@ -109,7 +109,7 @@ export class ValoracionService {
     const coeficiente = 0.5; // Coeficiente multiplicador por defecto
 
     return {
-      referencia_catastral: propiedad.referencia_catastral,
+      referencia_catastral: propiedad.referencia_catastral || '',
       tipo_inmueble: 'urbano',
       valor_estimado_euros: parseFloat((valorCatastral * coeficiente).toFixed(2)),
       metodo_valoracion: 'valor_catastral_x_coeficiente'

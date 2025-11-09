@@ -3,8 +3,8 @@
  */
 
 export interface Localizacion {
-  provincia: string;
-  municipio: string;
+  provincia?: string;
+  municipio?: string;
   partida?: string;
   poligono?: string;
   parcela?: string;
@@ -12,16 +12,16 @@ export interface Localizacion {
 }
 
 export interface DatosInmueble {
-  clase: string;
-  uso_principal: string;
-  superficie_construida: number;
+  clase?: string;
+  uso_principal?: string;
+  superficie_construida?: number;
 }
 
 export interface Cultivo {
-  subparcela: string;
-  cultivo_aprovechamiento: string;
-  intensidad_productiva: string;
-  superficie_m2: number;
+  subparcela?: string;
+  cultivo_aprovechamiento?: string;
+  intensidad_productiva?: string;
+  superficie_m2?: number;
 }
 
 export interface ParcelaCatastral {
@@ -30,22 +30,22 @@ export interface ParcelaCatastral {
 }
 
 export interface ValorReferenciaOficial {
-  valor_referencia: number;
+  valor_referencia?: number;
   fecha_referencia?: string;
 }
 
 export interface DatosCatastrales {
-  valor_catastral: number;
+  valor_catastral?: number;
   valor_suelo?: number;
   valor_construccion?: number;
 }
 
 export interface Propiedad {
-  referencia_catastral: string;
+  referencia_catastral?: string;
   fecha_extraccion?: string;
   url_consultada?: string;
-  localizacion: Localizacion;
-  datos_inmueble: DatosInmueble;
+  localizacion?: Localizacion;
+  datos_inmueble?: DatosInmueble;
   cultivos?: Cultivo[];
   parcela_catastral?: ParcelaCatastral;
   datos_catastrales?: DatosCatastrales;
