@@ -133,7 +133,14 @@
             [class.active]="vistaActual === 'tabla'"
             (click)="cambiarVista('tabla')"
           >
-            📊 Tabla
+            📊 Tabla Detalle
+          </button>
+          <button
+            class="btn-vista"
+            [class.active]="vistaActual === 'resumen'"
+            (click)="cambiarVista('resumen')"
+          >
+            📋 Tabla Resumen
           </button>
           <button
             class="btn-vista"
@@ -159,6 +166,7 @@
       <table class="properties-data-table">
         <thead>
           <tr>
+            <th>Catastro</th>
             <th>Ref. Catastral</th>
             <th>Provincia</th>
             <th>Municipio</th>
@@ -189,6 +197,11 @@
                 [class.first-row]="i === 0"
                 [class.subparcela-row]="i > 0"
               >
+                <td *ngIf="i === 0" [attr.rowspan]="propiedad.cultivos!.length" class="btn-cell">
+                  <button class="btn-catastro" (click)="abrirCatastro(propiedad)" title="Ver en Catastro">
+                    🔗
+                  </button>
+                </td>
                 <td class="ref-catastral">{{ propiedad.referencia_catastral }}</td>
                 <td>{{ propiedad.localizacion?.provincia }}</td>
                 <td>{{ propiedad.localizacion?.municipio }}</td>
@@ -241,6 +254,11 @@
             </ng-container>
             <ng-template #sinCultivos>
               <tr class="first-row">
+                <td class="btn-cell">
+                  <button class="btn-catastro" (click)="abrirCatastro(propiedad)" title="Ver en Catastro">
+                    🔗
+                  </button>
+                </td>
                 <td class="ref-catastral">{{ propiedad.referencia_catastral }}</td>
                 <td>{{ propiedad.localizacion?.provincia }}</td>
                 <td>{{ propiedad.localizacion?.municipio }}</td>
@@ -298,6 +316,9 @@
               {{ propiedad.escritura }}
             </div>
           </div>
+          <button class="btn-catastro-card" (click)="abrirCatastro(propiedad)" title="Ver en Catastro">
+            🔗 Catastro
+          </button>
         </div>
         <div class="property-details">
           <div class="detail-item">
@@ -350,6 +371,44 @@
           </ng-container>
         </div>
       </div>
+    </div>
+
+    <!-- Vista de Tabla Resumen -->
+    <div *ngIf="vistaActual === 'resumen'" class="properties-table-container">
+      <table class="properties-data-table table-resumen">
+        <thead>
+          <tr>
+            <th>Catastro</th>
+            <th>Ref. Catastral</th>
+            <th>Municipio</th>
+            <th>Partida</th>
+            <th>Escritura</th>
+            <th>Sup. (m²)</th>
+            <th>Sup. (ha)</th>
+            <th>€/ha Medio</th>
+            <th>Valor Total Calculado €</th>
+            <th>Valor Catastral Oficial €</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of getPropiedadesResumen()" class="resumen-row">
+            <td class="btn-cell">
+              <button class="btn-catastro" (click)="abrirCatastro(item.propiedad)" title="Ver en Catastro">
+                🔗
+              </button>
+            </td>
+            <td class="ref-catastral">{{ item.referencia_catastral }}</td>
+            <td>{{ item.municipio }}</td>
+            <td>{{ item.partida }}</td>
+            <td class="escritura">{{ item.escritura }}</td>
+            <td class="numeric">{{ formatNumber(item.superficie_m2) }}</td>
+            <td class="numeric">{{ item.superficie_ha.toFixed(4) }}</td>
+            <td class="numeric">{{ formatNumber(item.precio_medio_ha) }}</td>
+            <td class="numeric valor-calculado">{{ formatCurrency(item.valor_calculado) }}</td>
+            <td class="numeric valor-oficial">{{ formatCurrency(item.valor_oficial) }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 

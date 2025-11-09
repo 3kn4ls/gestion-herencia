@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
   };
 
   // Vista
-  vistaActual: 'tabla' | 'tarjetas' = 'tabla';
+  vistaActual: 'tabla' | 'tarjetas' | 'resumen' = 'tabla';
 
   // Loading states
   cargandoDatos = false;
@@ -194,10 +194,63 @@ export class AppComponent implements OnInit {
   }
 
   /**
-   * Cambia la vista (tabla/tarjetas)
+   * Cambia la vista (tabla/tarjetas/resumen)
    */
-  cambiarVista(vista: 'tabla' | 'tarjetas'): void {
+  cambiarVista(vista: 'tabla' | 'tarjetas' | 'resumen'): void {
     this.vistaActual = vista;
+  }
+
+  /**
+   * Abre la página del catastro en una ventana popup
+   */
+  abrirCatastro(propiedad: Propiedad): void {
+    if (propiedad.url_consultada) {
+      const width = 1200;
+      const height = 800;
+      const left = (screen.width / 2) - (width / 2);
+      const top = (screen.height / 2) - (height / 2);
+
+      window.open(
+        propiedad.url_consultada,
+        'catastro',
+        `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
+      );
+    } else {
+      alert('No hay URL del catastro disponible para esta propiedad');
+    }
+  }
+
+  /**
+   * Obtiene propiedades agrupadas por referencia catastral para vista resumen
+   */
+  getPropiedadesResumen(): any[] {
+    const resumenMap = new Map<string, any>();
+
+    this.propiedadesFiltradas.forEach(propiedad => {
+      const ref = propiedad.referencia_catastral || '';
+      if (!resumenMap.has(ref)) {
+        const valoracion = this.getValoracion(ref);
+        const superficieTotalM2 = propiedad.cultivos?.reduce((sum, c) => sum + (c.superficie_m2 || 0), 0) || 0;
+        const superficieTotalHa = superficieTotalM2 / 10000;
+        const valorTotalCalculado = valoracion?.valor_estimado_euros || 0;
+        const precioMedioHa = superficieTotalHa > 0 ? valorTotalCalculado / superficieTotalHa : 0;
+
+        resumenMap.set(ref, {
+          referencia_catastral: ref,
+          municipio: propiedad.localizacion?.municipio || '',
+          partida: propiedad.localizacion?.partida || '',
+          escritura: propiedad.escritura || '',
+          superficie_m2: superficieTotalM2,
+          superficie_ha: superficieTotalHa,
+          precio_medio_ha: precioMedioHa,
+          valor_calculado: valorTotalCalculado,
+          valor_oficial: propiedad.valor_referencia || 0,
+          propiedad: propiedad
+        });
+      }
+    });
+
+    return Array.from(resumenMap.values());
   }
 
   /**
