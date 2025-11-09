@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Propiedad, Cultivo } from '../models/propiedad.model';
 import { Valoracion, DetalleCultivo, ResultadoValoracion } from '../models/valoracion.model';
-import { CriteriosValoracion, CriteriosCultivo } from '../models/criterios.model';
+import { ValoresTasacion } from './data.service';
 
 /**
- * Servicio de valoración de propiedades
- * Replica la lógica del backend Python en TypeScript
+ * Servicio de valoración de propiedades basado en cultivos catastrales
  */
 @Injectable({
   providedIn: 'root'
@@ -15,14 +14,14 @@ export class ValoracionService {
   constructor() { }
 
   /**
-   * Valora un conjunto de propiedades usando los criterios proporcionados
+   * Valora un conjunto de propiedades usando los valores de tasación
    */
-  valorarPropiedades(propiedades: Propiedad[], criterios: CriteriosValoracion): ResultadoValoracion {
+  valorarPropiedades(propiedades: Propiedad[], valoresTasacion: ValoresTasacion): ResultadoValoracion {
     const valoraciones: Valoracion[] = [];
     let valorTotalEstimado = 0;
 
     for (const propiedad of propiedades) {
-      const valoracion = this.valorarPropiedad(propiedad, criterios);
+      const valoracion = this.valorarPropiedad(propiedad, valoresTasacion);
       if (valoracion) {
         valoraciones.push(valoracion);
         valorTotalEstimado += valoracion.valor_estimado_euros;
@@ -40,11 +39,12 @@ export class ValoracionService {
   /**
    * Valora una propiedad individual
    */
-  private valorarPropiedad(propiedad: Propiedad, criterios: CriteriosValoracion): Valoracion | null {
+  private valorarPropiedad(propiedad: Propiedad, valoresTasacion: ValoresTasacion): Valoracion | null {
     const clase = propiedad.datos_inmueble?.clase?.toLowerCase() || '';
 
+    // Solo valorar propiedades rústicas
     if (clase.includes('rústico') || clase.includes('rustico')) {
-      return this.valorarRustico(propiedad, criterios);
+      return this.valorarRustico(propiedad, valoresTasacion);
     } else if (clase.includes('urbano')) {
       return this.valorarUrbano(propiedad);
     }
@@ -53,11 +53,11 @@ export class ValoracionService {
   }
 
   /**
-   * Valoración de inmuebles rústicos
+   * Valoración de inmuebles rústicos basada en cultivos
    */
-  private valorarRustico(propiedad: Propiedad, criterios: CriteriosValoracion): Valoracion {
-    const ambito = this.identificarAmbito(propiedad, criterios);
-    const preciosRustico = ambito?.precios_rustico || criterios.ambitos[0].precios_rustico;
+  private valorarRustico(propiedad: Propiedad, valoresTasacion: ValoresTasacion): Valoracion {
+    const municipio = this.normalizarMunicipio(propiedad.localizacion?.municipio || '');
+    const valoresMunicipio = this.obtenerValoresMunicipio(municipio, valoresTasacion);
 
     const detallesCultivos: DetalleCultivo[] = [];
     let valorTotal = 0;
@@ -66,27 +66,33 @@ export class ValoracionService {
     // Si tiene cultivos definidos, valorar cada uno
     if (propiedad.cultivos && propiedad.cultivos.length > 0) {
       for (const cultivo of propiedad.cultivos) {
-        const tipoCultivo = this.identificarTipoCultivo(cultivo.cultivo_aprovechamiento || '');
-        const superficieHa = parseFloat((cultivo.superficie_m2 || 0).toString()) / 10000;
-        const precioHa = (preciosRustico as any)[tipoCultivo] || preciosRustico.default;
-        const valorCultivo = superficieHa * precioHa;
+        const codigo = this.extraerCodigoCatastral(cultivo.cultivo_aprovechamiento || '');
+        const superficieHa = (cultivo.superficie_m2 || 0) / 10000;
+
+        // Buscar valor por hectárea para este código
+        const valorHa = valoresMunicipio.cultivos[codigo]?.valor_por_hectarea
+                     || valoresTasacion.valores_por_defecto.valor_por_hectarea;
+
+        const valorCultivo = superficieHa * valorHa;
 
         detallesCultivos.push({
           cultivo: cultivo.cultivo_aprovechamiento || '',
+          codigo_catastral: codigo,
           superficie_ha: parseFloat(superficieHa.toFixed(4)),
-          precio_ha: precioHa,
-          valor_estimado: parseFloat(valorCultivo.toFixed(2))
+          precio_ha: valorHa,
+          valor_estimado: parseFloat(valorCultivo.toFixed(2)),
+          municipio: municipio
         });
 
         valorTotal += valorCultivo;
         superficieTotalHa += superficieHa;
       }
     } else {
-      // Sin información de cultivos, usar superficie general
+      // Sin información de cultivos, usar valor por defecto
       const superficie = propiedad.datos_inmueble?.superficie_construida || 0;
       const superficieHa = superficie / 10000;
-      const precioHa = preciosRustico.default;
-      valorTotal = superficieHa * precioHa;
+      const valorHa = valoresTasacion.valores_por_defecto.valor_por_hectarea;
+      valorTotal = superficieHa * valorHa;
       superficieTotalHa = superficieHa;
     }
 
@@ -94,10 +100,11 @@ export class ValoracionService {
       referencia_catastral: propiedad.referencia_catastral || '',
       tipo_inmueble: 'rústico',
       valor_estimado_euros: parseFloat(valorTotal.toFixed(2)),
-      metodo_valoracion: 'superficie_x_precio_hectarea',
+      metodo_valoracion: 'superficie_x_precio_hectarea_catastral',
       detalles_cultivos: detallesCultivos,
       superficie_total_ha: parseFloat(superficieTotalHa.toFixed(4)),
-      valor_por_ha: superficieTotalHa > 0 ? parseFloat((valorTotal / superficieTotalHa).toFixed(2)) : 0
+      valor_por_ha: superficieTotalHa > 0 ? parseFloat((valorTotal / superficieTotalHa).toFixed(2)) : 0,
+      municipio: municipio
     };
   }
 
@@ -105,127 +112,74 @@ export class ValoracionService {
    * Valoración de inmuebles urbanos
    */
   private valorarUrbano(propiedad: Propiedad): Valoracion {
-    const valorCatastral = propiedad.datos_catastrales?.valor_catastral || 0;
-    const coeficiente = 0.5; // Coeficiente multiplicador por defecto
+    // Para urbanos, usar el valor de referencia si existe
+    const valorReferencia = propiedad.valor_referencia || 0;
 
     return {
       referencia_catastral: propiedad.referencia_catastral || '',
       tipo_inmueble: 'urbano',
-      valor_estimado_euros: parseFloat((valorCatastral * coeficiente).toFixed(2)),
-      metodo_valoracion: 'valor_catastral_x_coeficiente'
+      valor_estimado_euros: valorReferencia,
+      metodo_valoracion: 'valor_referencia_catastral'
     };
   }
 
   /**
-   * Identifica el ámbito territorial según el municipio
+   * Extrae el código catastral del texto de cultivo
+   * Ejemplos: "O- Olivos secano" -> "O-", "NR Agrios regadío" -> "NR"
    */
-  private identificarAmbito(propiedad: Propiedad, criterios: CriteriosValoracion) {
-    const municipio = propiedad.localizacion?.municipio?.toLowerCase().trim() || '';
+  private extraerCodigoCatastral(textoCultivo: string): string {
+    const texto = textoCultivo.trim();
 
-    for (const ambito of criterios.ambitos) {
-      if (ambito.municipios.some(m => m.toLowerCase() === municipio)) {
-        return ambito;
+    // Buscar patrón de código catastral al inicio (2-3 caracteres)
+    const match = texto.match(/^([A-Z]{1,2}[-]?)\s/);
+    if (match) {
+      return match[1];
+    }
+
+    // Si no encuentra patrón, tomar las primeras 2 letras
+    const codigo = texto.substring(0, 2).toUpperCase();
+    return codigo;
+  }
+
+  /**
+   * Normaliza el nombre del municipio
+   */
+  private normalizarMunicipio(municipio: string): string {
+    // Limpiar código postal y espacios
+    let normalizado = municipio.replace(/^\d{5}\s*/, '').trim().toUpperCase();
+
+    // Casos especiales
+    const equivalencias: { [key: string]: string } = {
+      'PLANES': 'PLANES',
+      'VALL DE GALLINERA': 'VALL DE GALLINERA',
+      'OLIVA': 'OLIVA',
+      'PILES': 'PILES'
+    };
+
+    return equivalencias[normalizado] || normalizado;
+  }
+
+  /**
+   * Obtiene los valores de tasación para un municipio
+   */
+  private obtenerValoresMunicipio(municipio: string, valoresTasacion: ValoresTasacion): any {
+    const municipioNormalizado = this.normalizarMunicipio(municipio);
+
+    // Buscar directamente
+    if (valoresTasacion.municipios[municipioNormalizado]) {
+      return valoresTasacion.municipios[municipioNormalizado];
+    }
+
+    // Buscar por alias
+    for (const [key, value] of Object.entries(valoresTasacion.municipios)) {
+      if (value.alias_de && value.alias_de === municipioNormalizado) {
+        return value;
       }
     }
 
-    // Fallback al primer ámbito
-    return criterios.ambitos[0];
-  }
-
-  /**
-   * Identifica el tipo de cultivo a partir del código catastral
-   * Replica la lógica de identificar_tipo_cultivo de Python
-   */
-  private identificarTipoCultivo(textoCultivo: string): string {
-    const texto = textoCultivo.trim();
-    const textoLower = texto.toLowerCase();
-
-    // Extraer código catastral (primeros caracteres antes del espacio)
-    const codigo = texto.split(' ')[0]?.toUpperCase() || '';
-
-    // MAPEO DIRECTO DE CÓDIGOS CATASTRALES OFICIALES
-    const esRegadio = textoLower.includes('regadio') || textoLower.includes('regadío');
-
-    // Códigos exactos sin variantes
-    const MAPEO_EXACTO: { [key: string]: string } = {
-      'MM': 'pinar_maderable',
-      'MT': 'matorral',
-      'I-': 'improductivo',
-      'E-': 'pastos',
-      'NR': 'citricos_regadio'
-    };
-
-    if (MAPEO_EXACTO[codigo]) {
-      return MAPEO_EXACTO[codigo];
-    }
-
-    // Códigos con variantes regadío/secano
-    if (codigo === 'O-') {
-      return esRegadio ? 'olivar_regadio' : 'olivar_secano';
-    }
-
-    if (codigo === 'F-') {
-      return esRegadio ? 'almendro_regadio' : 'almendro_secano';
-    }
-
-    if (codigo === 'CR' || codigo === 'CL') {
-      return esRegadio ? 'labor_regadio' : 'labor_secano';
-    }
-
-    // FALLBACK: Búsqueda por palabras clave
-    if (textoLower.includes('oliv')) {
-      return esRegadio ? 'olivar_regadio' : 'olivar_secano';
-    }
-
-    if (textoLower.includes('almendr') || textoLower.includes('fruto') || textoLower.includes('seco')) {
-      return esRegadio ? 'almendro_regadio' : 'almendro_secano';
-    }
-
-    if (textoLower.includes('viñ') || textoLower.includes('vid')) {
-      return esRegadio ? 'vina_regadio' : 'vina_secano';
-    }
-
-    if (textoLower.includes('cítric') || textoLower.includes('citric') || textoLower.includes('agrio') || textoLower.includes('naranj')) {
-      return 'citricos_regadio';
-    }
-
-    if (textoLower.includes('labor') || textoLower.includes('labradío')) {
-      return esRegadio ? 'labor_regadio' : 'labor_secano';
-    }
-
-    if (textoLower.includes('pasto') || textoLower.includes('prado')) {
-      return 'pastos';
-    }
-
-    if (textoLower.includes('pinar') || textoLower.includes('madera')) {
-      return 'pinar_maderable';
-    }
-
-    if (textoLower.includes('matorral') || textoLower.includes('monte bajo')) {
-      return 'matorral';
-    }
-
-    if (textoLower.includes('improductivo') || textoLower.includes('erial')) {
-      return 'improductivo';
-    }
-
-    if (textoLower.includes('cereal') || textoLower.includes('trigo') || textoLower.includes('cebada')) {
-      return esRegadio ? 'cereal_regadio' : 'cereal_secano';
-    }
-
-    if (textoLower.includes('horta') || textoLower.includes('huert')) {
-      return 'horticola_regadio';
-    }
-
-    if (textoLower.includes('arroz')) {
-      return 'arroz_regadio';
-    }
-
-    if (textoLower.includes('forestal') || textoLower.includes('bosque')) {
-      return 'forestal';
-    }
-
-    // Default
-    return 'default';
+    // Por defecto, usar primer municipio disponible
+    const primerMunicipio = Object.keys(valoresTasacion.municipios)[0];
+    console.warn(`Municipio "${municipio}" no encontrado, usando valores de ${primerMunicipio}`);
+    return valoresTasacion.municipios[primerMunicipio];
   }
 }

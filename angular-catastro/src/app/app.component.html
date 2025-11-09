@@ -1,75 +1,42 @@
 <!-- Header -->
 <header class="app-header">
-  <h1>📋 Gestor de Datos Catastrales</h1>
-  <p class="subtitle">Sistema de consulta y valoración de referencias catastrales</p>
+  <h1>📋 Valoración de Propiedades Catastrales</h1>
+  <p class="subtitle">Sistema de valoración basado en cultivos y tasaciones oficiales</p>
 </header>
 
 <div class="container">
 
-  <!-- Sección de carga de datos -->
-  <section class="upload-section">
-    <h2>Cargar Datos</h2>
-    <div class="upload-controls">
-      <input
-        type="file"
-        #fileInput
-        accept=".json"
-        (change)="onFileSelected($event)"
-        id="fileInput"
-      />
-      <button
-        class="btn btn-primary"
-        (click)="cargarDatosMuestra()"
-        [disabled]="cargandoDatos || cargandoCriterios"
-      >
-        Cargar Datos de Ejemplo
-      </button>
-      <button
-        class="btn btn-sec"
-        style="background: var(--success); color: white;"
-        (click)="valorarAutomaticamente()"
-        [disabled]="!criterios || propiedades.length === 0"
-      >
-        💰 Valorar Propiedades
-      </button>
-    </div>
-    <p class="help-text">
-      Carga un archivo JSON con datos catastrales o usa los datos de ejemplo.
-      Los cálculos se realizan automáticamente en tu navegador.
-    </p>
-  </section>
-
   <!-- Loading indicator -->
-  <div *ngIf="cargandoDatos || cargandoCriterios" class="loading">
+  <div *ngIf="cargandoDatos" class="loading">
     <div class="spinner"></div>
-    <p>{{ cargandoDatos ? 'Cargando datos...' : 'Cargando criterios de valoración...' }}</p>
+    <p>Cargando datos catastrales y calculando valoraciones...</p>
   </div>
 
   <!-- Resumen general -->
-  <section *ngIf="propiedades.length > 0" class="summary-section">
+  <section *ngIf="propiedades.length > 0 && !cargandoDatos" class="summary-section">
     <h2>Resumen General</h2>
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-value">{{ propiedades.length }}</div>
-        <div class="stat-label">Propiedades</div>
+        <div class="stat-label">Propiedades Totales</div>
       </div>
       <div class="stat-card">
         <div class="stat-value">{{ formatCurrency(resultadoValoracion?.valor_total_estimado || 0) }}</div>
-        <div class="stat-label">Valor Total Estimado</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value">{{ opcionesClase.length }}</div>
-        <div class="stat-label">Tipos de Inmueble</div>
+        <div class="stat-label">Valor Total Calculado</div>
       </div>
       <div class="stat-card">
         <div class="stat-value">{{ opcionesMunicipio.length }}</div>
         <div class="stat-label">Municipios</div>
       </div>
+      <div class="stat-card">
+        <div class="stat-value">{{ opcionesProvincia.length }}</div>
+        <div class="stat-label">Provincias</div>
+      </div>
     </div>
   </section>
 
   <!-- Filtros -->
-  <section *ngIf="propiedades.length > 0" class="filters-section">
+  <section *ngIf="propiedades.length > 0 && !cargandoDatos" class="filters-section">
     <h2>Filtros</h2>
     <div class="filters-grid">
       <div class="filter-item">
@@ -82,18 +49,6 @@
         >
           <option value="all">Todos</option>
           <option *ngFor="let clase of opcionesClase" [value]="clase">{{ clase }}</option>
-        </select>
-      </div>
-      <div class="filter-item">
-        <label for="filterUso">Uso Principal</label>
-        <select
-          id="filterUso"
-          class="filter-select"
-          [(ngModel)]="filtros.uso"
-          (change)="aplicarFiltros()"
-        >
-          <option value="all">Todos</option>
-          <option *ngFor="let uso of opcionesUso" [value]="uso">{{ uso }}</option>
         </select>
       </div>
       <div class="filter-item">
@@ -120,18 +75,30 @@
           <option *ngFor="let municipio of opcionesMunicipio" [value]="municipio">{{ municipio }}</option>
         </select>
       </div>
+      <div class="filter-item">
+        <label for="filterUso">Uso Principal</label>
+        <select
+          id="filterUso"
+          class="filter-select"
+          [(ngModel)]="filtros.uso"
+          (change)="aplicarFiltros()"
+        >
+          <option value="all">Todos</option>
+          <option *ngFor="let uso of opcionesUso" [value]="uso">{{ uso }}</option>
+        </select>
+      </div>
     </div>
   </section>
 
   <!-- Buscador -->
-  <section *ngIf="propiedades.length > 0" class="search-section">
+  <section *ngIf="propiedades.length > 0 && !cargandoDatos" class="search-section">
     <h2>Buscar</h2>
     <input
       type="text"
       id="searchInput"
       [(ngModel)]="filtros.busqueda"
       (input)="aplicarFiltros()"
-      placeholder="Buscar por referencia catastral, partida, municipio, clase, uso..."
+      placeholder="Buscar por referencia catastral, partida, municipio..."
     >
     <p class="help-text">
       Mostrando {{ propiedadesFiltradas.length }} de {{ propiedades.length }} propiedades
@@ -139,9 +106,9 @@
   </section>
 
   <!-- Lista de propiedades -->
-  <section *ngIf="propiedadesFiltradas.length > 0" class="properties-section">
+  <section *ngIf="propiedadesFiltradas.length > 0 && !cargandoDatos" class="properties-section">
     <div class="properties-header">
-      <h2>Propiedades</h2>
+      <h2>Propiedades y Valoraciones</h2>
       <div class="properties-controls">
         <!-- Toggle vista -->
         <div class="view-toggle">
@@ -184,18 +151,16 @@
             <th>Parcela</th>
             <th>Clase</th>
             <th>Uso</th>
-            <th>Sup. Total (m²)</th>
+            <th>Escritura</th>
             <th>Subparcela</th>
             <th>Cultivo/Aprovechamiento</th>
-            <th>Intensidad</th>
-            <th>Sup. Subp. (m²)</th>
-            <th>Cultivo Valorado</th>
+            <th>Código</th>
+            <th>Sup. (m²)</th>
             <th>Sup. (ha)</th>
-            <th>Precio €/ha</th>
+            <th>€/ha</th>
             <th>Valor €</th>
-            <th>Valor Total €</th>
-            <th>Valor Catastral €</th>
-            <th>Valor Oficial €</th>
+            <th>Valor Total Calculado €</th>
+            <th>Valor Catastral Oficial €</th>
             <th>Diferencia €</th>
             <th>Diferencia %</th>
           </tr>
@@ -216,43 +181,41 @@
                 <td>{{ propiedad.localizacion?.parcela }}</td>
                 <td>{{ propiedad.datos_inmueble?.clase }}</td>
                 <td>{{ propiedad.datos_inmueble?.uso_principal }}</td>
-                <td class="numeric">{{ formatNumber(propiedad.datos_inmueble?.superficie_construida || 0) }}</td>
+                <td class="escritura">{{ propiedad.escritura }}</td>
                 <td>{{ cultivo.subparcela }}</td>
                 <td class="cultivo">{{ cultivo.cultivo_aprovechamiento }}</td>
-                <td>{{ cultivo.intensidad_productiva }}</td>
-                <td class="numeric">{{ cultivo.superficie_m2 }}</td>
                 <ng-container *ngIf="getValoracion(propiedad.referencia_catastral) as valoracion">
                   <ng-container *ngIf="valoracion.detalles_cultivos && valoracion.detalles_cultivos[i] as detalle">
-                    <td class="cultivo">{{ detalle.cultivo }}</td>
-                    <td class="numeric">{{ detalle.superficie_ha }}</td>
+                    <td class="codigo">{{ detalle.codigo_catastral }}</td>
+                    <td class="numeric">{{ cultivo.superficie_m2 }}</td>
+                    <td class="numeric">{{ detalle.superficie_ha.toFixed(4) }}</td>
                     <td class="numeric">{{ formatNumber(detalle.precio_ha) }}</td>
-                    <td class="numeric">{{ formatNumber(detalle.valor_estimado) }}</td>
+                    <td class="numeric">{{ formatCurrency(detalle.valor_estimado) }}</td>
                   </ng-container>
                   <ng-container *ngIf="!valoracion.detalles_cultivos || !valoracion.detalles_cultivos[i]">
-                    <td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
                   </ng-container>
                   <ng-container *ngIf="i === 0">
-                    <td class="numeric">{{ formatNumber(valoracion.valor_estimado_euros) }}</td>
-                    <td class="numeric">{{ formatNumber(propiedad.datos_catastrales?.valor_catastral || 0) }}</td>
-                    <td class="numeric">{{ formatNumber(propiedad.valor_referencia_oficial?.valor_referencia || 0) }}</td>
-                    <ng-container *ngIf="propiedad.valor_referencia_oficial?.valor_referencia as valorOficial">
+                    <td class="numeric valor-calculado">{{ formatCurrency(valoracion.valor_estimado_euros) }}</td>
+                    <td class="numeric valor-oficial">{{ formatCurrency(propiedad.valor_referencia) }}</td>
+                    <ng-container *ngIf="propiedad.valor_referencia as valorOficial">
                       <td class="numeric"
                           [class.positivo]="valoracion.valor_estimado_euros > valorOficial"
                           [class.negativo]="valoracion.valor_estimado_euros < valorOficial">
-                        {{ formatNumber(valoracion.valor_estimado_euros - valorOficial) }}
+                        {{ formatCurrency((valoracion.valor_estimado_euros || 0) - valorOficial) }}
                       </td>
                       <td class="numeric"
                           [class.positivo]="valoracion.valor_estimado_euros > valorOficial"
                           [class.negativo]="valoracion.valor_estimado_euros < valorOficial">
-                        {{ ((valoracion.valor_estimado_euros - valorOficial) / valorOficial * 100).toFixed(2) }}%
+                        {{ (((valoracion.valor_estimado_euros || 0) - valorOficial) / valorOficial * 100).toFixed(2) }}%
                       </td>
                     </ng-container>
-                    <ng-container *ngIf="!propiedad.valor_referencia_oficial?.valor_referencia">
-                      <td></td><td></td>
+                    <ng-container *ngIf="!propiedad.valor_referencia">
+                      <td class="numeric">-</td><td class="numeric">-</td>
                     </ng-container>
                   </ng-container>
                   <ng-container *ngIf="i > 0">
-                    <td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td>
                   </ng-container>
                 </ng-container>
                 <ng-container *ngIf="!getValoracion(propiedad.referencia_catastral)">
@@ -270,30 +233,29 @@
                 <td>{{ propiedad.localizacion?.parcela }}</td>
                 <td>{{ propiedad.datos_inmueble?.clase }}</td>
                 <td>{{ propiedad.datos_inmueble?.uso_principal }}</td>
-                <td class="numeric">{{ formatNumber(propiedad.datos_inmueble?.superficie_construida || 0) }}</td>
-                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                <td class="escritura">{{ propiedad.escritura }}</td>
+                <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                 <ng-container *ngIf="getValoracion(propiedad.referencia_catastral) as valoracion">
-                  <td class="numeric">{{ formatNumber(valoracion.valor_estimado_euros) }}</td>
-                  <td class="numeric">{{ formatNumber(propiedad.datos_catastrales?.valor_catastral || 0) }}</td>
-                  <td class="numeric">{{ formatNumber(propiedad.valor_referencia_oficial?.valor_referencia || 0) }}</td>
-                  <ng-container *ngIf="propiedad.valor_referencia_oficial?.valor_referencia as valorOficial">
+                  <td class="numeric valor-calculado">{{ formatCurrency(valoracion.valor_estimado_euros) }}</td>
+                  <td class="numeric valor-oficial">{{ formatCurrency(propiedad.valor_referencia) }}</td>
+                  <ng-container *ngIf="propiedad.valor_referencia as valorOficial">
                     <td class="numeric"
                         [class.positivo]="valoracion.valor_estimado_euros > valorOficial"
                         [class.negativo]="valoracion.valor_estimado_euros < valorOficial">
-                      {{ formatNumber(valoracion.valor_estimado_euros - valorOficial) }}
+                      {{ formatCurrency((valoracion.valor_estimado_euros || 0) - valorOficial) }}
                     </td>
                     <td class="numeric"
                         [class.positivo]="valoracion.valor_estimado_euros > valorOficial"
                         [class.negativo]="valoracion.valor_estimado_euros < valorOficial">
-                      {{ ((valoracion.valor_estimado_euros - valorOficial) / valorOficial * 100).toFixed(2) }}%
+                      {{ (((valoracion.valor_estimado_euros || 0) - valorOficial) / valorOficial * 100).toFixed(2) }}%
                     </td>
                   </ng-container>
-                  <ng-container *ngIf="!propiedad.valor_referencia_oficial?.valor_referencia">
-                    <td></td><td></td>
+                  <ng-container *ngIf="!propiedad.valor_referencia">
+                    <td class="numeric">-</td><td class="numeric">-</td>
                   </ng-container>
                 </ng-container>
                 <ng-container *ngIf="!getValoracion(propiedad.referencia_catastral)">
-                  <td></td><td></td><td></td><td></td><td></td>
+                  <td></td><td></td><td></td><td></td>
                 </ng-container>
               </tr>
             </ng-template>
@@ -312,10 +274,12 @@
           <div>
             <div class="property-ref">{{ propiedad.referencia_catastral }}</div>
             <div class="property-location">
-              {{ propiedad.localizacion?.texto_completo ||
-                 (propiedad.localizacion?.partida || '') + ' ' +
-                 (propiedad.localizacion?.municipio || '') +
-                 ' (' + (propiedad.localizacion?.provincia || '') + ')' }}
+              {{ propiedad.localizacion?.partida }} -
+              {{ propiedad.localizacion?.municipio }}
+              ({{ propiedad.localizacion?.provincia }})
+            </div>
+            <div *ngIf="propiedad.escritura" class="property-escritura">
+              {{ propiedad.escritura }}
             </div>
           </div>
         </div>
@@ -329,16 +293,16 @@
             <span class="detail-value">{{ propiedad.datos_inmueble?.uso_principal || 'N/A' }}</span>
           </div>
           <div class="detail-item">
-            <span class="detail-label">Superficie</span>
-            <span class="detail-value">{{ formatNumber(propiedad.datos_inmueble?.superficie_construida || 0) }} m²</span>
+            <span class="detail-label">Polígono/Parcela</span>
+            <span class="detail-value">{{ propiedad.localizacion?.poligono }}/{{ propiedad.localizacion?.parcela }}</span>
           </div>
-          <div class="detail-item">
-            <span class="detail-label">Provincia</span>
-            <span class="detail-value">{{ propiedad.localizacion?.provincia || 'N/A' }}</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Municipio</span>
-            <span class="detail-value">{{ propiedad.localizacion?.municipio || 'N/A' }}</span>
+
+          <!-- Cultivos -->
+          <div *ngIf="propiedad.cultivos && propiedad.cultivos.length > 0" style="grid-column: 1 / -1; margin-top: 0.5rem;">
+            <div style="font-weight: bold; margin-bottom: 0.25rem; font-size: 0.85rem;">Cultivos:</div>
+            <div *ngFor="let cultivo of propiedad.cultivos" style="font-size: 0.8rem; padding: 0.25rem; background: #f9fafb; border-radius: 4px; margin-bottom: 0.25rem;">
+              <strong>{{ cultivo.cultivo_aprovechamiento }}</strong> - {{ (cultivo.superficie_m2 || 0) }} m² ({{ ((cultivo.superficie_m2 || 0) / 10000).toFixed(4) }} ha)
+            </div>
           </div>
 
           <!-- Valoraciones -->
@@ -346,20 +310,26 @@
             <div style="grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.5rem;">
               <div style="background: var(--success-bg); padding: 0.5rem; border-radius: 4px; text-align: center;">
                 <div style="font-size: 0.75rem; color: var(--success);">💰 Valor Calculado</div>
-                <div style="font-weight: bold; color: var(--success);">{{ formatCurrency(valoracion.valor_estimado_euros) }}</div>
+                <div style="font-weight: bold; color: var(--success); font-size: 1.1rem;">{{ formatCurrency(valoracion.valor_estimado_euros) }}</div>
               </div>
-              <div *ngIf="propiedad.valor_referencia_oficial?.valor_referencia"
+              <div *ngIf="propiedad.valor_referencia"
                    style="background: #e0f2fe; padding: 0.5rem; border-radius: 4px; text-align: center;">
-                <div style="font-size: 0.75rem; color: #0369a1;">📊 Valor Oficial</div>
-                <div style="font-weight: bold; color: #0369a1;">{{ formatCurrency(propiedad.valor_referencia_oficial.valor_referencia) }}</div>
+                <div style="font-size: 0.75rem; color: #0369a1;">📊 Valor Catastral</div>
+                <div style="font-weight: bold; color: #0369a1; font-size: 1.1rem;">{{ formatCurrency(propiedad.valor_referencia) }}</div>
+              </div>
+              <div *ngIf="!propiedad.valor_referencia"
+                   style="background: #f3f4f6; padding: 0.5rem; border-radius: 4px; text-align: center;">
+                <div style="font-size: 0.75rem; color: #6b7280;">📊 Valor Catastral</div>
+                <div style="font-weight: bold; color: #6b7280;">Sin datos</div>
               </div>
             </div>
             <!-- Diferencia -->
-            <div *ngIf="propiedad.valor_referencia_oficial?.valor_referencia as valorOficial"
-                 style="grid-column: 1 / -1; text-align: center; font-size: 0.8rem; margin-top: 0.25rem;"
-                 [style.color]="valoracion.valor_estimado_euros >= valorOficial ? 'var(--success)' : 'var(--danger-color)'">
-              Diferencia: {{ valoracion.valor_estimado_euros >= valorOficial ? '+' : '' }}{{ formatCurrency(valoracion.valor_estimado_euros - valorOficial) }}
-              ({{ ((valoracion.valor_estimado_euros - valorOficial) / valorOficial * 100).toFixed(1) }}%)
+            <div *ngIf="propiedad.valor_referencia as valorOficial"
+                 style="grid-column: 1 / -1; text-align: center; font-size: 0.85rem; margin-top: 0.5rem; padding: 0.5rem; border-radius: 4px;"
+                 [style.background]="valoracion.valor_estimado_euros >= valorOficial ? '#d1fae5' : '#fee2e2'"
+                 [style.color]="valoracion.valor_estimado_euros >= valorOficial ? '#065f46' : '#991b1b'">
+              <strong>Diferencia:</strong> {{ valoracion.valor_estimado_euros >= valorOficial ? '+' : '' }}{{ formatCurrency((valoracion.valor_estimado_euros || 0) - valorOficial) }}
+              ({{ (((valoracion.valor_estimado_euros || 0) - valorOficial) / valorOficial * 100).toFixed(1) }}%)
             </div>
           </ng-container>
         </div>
@@ -368,8 +338,12 @@
   </section>
 
   <!-- Mensaje cuando no hay resultados -->
-  <section *ngIf="propiedades.length > 0 && propiedadesFiltradas.length === 0" class="no-results">
-    <p>No se encontraron propiedades con los filtros seleccionados</p>
+  <section *ngIf="propiedades.length > 0 && propiedadesFiltradas.length === 0 && !cargandoDatos" class="no-results">
+    <p>🔍 No se encontraron propiedades con los filtros seleccionados</p>
+  </section>
+
+  <section *ngIf="propiedades.length === 0 && !cargandoDatos" class="no-results">
+    <p>No hay propiedades cargadas</p>
   </section>
 
 </div>

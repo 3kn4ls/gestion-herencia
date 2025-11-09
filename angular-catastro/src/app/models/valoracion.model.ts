@@ -4,9 +4,11 @@
 
 export interface DetalleCultivo {
   cultivo: string;
+  codigo_catastral?: string;
   superficie_ha: number;
   precio_ha: number;
   valor_estimado: number;
+  municipio?: string;
 }
 
 export interface Valoracion {
@@ -17,6 +19,7 @@ export interface Valoracion {
   detalles_cultivos?: DetalleCultivo[];
   superficie_total_ha?: number;
   valor_por_ha?: number;
+  municipio?: string;
 }
 
 export interface ResultadoValoracion {

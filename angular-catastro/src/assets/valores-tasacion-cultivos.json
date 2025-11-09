@@ -1,0 +1,254 @@
+{
+  "descripcion": "Valores de tasación por hectárea según cultivo y municipio",
+  "fecha": "2025",
+  "municipios": {
+    "OLIVA": {
+      "codigo_ath": "ATH 1603",
+      "provincia": "VALENCIA",
+      "cultivos": {
+        "NR": {
+          "codigo": "NR",
+          "uso_catastral": "Agrios Regadío (CIT)",
+          "valor_por_hectarea": 33783,
+          "descripcion": "Cítricos en regadío"
+        },
+        "CR": {
+          "codigo": "CR",
+          "uso_catastral": "Labor o Labradío Regadío (TAR)",
+          "valor_por_hectarea": 24379,
+          "descripcion": "Labor de regadío"
+        },
+        "CL": {
+          "codigo": "CL",
+          "uso_catastral": "Labor o Labradío Secano (TAS)",
+          "valor_por_hectarea": 6633,
+          "descripcion": "Labor de secano"
+        },
+        "O-": {
+          "codigo": "O-",
+          "uso_catastral": "Olivos Secano (OLS)",
+          "valor_por_hectarea": 13289,
+          "descripcion": "Olivos de secano"
+        },
+        "F-": {
+          "codigo": "F-",
+          "uso_catastral": "Frutales Secano (FCS)",
+          "valor_por_hectarea": 9908,
+          "descripcion": "Frutales de secano"
+        },
+        "MM": {
+          "codigo": "MM",
+          "uso_catastral": "Pinar Maderable",
+          "valor_por_hectarea": 1800,
+          "descripcion": "Pinar maderable"
+        },
+        "E-": {
+          "codigo": "E-",
+          "uso_catastral": "Pastos (PST)",
+          "valor_por_hectarea": 1000,
+          "descripcion": "Pastos"
+        },
+        "I-": {
+          "codigo": "I-",
+          "uso_catastral": "Improductivo",
+          "valor_por_hectarea": 1000,
+          "descripcion": "Terreno improductivo"
+        },
+        "MT": {
+          "codigo": "MT",
+          "uso_catastral": "Matorral",
+          "valor_por_hectarea": 1000,
+          "descripcion": "Matorral"
+        }
+      }
+    },
+    "VALL DE GALLINERA": {
+      "codigo_ath": "ATH 1613",
+      "provincia": "ALICANTE",
+      "cultivos": {
+        "NR": {
+          "codigo": "NR",
+          "uso_catastral": "Agrios Regadío (CIT)",
+          "valor_por_hectarea": 13698,
+          "descripcion": "Cítricos en regadío"
+        },
+        "CR": {
+          "codigo": "CR",
+          "uso_catastral": "Labor o Labradío Regadío (TAR)",
+          "valor_por_hectarea": 13801,
+          "descripcion": "Labor de regadío"
+        },
+        "CL": {
+          "codigo": "CL",
+          "uso_catastral": "Labor o Labradío Secano (TAS)",
+          "valor_por_hectarea": 6633,
+          "descripcion": "Labor de secano"
+        },
+        "O-": {
+          "codigo": "O-",
+          "uso_catastral": "Olivos Secano (OLS)",
+          "valor_por_hectarea": 13289,
+          "descripcion": "Olivos de secano"
+        },
+        "F-": {
+          "codigo": "F-",
+          "uso_catastral": "Frutales Secano (FCS)",
+          "valor_por_hectarea": 9908,
+          "descripcion": "Frutales de secano"
+        },
+        "MM": {
+          "codigo": "MM",
+          "uso_catastral": "Pinar Maderable",
+          "valor_por_hectarea": 1800,
+          "descripcion": "Pinar maderable"
+        },
+        "E-": {
+          "codigo": "E-",
+          "uso_catastral": "Pastos (PST)",
+          "valor_por_hectarea": 1000,
+          "descripcion": "Pastos"
+        },
+        "I-": {
+          "codigo": "I-",
+          "uso_catastral": "Improductivo",
+          "valor_por_hectarea": 1000,
+          "descripcion": "Terreno improductivo"
+        },
+        "MT": {
+          "codigo": "MT",
+          "uso_catastral": "Matorral",
+          "valor_por_hectarea": 1000,
+          "descripcion": "Matorral"
+        }
+      }
+    },
+    "PLANES": {
+      "codigo_ath": "ATH 1613",
+      "provincia": "ALICANTE",
+      "alias_de": "VALL DE GALLINERA",
+      "cultivos": {
+        "NR": {
+          "codigo": "NR",
+          "uso_catastral": "Agrios Regadío (CIT)",
+          "valor_por_hectarea": 13698,
+          "descripcion": "Cítricos en regadío"
+        },
+        "CR": {
+          "codigo": "CR",
+          "uso_catastral": "Labor o Labradío Regadío (TAR)",
+          "valor_por_hectarea": 13801,
+          "descripcion": "Labor de regadío"
+        },
+        "CL": {
+          "codigo": "CL",
+          "uso_catastral": "Labor o Labradío Secano (TAS)",
+          "valor_por_hectarea": 6633,
+          "descripcion": "Labor de secano"
+        },
+        "O-": {
+          "codigo": "O-",
+          "uso_catastral": "Olivos Secano (OLS)",
+          "valor_por_hectarea": 13289,
+          "descripcion": "Olivos de secano"
+        },
+        "F-": {
+          "codigo": "F-",
+          "uso_catastral": "Frutales Secano (FCS)",
+          "valor_por_hectarea": 9908,
+          "descripcion": "Frutales de secano"
+        },
+        "MM": {
+          "codigo": "MM",
+          "uso_catastral": "Pinar Maderable",
+          "valor_por_hectarea": 1800,
+          "descripcion": "Pinar maderable"
+        },
+        "E-": {
+          "codigo": "E-",
+          "uso_catastral": "Pastos (PST)",
+          "valor_por_hectarea": 1000,
+          "descripcion": "Pastos"
+        },
+        "I-": {
+          "codigo": "I-",
+          "uso_catastral": "Improductivo",
+          "valor_por_hectarea": 1000,
+          "descripcion": "Terreno improductivo"
+        },
+        "MT": {
+          "codigo": "MT",
+          "uso_catastral": "Matorral",
+          "valor_por_hectarea": 1000,
+          "descripcion": "Matorral"
+        }
+      }
+    },
+    "PILES": {
+      "codigo_ath": "ATH 1603",
+      "provincia": "VALENCIA",
+      "alias_de": "OLIVA",
+      "cultivos": {
+        "NR": {
+          "codigo": "NR",
+          "uso_catastral": "Agrios Regadío (CIT)",
+          "valor_por_hectarea": 33783,
+          "descripcion": "Cítricos en regadío"
+        },
+        "CR": {
+          "codigo": "CR",
+          "uso_catastral": "Labor o Labradío Regadío (TAR)",
+          "valor_por_hectarea": 24379,
+          "descripcion": "Labor de regadío"
+        },
+        "CL": {
+          "codigo": "CL",
+          "uso_catastral": "Labor o Labradío Secano (TAS)",
+          "valor_por_hectarea": 6633,
+          "descripcion": "Labor de secano"
+        },
+        "O-": {
+          "codigo": "O-",
+          "uso_catastral": "Olivos Secano (OLS)",
+          "valor_por_hectarea": 13289,
+          "descripcion": "Olivos de secano"
+        },
+        "F-": {
+          "codigo": "F-",
+          "uso_catastral": "Frutales Secano (FCS)",
+          "valor_por_hectarea": 9908,
+          "descripcion": "Frutales de secano"
+        },
+        "MM": {
+          "codigo": "MM",
+          "uso_catastral": "Pinar Maderable",
+          "valor_por_hectarea": 1800,
+          "descripcion": "Pinar maderable"
+        },
+        "E-": {
+          "codigo": "E-",
+          "uso_catastral": "Pastos (PST)",
+          "valor_por_hectarea": 1000,
+          "descripcion": "Pastos"
+        },
+        "I-": {
+          "codigo": "I-",
+          "uso_catastral": "Improductivo",
+          "valor_por_hectarea": 1000,
+          "descripcion": "Terreno improductivo"
+        },
+        "MT": {
+          "codigo": "MT",
+          "uso_catastral": "Matorral",
+          "valor_por_hectarea": 1000,
+          "descripcion": "Matorral"
+        }
+      }
+    }
+  },
+  "valores_por_defecto": {
+    "codigo": "DEFAULT",
+    "uso_catastral": "Sin especificar",
+    "valor_por_hectarea": 5000,
+    "descripcion": "Valor por defecto para cultivos no identificados"
+  }
+}
