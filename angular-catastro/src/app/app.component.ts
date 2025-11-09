@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { forkJoin } from 'rxjs';
 
-import { DataService } from './services/data.service';
+import { DataService, ValoresTasacion } from './services/data.service';
 import { ValoracionService } from './services/valoracion.service';
 import { Propiedad } from './models/propiedad.model';
 import { Valoracion, ResultadoValoracion } from './models/valoracion.model';
-import { CriteriosValoracion } from './models/criterios.model';
 
 @Component({
   selector: 'app-root',
@@ -17,12 +17,12 @@ import { CriteriosValoracion } from './models/criterios.model';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'Gestor de Datos Catastrales';
+  title = 'Valoración de Propiedades Catastrales';
 
   // Datos
   propiedades: Propiedad[] = [];
   propiedadesFiltradas: Propiedad[] = [];
-  criterios: CriteriosValoracion | null = null;
+  valoresTasacion: ValoresTasacion | null = null;
   resultadoValoracion: ResultadoValoracion | null = null;
 
   // Filtros
@@ -39,7 +39,6 @@ export class AppComponent implements OnInit {
 
   // Loading states
   cargandoDatos = false;
-  cargandoCriterios = false;
 
   // Opciones para filtros
   opcionesClase: string[] = [];
@@ -53,79 +52,31 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.cargarCriterios();
-    this.cargarDatosMuestra();
+    this.cargarDatos();
   }
 
   /**
-   * Carga los criterios de valoración
+   * Carga los datos automáticamente al iniciar
    */
-  cargarCriterios(): void {
-    this.cargandoCriterios = true;
-    this.dataService.cargarCriterios().subscribe({
-      next: (criterios) => {
-        this.criterios = criterios;
-        this.cargandoCriterios = false;
-        console.log('✅ Criterios cargados:', criterios);
-        // Valorar si ya hay propiedades cargadas
-        if (this.propiedades.length > 0) {
-          this.valorarAutomaticamente();
-        }
-      },
-      error: (error) => {
-        console.error('❌ Error al cargar criterios:', error);
-        this.cargandoCriterios = false;
-      }
-    });
-  }
-
-  /**
-   * Maneja la carga de archivo
-   */
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.cargandoDatos = true;
-      this.dataService.cargarArchivo(file).then(
-        (propiedades) => {
-          this.propiedades = propiedades;
-          this.aplicarFiltros();
-          this.construirFiltros();
-          this.cargandoDatos = false;
-          console.log(`✅ ${propiedades.length} propiedades cargadas`);
-          // Valorar si ya hay criterios cargados
-          if (this.criterios) {
-            this.valorarAutomaticamente();
-          }
-        },
-        (error) => {
-          console.error('❌ Error al cargar archivo:', error);
-          alert('Error al cargar el archivo. Verifica que sea un JSON válido.');
-          this.cargandoDatos = false;
-        }
-      );
-    }
-  }
-
-  /**
-   * Carga datos de muestra
-   */
-  cargarDatosMuestra(): void {
+  cargarDatos(): void {
     this.cargandoDatos = true;
-    this.dataService.cargarPropiedades().subscribe({
-      next: (propiedades) => {
+
+    forkJoin({
+      propiedades: this.dataService.cargarPropiedades(),
+      valores: this.dataService.cargarValoresTasacion()
+    }).subscribe({
+      next: ({ propiedades, valores }) => {
         this.propiedades = propiedades;
+        this.valoresTasacion = valores;
         this.aplicarFiltros();
         this.construirFiltros();
+        this.valorarAutomaticamente();
         this.cargandoDatos = false;
-        console.log(`✅ ${propiedades.length} propiedades de muestra cargadas`);
-        // Valorar si ya hay criterios cargados
-        if (this.criterios) {
-          this.valorarAutomaticamente();
-        }
+        console.log(`✅ ${propiedades.length} propiedades cargadas y valoradas`);
       },
       error: (error) => {
-        console.error('❌ Error al cargar datos de muestra:', error);
+        console.error('❌ Error al cargar datos:', error);
+        alert('Error al cargar los datos. Por favor, verifica los archivos JSON.');
         this.cargandoDatos = false;
       }
     });
@@ -135,8 +86,8 @@ export class AppComponent implements OnInit {
    * Valora las propiedades automáticamente
    */
   valorarAutomaticamente(): void {
-    if (!this.criterios) {
-      console.warn('⚠️ No hay criterios cargados');
+    if (!this.valoresTasacion) {
+      console.warn('⚠️ No hay valores de tasación cargados');
       return;
     }
 
@@ -147,7 +98,7 @@ export class AppComponent implements OnInit {
 
     this.resultadoValoracion = this.valoracionService.valorarPropiedades(
       this.propiedades,
-      this.criterios
+      this.valoresTasacion
     );
 
     console.log('✅ Valoración completada:', this.resultadoValoracion);
@@ -239,6 +190,23 @@ export class AppComponent implements OnInit {
   }
 
   /**
+   * Calcula la diferencia entre valor calculado y valor catastral oficial
+   */
+  getDiferencia(propiedad: Propiedad): { absoluta: number, porcentaje: number } {
+    const valoracion = this.getValoracion(propiedad.referencia_catastral);
+    const valorCalculado = valoracion?.valor_estimado_euros || 0;
+    const valorOficial = propiedad.valor_referencia || 0;
+
+    const diferencia = valorOficial > 0 ? (valorCalculado - valorOficial) : 0;
+    const porcentaje = valorOficial > 0 ? ((diferencia / valorOficial) * 100) : 0;
+
+    return {
+      absoluta: diferencia,
+      porcentaje: porcentaje
+    };
+  }
+
+  /**
    * Exporta a Excel (formato TSV)
    */
   async exportarAExcel(): Promise<void> {
@@ -250,11 +218,11 @@ export class AppComponent implements OnInit {
     try {
       const headers = [
         'Referencia Catastral', 'Provincia', 'Municipio', 'Partida', 'Polígono', 'Parcela',
-        'Clase', 'Uso Principal', 'Superficie Total (m²)',
-        'Subparcela', 'Cultivo/Aprovechamiento', 'Intensidad', 'Superficie Subparcela (m²)',
-        'Cultivo Valorado', 'Superficie Cultivo (ha)', 'Precio €/ha', 'Valor Cultivo (€)',
-        'Valor Total Calculado (€)', 'Valor Catastral (€)', 'Valor Oficial Referencia (€)',
-        'Diferencia vs Oficial (€)', 'Diferencia vs Oficial (%)'
+        'Clase', 'Uso Principal', 'Superficie Total (m²)', 'Escritura',
+        'Subparcela', 'Cultivo/Aprovechamiento', 'Código Catastral', 'Intensidad', 'Superficie Cultivo (m²)',
+        'Superficie Cultivo (ha)', 'Precio €/ha', 'Valor Cultivo (€)',
+        'Valor Total Calculado (€)', 'Valor Catastral Oficial (€)',
+        'Diferencia (€)', 'Diferencia (%)'
       ];
 
       const rows: string[][] = [];
@@ -262,10 +230,8 @@ export class AppComponent implements OnInit {
       for (const propiedad of this.propiedadesFiltradas) {
         const valoracion = this.getValoracion(propiedad.referencia_catastral);
         const valorCalculado = valoracion?.valor_estimado_euros || 0;
-        const valorCatastral = propiedad.datos_catastrales?.valor_catastral || 0;
-        const valorOficial = propiedad.valor_referencia_oficial?.valor_referencia || 0;
-        const diferencia = valorOficial > 0 ? (valorCalculado - valorOficial) : 0;
-        const diferenciaPct = valorOficial > 0 ? ((diferencia / valorOficial) * 100) : 0;
+        const valorOficial = propiedad.valor_referencia || 0;
+        const diferencia = this.getDiferencia(propiedad);
 
         const datosComunes = [
           propiedad.referencia_catastral || '',
@@ -276,7 +242,8 @@ export class AppComponent implements OnInit {
           propiedad.localizacion?.parcela || '',
           propiedad.datos_inmueble?.clase || '',
           propiedad.datos_inmueble?.uso_principal || '',
-          propiedad.datos_inmueble?.superficie_construida?.toString() || '0'
+          propiedad.datos_inmueble?.superficie_construida?.toString() || '0',
+          propiedad.escritura || ''
         ];
 
         if (propiedad.cultivos && propiedad.cultivos.length > 0) {
@@ -284,7 +251,7 @@ export class AppComponent implements OnInit {
 
           for (let i = 0; i < propiedad.cultivos.length; i++) {
             const cultivo = propiedad.cultivos[i];
-            const superficieHa = parseFloat((cultivo.superficie_m2 || 0).toString()) / 10000;
+            const superficieHa = (cultivo.superficie_m2 || 0) / 10000;
 
             let detalle = null;
             const idx = detallesDisponibles.findIndex(d =>
@@ -302,29 +269,27 @@ export class AppComponent implements OnInit {
               ...datosComunes,
               cultivo.subparcela || '',
               cultivo.cultivo_aprovechamiento || '',
+              detalle?.codigo_catastral || '',
               cultivo.intensidad_productiva || '',
               cultivo.superficie_m2?.toString() || '',
-              detalle?.cultivo || '',
-              detalle?.superficie_ha?.toString() || '',
+              detalle?.superficie_ha?.toFixed(4) || '',
               detalle?.precio_ha?.toString() || '',
-              detalle?.valor_estimado?.toString() || '',
-              i === 0 ? valorCalculado.toString() : '',
-              i === 0 ? valorCatastral.toString() : '',
-              i === 0 ? valorOficial.toString() : '',
-              i === 0 ? diferencia.toString() : '',
-              i === 0 ? diferenciaPct.toFixed(2) : ''
+              detalle?.valor_estimado?.toFixed(2) || '',
+              i === 0 ? valorCalculado.toFixed(2) : '',
+              i === 0 ? valorOficial.toFixed(2) : '',
+              i === 0 ? diferencia.absoluta.toFixed(2) : '',
+              i === 0 ? diferencia.porcentaje.toFixed(2) : ''
             ]);
           }
         } else {
           rows.push([
             ...datosComunes,
-            '', '', '', '',
-            '', '', '', '',
-            valorCalculado.toString(),
-            valorCatastral.toString(),
-            valorOficial.toString(),
-            diferencia.toString(),
-            diferenciaPct.toFixed(2)
+            '', '', '', '', '',
+            '', '', '',
+            valorCalculado.toFixed(2),
+            valorOficial.toFixed(2),
+            diferencia.absoluta.toFixed(2),
+            diferencia.porcentaje.toFixed(2)
           ]);
         }
       }
@@ -338,7 +303,7 @@ export class AppComponent implements OnInit {
 
       alert(`✅ ¡Datos copiados al portapapeles!\n\n` +
             `${this.propiedadesFiltradas.length} propiedades\n` +
-            `${rows.length} filas (incluyendo subparcelas desglosadas)\n\n` +
+            `${rows.length} filas (incluyendo cultivos desglosados)\n\n` +
             `Ahora puedes pegar (Ctrl+V) en Excel`);
 
       console.log(`✅ Exportación completada: ${rows.length} filas`);
@@ -352,7 +317,8 @@ export class AppComponent implements OnInit {
   /**
    * Formatea moneda
    */
-  formatCurrency(value: number): string {
+  formatCurrency(value: number | null | undefined): string {
+    if (value === null || value === undefined) return '-';
     return new Intl.NumberFormat('es-ES', {
       style: 'currency',
       currency: 'EUR'
@@ -362,7 +328,8 @@ export class AppComponent implements OnInit {
   /**
    * Formatea número
    */
-  formatNumber(value: number): string {
+  formatNumber(value: number | null | undefined): string {
+    if (value === null || value === undefined) return '-';
     return new Intl.NumberFormat('es-ES', {
       minimumFractionDigits: 0,
       maximumFractionDigits: 2

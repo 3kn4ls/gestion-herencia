@@ -15,6 +15,7 @@ export interface DatosInmueble {
   clase?: string;
   uso_principal?: string;
   superficie_construida?: number;
+  año_construccion?: string;
 }
 
 export interface Cultivo {
@@ -29,17 +30,6 @@ export interface ParcelaCatastral {
   [key: string]: any;
 }
 
-export interface ValorReferenciaOficial {
-  valor_referencia?: number;
-  fecha_referencia?: string;
-}
-
-export interface DatosCatastrales {
-  valor_catastral?: number;
-  valor_suelo?: number;
-  valor_construccion?: number;
-}
-
 export interface Propiedad {
   referencia_catastral?: string;
   fecha_extraccion?: string;
@@ -48,6 +38,6 @@ export interface Propiedad {
   datos_inmueble?: DatosInmueble;
   cultivos?: Cultivo[];
   parcela_catastral?: ParcelaCatastral;
-  datos_catastrales?: DatosCatastrales;
-  valor_referencia_oficial?: ValorReferenciaOficial;
+  valor_referencia?: number | null;
+  escritura?: string;
 }
