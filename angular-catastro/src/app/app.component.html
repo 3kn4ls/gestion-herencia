@@ -351,7 +351,7 @@
               <div *ngIf="propiedad.valor_referencia_oficial?.valor_referencia"
                    style="background: #e0f2fe; padding: 0.5rem; border-radius: 4px; text-align: center;">
                 <div style="font-size: 0.75rem; color: #0369a1;">📊 Valor Oficial</div>
-                <div style="font-weight: bold; color: #0369a1;">{{ formatCurrency(propiedad.valor_referencia_oficial.valor_referencia) }}</div>
+                <div style="font-weight: bold; color: #0369a1;">{{ formatCurrency(propiedad.valor_referencia_oficial?.valor_referencia) }}</div>
               </div>
             </div>
             <!-- Diferencia -->

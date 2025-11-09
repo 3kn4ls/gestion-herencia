@@ -41,7 +41,7 @@ export class DataService {
       map(data => {
         // Normalizar datos si vienen en formato del JSON original
         const propiedades = Array.isArray(data) ? data : data.propiedades || [];
-        const propiedadesNormalizadas = propiedades.map(p => this.normalizarPropiedad(p));
+        const propiedadesNormalizadas = propiedades.map((p: any) => this.normalizarPropiedad(p));
         this.propiedadesSubject.next(propiedadesNormalizadas);
         return propiedadesNormalizadas;
       })
@@ -58,7 +58,7 @@ export class DataService {
         try {
           const data = JSON.parse(e.target.result);
           const propiedades = Array.isArray(data) ? data : data.propiedades || [];
-          const propiedadesNormalizadas = propiedades.map(p => this.normalizarPropiedad(p));
+          const propiedadesNormalizadas = propiedades.map((p: any) => this.normalizarPropiedad(p));
           this.propiedadesSubject.next(propiedadesNormalizadas);
           resolve(propiedadesNormalizadas);
         } catch (error) {
