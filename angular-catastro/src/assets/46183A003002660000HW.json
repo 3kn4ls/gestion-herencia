@@ -1,0 +1,29 @@
+{
+  "referencia_catastral": "46183A003002660000HW",
+  "fecha_extraccion": "2025-11-08T15:07:20.131161",
+  "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=46183A003002660000HW&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=46183A003002660000HW&final=&del=46&mun=183",
+  "datos_descriptivos": {
+    "referencia_catastral": "46183A003002660000HW",
+    "localizacion": {
+      "texto_completo": "Polígono 3 Parcela 266\nBURGUERA. OLIVA (VALENCIA)",
+      "poligono": "3",
+      "parcela": "266",
+      "partida": "BURGUERA",
+      "municipio": "OLIVA",
+      "provincia": "VALENCIA"
+    },
+    "clase": "Rústico",
+    "uso_principal": "Agrario"
+  },
+  "parcela_catastral": {
+    "superficie_gráfica": "2.130 m2"
+  },
+  "cultivos": [
+    {
+      "subparcela": "0",
+      "cultivo_aprovechamiento": "NR Agrios regadío",
+      "intensidad_productiva": "02",
+      "superficie_m2": "2.130"
+    }
+  ]
+}

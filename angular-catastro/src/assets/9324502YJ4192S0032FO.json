@@ -1,0 +1,25 @@
+{
+  "referencia_catastral": "9324502YJ4192S0032FO",
+  "fecha_extraccion": "2025-11-08T15:08:36.307342",
+  "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=U&RefC=9324502YJ4192S0032FO&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=9324502YJ4192S0032FO&final=&del=46&mun=183",
+  "datos_descriptivos": {
+    "referencia_catastral": "9324502YJ4192S0032FO",
+    "localizacion": {
+      "texto_completo": "CL JOANOT MARTORELL 15 Bl:A Es:1 Pl:07 Pt:0A\n46780 OLIVA (VALENCIA)",
+      "poligono": "",
+      "parcela": "",
+      "partida": "",
+      "municipio": "46780 OLIVA",
+      "provincia": "VALENCIA"
+    },
+    "clase": "Urbano",
+    "uso_principal": "Residencial",
+    "superficie_construida": "141 m2",
+    "año_construcción": "1977"
+  },
+  "parcela_catastral": {
+    "superficie_gráfica": "527 m2",
+    "participación_del_inmueble": "2,810000 %"
+  },
+  "cultivos": []
+}

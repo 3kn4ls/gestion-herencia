@@ -1,0 +1,15 @@
+{
+  "fecha_consolidacion": "2025-11-08T22:53:30.308431",
+  "total_inmuebles": 37,
+  "con_valoracion_calculada": 37,
+  "con_valor_referencia": 26,
+  "con_comparacion": 17,
+  "estadisticas": {
+    "suma_valoraciones_calculadas": 38299.74,
+    "suma_valores_referencia": 79738.06,
+    "diferencia_total_euros": -41438.32,
+    "diferencia_media_porcentaje": -25.9,
+    "diferencia_minima_porcentaje": -70.63,
+    "diferencia_maxima_porcentaje": 84.36
+  }
+}

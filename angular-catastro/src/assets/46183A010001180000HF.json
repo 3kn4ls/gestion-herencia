@@ -1,0 +1,29 @@
+{
+  "referencia_catastral": "46183A010001180000HF",
+  "fecha_extraccion": "2025-11-08T15:07:28.552405",
+  "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=46183A010001180000HF&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=46183A010001180000HF&final=&del=46&mun=183",
+  "datos_descriptivos": {
+    "referencia_catastral": "46183A010001180000HF",
+    "localizacion": {
+      "texto_completo": "Polígono 10 Parcela 118\nRABDELLS. OLIVA (VALENCIA)",
+      "poligono": "10",
+      "parcela": "118",
+      "partida": "RABDELLS",
+      "municipio": "OLIVA",
+      "provincia": "VALENCIA"
+    },
+    "clase": "Rústico",
+    "uso_principal": "Agrario"
+  },
+  "parcela_catastral": {
+    "superficie_gráfica": "1.387 m2"
+  },
+  "cultivos": [
+    {
+      "subparcela": "0",
+      "cultivo_aprovechamiento": "NR Agrios regadío",
+      "intensidad_productiva": "03",
+      "superficie_m2": "1.387"
+    }
+  ]
+}

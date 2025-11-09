@@ -1,0 +1,29 @@
+{
+  "referencia_catastral": "03136A007003790000ZK",
+  "fecha_extraccion": "2025-11-08T15:05:30.713076",
+  "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A007003790000ZK&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A007003790000ZK&final=&del=3&mun=136",
+  "datos_descriptivos": {
+    "referencia_catastral": "03136A007003790000ZK",
+    "localizacion": {
+      "texto_completo": "Polígono 7 Parcela 379\nLA FORADA. VALL DE GALLINERA (ALICANTE)",
+      "poligono": "7",
+      "parcela": "379",
+      "partida": "LA FORADA",
+      "municipio": "VALL DE GALLINERA",
+      "provincia": "ALICANTE"
+    },
+    "clase": "Rústico",
+    "uso_principal": "Agrario"
+  },
+  "parcela_catastral": {
+    "superficie_gráfica": "1.565 m2"
+  },
+  "cultivos": [
+    {
+      "subparcela": "0",
+      "cultivo_aprovechamiento": "F- Frutales secano",
+      "intensidad_productiva": "01",
+      "superficie_m2": "1.565"
+    }
+  ]
+}

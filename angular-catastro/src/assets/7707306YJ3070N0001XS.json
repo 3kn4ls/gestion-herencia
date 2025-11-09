@@ -1,0 +1,24 @@
+{
+  "referencia_catastral": "7707306YJ3070N0001XS",
+  "fecha_extraccion": "2025-11-08T15:06:29.376001",
+  "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=U&RefC=7707306YJ3070N0001XS&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=7707306YJ3070N0001XS&final=&del=3&mun=136",
+  "datos_descriptivos": {
+    "referencia_catastral": "7707306YJ3070N0001XS",
+    "localizacion": {
+      "texto_completo": "PZ MORERA ALPATRO 8\n03788 VALL DE GALLINERA (ALICANTE)",
+      "poligono": "",
+      "parcela": "",
+      "partida": "",
+      "municipio": "03788 VALL DE GALLINERA",
+      "provincia": "ALICANTE"
+    },
+    "clase": "Urbano",
+    "uso_principal": "Residencial",
+    "superficie_construida": "110 m2",
+    "año_construcción": "1890"
+  },
+  "parcela_catastral": {
+    "superficie_gráfica": "127 m2"
+  },
+  "cultivos": []
+}

@@ -1,0 +1,1148 @@
+{
+  "resumen": {
+    "total_propiedades": 37,
+    "valor_total_estimado": 62600.63,
+    "fecha_valoracion": "2025-11-08T18:43:53.581544",
+    "criterios_utilizados": {
+      "fuente_rusticos": "Cocampo 2024/2025, MAPA 2022",
+      "fuente_urbanos": "Coeficientes CCAA estimados 2025",
+      "advertencia": "Valoraciones orientativas, no sustituyen tasación oficial"
+    }
+  },
+  "valoraciones": [
+    {
+      "referencia_catastral": "03106A002000090000YL",
+      "fecha_valoracion": "2025-11-08T18:43:53.578706",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 1197.0,
+      "superficie_total_ha": 0.1197,
+      "region": "valencia",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 1460.34,
+      "valor_por_ha": 12200.0,
+      "valor_por_m2": 1.22,
+      "detalles_cultivos": [
+        {
+          "cultivo": "O- Olivos secano",
+          "tipo_identificado": "olivar_secano",
+          "superficie_m2": 1197.0,
+          "superficie_ha": 0.1197,
+          "precio_ha": 12200,
+          "valor_estimado": 1460.34
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región valencia",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "03106A002001800000YO",
+      "fecha_valoracion": "2025-11-08T18:43:53.581092",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 9682.0,
+      "superficie_total_ha": 0.9682,
+      "region": "valencia",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 10440.76,
+      "valor_por_ha": 10783.68,
+      "valor_por_m2": 1.08,
+      "detalles_cultivos": [
+        {
+          "cultivo": "O- Olivos secano",
+          "tipo_identificado": "olivar_secano",
+          "superficie_m2": 4992.0,
+          "superficie_ha": 0.4992,
+          "precio_ha": 12200,
+          "valor_estimado": 6090.24
+        },
+        {
+          "cultivo": "MM Pinar maderable",
+          "tipo_identificado": "forestal",
+          "superficie_m2": 1124.0,
+          "superficie_ha": 0.1124,
+          "precio_ha": 0,
+          "valor_estimado": 0.0
+        },
+        {
+          "cultivo": "O- Olivos secano",
+          "tipo_identificado": "olivar_secano",
+          "superficie_m2": 3566.0,
+          "superficie_ha": 0.3566,
+          "precio_ha": 12200,
+          "valor_estimado": 4350.52
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región valencia",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "03136A007002810000ZT",
+      "fecha_valoracion": "2025-11-08T18:43:53.581139",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 493.0,
+      "superficie_total_ha": 0.0493,
+      "region": "ambito_17_marina_alta_interior",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 0.0,
+      "valor_por_ha": 0.0,
+      "valor_por_m2": 0.0,
+      "detalles_cultivos": [
+        {
+          "cultivo": "MM Pinar maderable",
+          "tipo_identificado": "forestal",
+          "superficie_m2": 493.0,
+          "superficie_ha": 0.0493,
+          "precio_ha": 0,
+          "valor_estimado": 0.0
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_17_marina_alta_interior",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "03136A004001200000ZY",
+      "fecha_valoracion": "2025-11-08T18:43:53.581158",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 1859.0,
+      "superficie_total_ha": 0.1859,
+      "region": "ambito_17_marina_alta_interior",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 2900.04,
+      "valor_por_ha": 15600.0,
+      "valor_por_m2": 1.56,
+      "detalles_cultivos": [
+        {
+          "cultivo": "O- Olivos secano",
+          "tipo_identificado": "olivar_secano",
+          "superficie_m2": 1859.0,
+          "superficie_ha": 0.1859,
+          "precio_ha": 15600,
+          "valor_estimado": 2900.04
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_17_marina_alta_interior",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "03136A006002310000ZB",
+      "fecha_valoracion": "2025-11-08T18:43:53.581171",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 791.0,
+      "superficie_total_ha": 0.0791,
+      "region": "ambito_17_marina_alta_interior",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 791.0,
+      "valor_por_ha": 10000.0,
+      "valor_por_m2": 1.0,
+      "detalles_cultivos": [
+        {
+          "cultivo": "CR Labor o labradío regadío",
+          "tipo_identificado": "default",
+          "superficie_m2": 791.0,
+          "superficie_ha": 0.0791,
+          "precio_ha": 10000,
+          "valor_estimado": 791.0
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_17_marina_alta_interior",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "03136A004000090000ZE",
+      "fecha_valoracion": "2025-11-08T18:43:53.581186",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 1236.0,
+      "superficie_total_ha": 0.1236,
+      "region": "ambito_17_marina_alta_interior",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 1928.16,
+      "valor_por_ha": 15600.0,
+      "valor_por_m2": 1.56,
+      "detalles_cultivos": [
+        {
+          "cultivo": "O- Olivos secano",
+          "tipo_identificado": "olivar_secano",
+          "superficie_m2": 1236.0,
+          "superficie_ha": 0.1236,
+          "precio_ha": 15600,
+          "valor_estimado": 1928.16
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_17_marina_alta_interior",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "03136A004002220000ZT",
+      "fecha_valoracion": "2025-11-08T18:43:53.581199",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 10098.0,
+      "superficie_total_ha": 1.0098,
+      "region": "ambito_17_marina_alta_interior",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 0.0,
+      "valor_por_ha": 0.0,
+      "valor_por_m2": 0.0,
+      "detalles_cultivos": [
+        {
+          "cultivo": "MM Pinar maderable",
+          "tipo_identificado": "forestal",
+          "superficie_m2": 10098.0,
+          "superficie_ha": 1.0098,
+          "precio_ha": 0,
+          "valor_estimado": 0.0
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_17_marina_alta_interior",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "03136A004002310000ZD",
+      "fecha_valoracion": "2025-11-08T18:43:53.581217",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 598.0,
+      "superficie_total_ha": 0.0598,
+      "region": "ambito_17_marina_alta_interior",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 0.0,
+      "valor_por_ha": 0.0,
+      "valor_por_m2": 0.0,
+      "detalles_cultivos": [
+        {
+          "cultivo": "MM Pinar maderable",
+          "tipo_identificado": "forestal",
+          "superficie_m2": 598.0,
+          "superficie_ha": 0.0598,
+          "precio_ha": 0,
+          "valor_estimado": 0.0
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_17_marina_alta_interior",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "03136A007001730000ZW",
+      "fecha_valoracion": "2025-11-08T18:43:53.581229",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 4605.0,
+      "superficie_total_ha": 0.4605,
+      "region": "ambito_17_marina_alta_interior",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 1427.55,
+      "valor_por_ha": 3100.0,
+      "valor_por_m2": 0.31,
+      "detalles_cultivos": [
+        {
+          "cultivo": "E- Pastos",
+          "tipo_identificado": "pastos",
+          "superficie_m2": 4605.0,
+          "superficie_ha": 0.4605,
+          "precio_ha": 3100,
+          "valor_estimado": 1427.55
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_17_marina_alta_interior",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "03136A004001250000ZT",
+      "fecha_valoracion": "2025-11-08T18:43:53.581241",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 3523.0,
+      "superficie_total_ha": 0.3523,
+      "region": "ambito_17_marina_alta_interior",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 3523.0,
+      "valor_por_ha": 10000.0,
+      "valor_por_m2": 1.0,
+      "detalles_cultivos": [
+        {
+          "cultivo": "MT Matorral",
+          "tipo_identificado": "default",
+          "superficie_m2": 3523.0,
+          "superficie_ha": 0.3523,
+          "precio_ha": 10000,
+          "valor_estimado": 3523.0
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_17_marina_alta_interior",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "03136A006001950000ZH",
+      "fecha_valoracion": "2025-11-08T18:43:53.581252",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 428.0,
+      "superficie_total_ha": 0.0428,
+      "region": "ambito_17_marina_alta_interior",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 428.0,
+      "valor_por_ha": 10000.0,
+      "valor_por_m2": 1.0,
+      "detalles_cultivos": [
+        {
+          "cultivo": "CR Labor o labradío regadío",
+          "tipo_identificado": "default",
+          "superficie_m2": 428.0,
+          "superficie_ha": 0.0428,
+          "precio_ha": 10000,
+          "valor_estimado": 428.0
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_17_marina_alta_interior",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "03136A007002280000ZS",
+      "fecha_valoracion": "2025-11-08T18:43:53.581265",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 1245.0,
+      "superficie_total_ha": 0.1245,
+      "region": "ambito_17_marina_alta_interior",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 1942.2,
+      "valor_por_ha": 15600.0,
+      "valor_por_m2": 1.56,
+      "detalles_cultivos": [
+        {
+          "cultivo": "O- Olivos secano",
+          "tipo_identificado": "olivar_secano",
+          "superficie_m2": 1245.0,
+          "superficie_ha": 0.1245,
+          "precio_ha": 15600,
+          "valor_estimado": 1942.2
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_17_marina_alta_interior",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "03136A006002580000ZW",
+      "fecha_valoracion": "2025-11-08T18:43:53.581276",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 9161.0,
+      "superficie_total_ha": 0.9161,
+      "region": "ambito_17_marina_alta_interior",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 7146.36,
+      "valor_por_ha": 7800.85,
+      "valor_por_m2": 0.78,
+      "detalles_cultivos": [
+        {
+          "cultivo": "F- Frutales secano",
+          "tipo_identificado": "frutal_secano",
+          "superficie_m2": 4580.0,
+          "superficie_ha": 0.458,
+          "precio_ha": 0,
+          "valor_estimado": 0.0
+        },
+        {
+          "cultivo": "O- Olivos secano",
+          "tipo_identificado": "olivar_secano",
+          "superficie_m2": 4581.0,
+          "superficie_ha": 0.4581,
+          "precio_ha": 15600,
+          "valor_estimado": 7146.36
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_17_marina_alta_interior",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "03136A006002600000ZH",
+      "fecha_valoracion": "2025-11-08T18:43:53.581295",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 4238.0,
+      "superficie_total_ha": 0.4238,
+      "region": "ambito_17_marina_alta_interior",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 3305.64,
+      "valor_por_ha": 7800.0,
+      "valor_por_m2": 0.78,
+      "detalles_cultivos": [
+        {
+          "cultivo": "F- Frutales secano",
+          "tipo_identificado": "frutal_secano",
+          "superficie_m2": 2119.0,
+          "superficie_ha": 0.2119,
+          "precio_ha": 0,
+          "valor_estimado": 0.0
+        },
+        {
+          "cultivo": "O- Olivos secano",
+          "tipo_identificado": "olivar_secano",
+          "superficie_m2": 2119.0,
+          "superficie_ha": 0.2119,
+          "precio_ha": 15600,
+          "valor_estimado": 3305.64
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_17_marina_alta_interior",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "03136A007003790000ZK",
+      "fecha_valoracion": "2025-11-08T18:43:53.581309",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 1565.0,
+      "superficie_total_ha": 0.1565,
+      "region": "ambito_17_marina_alta_interior",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 0.0,
+      "valor_por_ha": 0.0,
+      "valor_por_m2": 0.0,
+      "detalles_cultivos": [
+        {
+          "cultivo": "F- Frutales secano",
+          "tipo_identificado": "frutal_secano",
+          "superficie_m2": 1565.0,
+          "superficie_ha": 0.1565,
+          "precio_ha": 0,
+          "valor_estimado": 0.0
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_17_marina_alta_interior",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "03136A007004240000ZU",
+      "fecha_valoracion": "2025-11-08T18:43:53.581319",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 411.0,
+      "superficie_total_ha": 0.0411,
+      "region": "ambito_17_marina_alta_interior",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 0.0,
+      "valor_por_ha": 0.0,
+      "valor_por_m2": 0.0,
+      "detalles_cultivos": [
+        {
+          "cultivo": "F- Frutales secano",
+          "tipo_identificado": "frutal_secano",
+          "superficie_m2": 411.0,
+          "superficie_ha": 0.0411,
+          "precio_ha": 0,
+          "valor_estimado": 0.0
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_17_marina_alta_interior",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "03136A001000630000ZY",
+      "fecha_valoracion": "2025-11-08T18:43:53.581330",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 8862.0,
+      "superficie_total_ha": 0.8862,
+      "region": "ambito_17_marina_alta_interior",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 8862.0,
+      "valor_por_ha": 10000.0,
+      "valor_por_m2": 1.0,
+      "detalles_cultivos": [
+        {
+          "cultivo": "MT Matorral",
+          "tipo_identificado": "default",
+          "superficie_m2": 8862.0,
+          "superficie_ha": 0.8862,
+          "precio_ha": 10000,
+          "valor_estimado": 8862.0
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_17_marina_alta_interior",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "03136A001000670000ZL",
+      "fecha_valoracion": "2025-11-08T18:43:53.581341",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 2731.0,
+      "superficie_total_ha": 0.2731,
+      "region": "ambito_17_marina_alta_interior",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 0.0,
+      "valor_por_ha": 0.0,
+      "valor_por_m2": 0.0,
+      "detalles_cultivos": [
+        {
+          "cultivo": "F- Frutales secano",
+          "tipo_identificado": "frutal_secano",
+          "superficie_m2": 2731.0,
+          "superficie_ha": 0.2731,
+          "precio_ha": 0,
+          "valor_estimado": 0.0
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_17_marina_alta_interior",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "03136A003000430000ZW",
+      "fecha_valoracion": "2025-11-08T18:43:53.581350",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 204.0,
+      "superficie_total_ha": 0.0204,
+      "region": "ambito_17_marina_alta_interior",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 7.68,
+      "valor_por_ha": 376.47,
+      "valor_por_m2": 0.04,
+      "detalles_cultivos": [
+        {
+          "cultivo": "I- Improductivo",
+          "tipo_identificado": "improductivo",
+          "superficie_m2": 128.0,
+          "superficie_ha": 0.0128,
+          "precio_ha": 600,
+          "valor_estimado": 7.68
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_17_marina_alta_interior",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "03136A004000790000ZU",
+      "fecha_valoracion": "2025-11-08T18:43:53.581362",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 2919.0,
+      "superficie_total_ha": 0.2919,
+      "region": "ambito_17_marina_alta_interior",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 0.0,
+      "valor_por_ha": 0.0,
+      "valor_por_m2": 0.0,
+      "detalles_cultivos": [
+        {
+          "cultivo": "F- Frutales secano",
+          "tipo_identificado": "frutal_secano",
+          "superficie_m2": 2919.0,
+          "superficie_ha": 0.2919,
+          "precio_ha": 0,
+          "valor_estimado": 0.0
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_17_marina_alta_interior",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "03136A004001880000ZL",
+      "fecha_valoracion": "2025-11-08T18:43:53.581372",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 3120.0,
+      "superficie_total_ha": 0.312,
+      "region": "ambito_17_marina_alta_interior",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 0.0,
+      "valor_por_ha": 0.0,
+      "valor_por_m2": 0.0,
+      "detalles_cultivos": [
+        {
+          "cultivo": "F- Frutales secano",
+          "tipo_identificado": "frutal_secano",
+          "superficie_m2": 3120.0,
+          "superficie_ha": 0.312,
+          "precio_ha": 0,
+          "valor_estimado": 0.0
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_17_marina_alta_interior",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "7707306YJ3070N0001XS",
+      "fecha_valoracion": "2025-11-08T18:43:53.581382",
+      "clase": "Urbano",
+      "uso_principal": "Residencial",
+      "tipo_valoracion": "urbano",
+      "metodo": "no_disponible",
+      "error": "No se dispone del valor catastral para realizar la valoración",
+      "advertencias": [
+        "Para inmuebles urbanos se necesita el valor catastral",
+        "El scraper actual no extrae el valor catastral (dato protegido)",
+        "Consultar directamente en la Sede Electrónica del Catastro"
+      ]
+    },
+    {
+      "referencia_catastral": "7806511YJ3070N0001SS",
+      "fecha_valoracion": "2025-11-08T18:43:53.581390",
+      "clase": "Urbano",
+      "uso_principal": "Industrial",
+      "tipo_valoracion": "urbano",
+      "metodo": "no_disponible",
+      "error": "No se dispone del valor catastral para realizar la valoración",
+      "advertencias": [
+        "Para inmuebles urbanos se necesita el valor catastral",
+        "El scraper actual no extrae el valor catastral (dato protegido)",
+        "Consultar directamente en la Sede Electrónica del Catastro"
+      ]
+    },
+    {
+      "referencia_catastral": "7806511YJ3070N0000AA",
+      "fecha_valoracion": "2025-11-08T18:43:53.581394",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 251.0,
+      "superficie_total_ha": 0.0251,
+      "region": "valencia",
+      "provincia": "ALICANTE",
+      "valor_estimado_euros": 1.38,
+      "valor_por_ha": 54.98,
+      "valor_por_m2": 0.01,
+      "detalles_cultivos": [
+        {
+          "cultivo": "I- IMPRODUCTIVO",
+          "tipo_identificado": "improductivo",
+          "superficie_m2": 23.0,
+          "superficie_ha": 0.0023,
+          "precio_ha": 600,
+          "valor_estimado": 1.38
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región valencia",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "46183A020000880000HR",
+      "fecha_valoracion": "2025-11-08T18:43:53.581407",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 3086.0,
+      "superficie_total_ha": 0.3086,
+      "region": "ambito_13_safor_litoral",
+      "provincia": "VALENCIA",
+      "valor_estimado_euros": 3086.0,
+      "valor_por_ha": 10000.0,
+      "valor_por_m2": 1.0,
+      "detalles_cultivos": [
+        {
+          "cultivo": "NR Agrios regadío",
+          "tipo_identificado": "default",
+          "superficie_m2": 3086.0,
+          "superficie_ha": 0.3086,
+          "precio_ha": 10000,
+          "valor_estimado": 3086.0
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_13_safor_litoral",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "46197A001002690000FX",
+      "fecha_valoracion": "2025-11-08T18:43:53.581422",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 4935.0,
+      "superficie_total_ha": 0.4935,
+      "region": "ambito_13_safor_litoral",
+      "provincia": "VALENCIA",
+      "valor_estimado_euros": 4935.0,
+      "valor_por_ha": 10000.0,
+      "valor_por_m2": 1.0,
+      "detalles_cultivos": [
+        {
+          "cultivo": "NR Agrios regadío",
+          "tipo_identificado": "default",
+          "superficie_m2": 4935.0,
+          "superficie_ha": 0.4935,
+          "precio_ha": 10000,
+          "valor_estimado": 4935.0
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_13_safor_litoral",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "46183A008001360000HX",
+      "fecha_valoracion": "2025-11-08T18:43:53.581434",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 1476.0,
+      "superficie_total_ha": 0.1476,
+      "region": "ambito_13_safor_litoral",
+      "provincia": "VALENCIA",
+      "valor_estimado_euros": 1476.0,
+      "valor_por_ha": 10000.0,
+      "valor_por_m2": 1.0,
+      "detalles_cultivos": [
+        {
+          "cultivo": "NR Agrios regadío",
+          "tipo_identificado": "default",
+          "superficie_m2": 1476.0,
+          "superficie_ha": 0.1476,
+          "precio_ha": 10000,
+          "valor_estimado": 1476.0
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_13_safor_litoral",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "46183A003002660000HW",
+      "fecha_valoracion": "2025-11-08T18:43:53.581447",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 2130.0,
+      "superficie_total_ha": 0.213,
+      "region": "ambito_13_safor_litoral",
+      "provincia": "VALENCIA",
+      "valor_estimado_euros": 2130.0,
+      "valor_por_ha": 10000.0,
+      "valor_por_m2": 1.0,
+      "detalles_cultivos": [
+        {
+          "cultivo": "NR Agrios regadío",
+          "tipo_identificado": "default",
+          "superficie_m2": 2130.0,
+          "superficie_ha": 0.213,
+          "precio_ha": 10000,
+          "valor_estimado": 2130.0
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_13_safor_litoral",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "46183A010001180000HF",
+      "fecha_valoracion": "2025-11-08T18:43:53.581459",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 1387.0,
+      "superficie_total_ha": 0.1387,
+      "region": "ambito_13_safor_litoral",
+      "provincia": "VALENCIA",
+      "valor_estimado_euros": 1387.0,
+      "valor_por_ha": 10000.0,
+      "valor_por_m2": 1.0,
+      "detalles_cultivos": [
+        {
+          "cultivo": "NR Agrios regadío",
+          "tipo_identificado": "default",
+          "superficie_m2": 1387.0,
+          "superficie_ha": 0.1387,
+          "precio_ha": 10000,
+          "valor_estimado": 1387.0
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_13_safor_litoral",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "46183A008004210000HK",
+      "fecha_valoracion": "2025-11-08T18:43:53.581472",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 1268.0,
+      "superficie_total_ha": 0.1268,
+      "region": "ambito_13_safor_litoral",
+      "provincia": "VALENCIA",
+      "valor_estimado_euros": 1268.0,
+      "valor_por_ha": 10000.0,
+      "valor_por_m2": 1.0,
+      "detalles_cultivos": [
+        {
+          "cultivo": "NR Agrios regadío",
+          "tipo_identificado": "default",
+          "superficie_m2": 1268.0,
+          "superficie_ha": 0.1268,
+          "precio_ha": 10000,
+          "valor_estimado": 1268.0
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_13_safor_litoral",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "46183A009007320000HW",
+      "fecha_valoracion": "2025-11-08T18:43:53.581483",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 1804.0,
+      "superficie_total_ha": 0.1804,
+      "region": "ambito_13_safor_litoral",
+      "provincia": "VALENCIA",
+      "valor_estimado_euros": 1804.0,
+      "valor_por_ha": 10000.0,
+      "valor_por_m2": 1.0,
+      "detalles_cultivos": [
+        {
+          "cultivo": "NR Agrios regadío",
+          "tipo_identificado": "default",
+          "superficie_m2": 1804.0,
+          "superficie_ha": 0.1804,
+          "precio_ha": 10000,
+          "valor_estimado": 1804.0
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_13_safor_litoral",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "46183A009007330000HA",
+      "fecha_valoracion": "2025-11-08T18:43:53.581496",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 642.0,
+      "superficie_total_ha": 0.0642,
+      "region": "ambito_13_safor_litoral",
+      "provincia": "VALENCIA",
+      "valor_estimado_euros": 38.52,
+      "valor_por_ha": 600.0,
+      "valor_por_m2": 0.06,
+      "detalles_cultivos": [
+        {
+          "cultivo": "I- Improductivo",
+          "tipo_identificado": "improductivo",
+          "superficie_m2": 174.0,
+          "superficie_ha": 0.0174,
+          "precio_ha": 600,
+          "valor_estimado": 10.44
+        },
+        {
+          "cultivo": "I- Improductivo",
+          "tipo_identificado": "improductivo",
+          "superficie_m2": 468.0,
+          "superficie_ha": 0.0468,
+          "precio_ha": 600,
+          "valor_estimado": 28.08
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_13_safor_litoral",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "46183A009007340000HB",
+      "fecha_valoracion": "2025-11-08T18:43:53.581510",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 1129.0,
+      "superficie_total_ha": 0.1129,
+      "region": "ambito_13_safor_litoral",
+      "provincia": "VALENCIA",
+      "valor_estimado_euros": 1129.0,
+      "valor_por_ha": 10000.0,
+      "valor_por_m2": 1.0,
+      "detalles_cultivos": [
+        {
+          "cultivo": "NR Agrios regadío",
+          "tipo_identificado": "default",
+          "superficie_m2": 1129.0,
+          "superficie_ha": 0.1129,
+          "precio_ha": 10000,
+          "valor_estimado": 1129.0
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_13_safor_litoral",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "46183A009007350000HY",
+      "fecha_valoracion": "2025-11-08T18:43:53.581523",
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "tipo_valoracion": "rustico",
+      "metodo": "precio_mercado_cultivo",
+      "superficie_total_m2": 1183.0,
+      "superficie_total_ha": 0.1183,
+      "region": "ambito_13_safor_litoral",
+      "provincia": "VALENCIA",
+      "valor_estimado_euros": 1183.0,
+      "valor_por_ha": 10000.0,
+      "valor_por_m2": 1.0,
+      "detalles_cultivos": [
+        {
+          "cultivo": "NR Agrios regadío",
+          "tipo_identificado": "default",
+          "superficie_m2": 1183.0,
+          "superficie_ha": 0.1183,
+          "precio_ha": 10000,
+          "valor_estimado": 1183.0
+        }
+      ],
+      "fuente_precios": "Cocampo 2024/2025 - Región ambito_13_safor_litoral",
+      "advertencias": [
+        "Valoración estimada basada en precios medios de mercado 2024/2025",
+        "No incluye valor catastral (no disponible en datos extraídos)",
+        "Precio real puede variar según ubicación exacta, accesos, agua, etc.",
+        "Recomendable tasación oficial para operaciones importantes"
+      ]
+    },
+    {
+      "referencia_catastral": "0119501YJ5101N0002AI",
+      "fecha_valoracion": "2025-11-08T18:43:53.581534",
+      "clase": "Urbano",
+      "uso_principal": "Residencial",
+      "tipo_valoracion": "urbano",
+      "metodo": "no_disponible",
+      "error": "No se dispone del valor catastral para realizar la valoración",
+      "advertencias": [
+        "Para inmuebles urbanos se necesita el valor catastral",
+        "El scraper actual no extrae el valor catastral (dato protegido)",
+        "Consultar directamente en la Sede Electrónica del Catastro"
+      ]
+    },
+    {
+      "referencia_catastral": "0119501YJ5101N0001PU",
+      "fecha_valoracion": "2025-11-08T18:43:53.581538",
+      "clase": "Urbano",
+      "uso_principal": "Residencial",
+      "tipo_valoracion": "urbano",
+      "metodo": "no_disponible",
+      "error": "No se dispone del valor catastral para realizar la valoración",
+      "advertencias": [
+        "Para inmuebles urbanos se necesita el valor catastral",
+        "El scraper actual no extrae el valor catastral (dato protegido)",
+        "Consultar directamente en la Sede Electrónica del Catastro"
+      ]
+    },
+    {
+      "referencia_catastral": "9324502YJ4192S0032FO",
+      "fecha_valoracion": "2025-11-08T18:43:53.581541",
+      "clase": "Urbano",
+      "uso_principal": "Residencial",
+      "tipo_valoracion": "urbano",
+      "metodo": "no_disponible",
+      "error": "No se dispone del valor catastral para realizar la valoración",
+      "advertencias": [
+        "Para inmuebles urbanos se necesita el valor catastral",
+        "El scraper actual no extrae el valor catastral (dato protegido)",
+        "Consultar directamente en la Sede Electrónica del Catastro"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "referencia_catastral": "03136A006001950000ZH",
+  "fecha_extraccion": "2025-11-08T15:04:57.031400",
+  "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A006001950000ZH&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A006001950000ZH&final=&del=3&mun=136",
+  "datos_descriptivos": {
+    "referencia_catastral": "03136A006001950000ZH",
+    "localizacion": {
+      "texto_completo": "Polígono 6 Parcela 195\nHUERTAS DE LLOMBAY. VALL DE GALLINERA (ALICANTE)",
+      "poligono": "6",
+      "parcela": "195",
+      "partida": "HUERTAS DE LLOMBAY",
+      "municipio": "VALL DE GALLINERA",
+      "provincia": "ALICANTE"
+    },
+    "clase": "Rústico",
+    "uso_principal": "Agrario"
+  },
+  "parcela_catastral": {
+    "superficie_gráfica": "428 m2"
+  },
+  "cultivos": [
+    {
+      "subparcela": "0",
+      "cultivo_aprovechamiento": "CR Labor o labradío regadío",
+      "intensidad_productiva": "00",
+      "superficie_m2": "428"
+    }
+  ]
+}

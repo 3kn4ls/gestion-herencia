@@ -1,0 +1,29 @@
+{
+  "referencia_catastral": "46183A008001360000HX",
+  "fecha_extraccion": "2025-11-08T15:07:11.841374",
+  "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=46183A008001360000HX&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=46183A008001360000HX&final=&del=46&mun=183",
+  "datos_descriptivos": {
+    "referencia_catastral": "46183A008001360000HX",
+    "localizacion": {
+      "texto_completo": "Polígono 8 Parcela 136\nFONT DEL MASET. OLIVA (VALENCIA)",
+      "poligono": "8",
+      "parcela": "136",
+      "partida": "FONT DEL MASET",
+      "municipio": "OLIVA",
+      "provincia": "VALENCIA"
+    },
+    "clase": "Rústico",
+    "uso_principal": "Agrario"
+  },
+  "parcela_catastral": {
+    "superficie_gráfica": "1.476 m2"
+  },
+  "cultivos": [
+    {
+      "subparcela": "0",
+      "cultivo_aprovechamiento": "NR Agrios regadío",
+      "intensidad_productiva": "03",
+      "superficie_m2": "1.476"
+    }
+  ]
+}

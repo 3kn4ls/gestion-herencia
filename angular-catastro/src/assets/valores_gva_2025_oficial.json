@@ -1,0 +1,615 @@
+{
+  "fuente": {
+    "documento": "NNTT_2025_Urbana y Rústica.pdf - Anejo II: Módulos de valor de los bienes inmuebles de naturaleza rústica",
+    "organismo": "Generalitat Valenciana - Agència Tributària Valenciana (ATV)",
+    "url": "https://atv.gva.es/auto/ValorDictamen/01%20Normas%20T%E9cnicas%20de%20Valoraci%F3n/Devengos%20desde%2001_01_2025%20hasta%2031_12_2025/NNTT_2025_Urbana%20y%20R%FAstica.pdf",
+    "vigencia": {
+      "desde": "2025-01-01",
+      "hasta": "2025-12-31"
+    },
+    "version": "2025",
+    "fecha_extraccion": "2025-11-08",
+    "metodo_extraccion": "Información proporcionada por el usuario basada en el documento oficial"
+  },
+  "metadatos": {
+    "descripcion": "Módulos de valor oficiales para valoración de inmuebles rústicos y urbanos",
+    "ambito_territorial": "Comunidad Valenciana",
+    "aplicacion": "Impuesto sobre Transmisiones Patrimoniales, Sucesiones y Donaciones",
+    "sistema_valoracion": "Por ámbitos territoriales que agrupan municipios con características agronómicas similares",
+    "municipios_incluidos": ["Oliva", "Piles", "Vall de Gallinera"]
+  },
+  "ambitos_territoriales": {
+    "ambito_13_safor_litoral": {
+      "numero_ambito": 13,
+      "nombre": "Safor-Litoral",
+      "provincia": "Valencia/València",
+      "municipios_incluidos": [
+        "Oliva",
+        "Piles"
+      ],
+      "caracteristicas": "Zona litoral con características agronómicas similares",
+      "modulos_valor_rustico": {
+        "agrios_regadio": {
+          "tipo_cultivo": "Agrios",
+          "modalidad": "Regadío",
+          "valor_eur_ha": 50800,
+          "denominacion_oficial": "Agrios",
+          "notas": "Cítricos en regadío - zona litoral"
+        },
+        "frutales_regadio": {
+          "tipo_cultivo": "Frutales (hueso, pepita, subtropicales)",
+          "modalidad": "Regadío",
+          "valor_eur_ha": 30500,
+          "denominacion_oficial": "Frutales (hueso, pepita, subtropicales)",
+          "notas": "Incluye frutales de hueso, pepita y subtropicales"
+        },
+        "horticolas_regadio": {
+          "tipo_cultivo": "Hortícolas (aire libre)",
+          "modalidad": "Regadío",
+          "valor_eur_ha": 30500,
+          "denominacion_oficial": "Hortícolas (aire libre)",
+          "notas": "Cultivos hortícolas al aire libre"
+        },
+        "olivar_regadio": {
+          "tipo_cultivo": "Olivar",
+          "modalidad": "Regadío",
+          "valor_eur_ha": 24400,
+          "denominacion_oficial": "Olivar",
+          "notas": ""
+        },
+        "arroz_regadio": {
+          "tipo_cultivo": "Arroz",
+          "modalidad": "Regadío",
+          "valor_eur_ha": 18300,
+          "denominacion_oficial": "Arroz",
+          "notas": ""
+        },
+        "vinedo_regadio": {
+          "tipo_cultivo": "Viñedo",
+          "modalidad": "Regadío",
+          "valor_eur_ha": 18300,
+          "denominacion_oficial": "Viñedo",
+          "notas": ""
+        },
+        "frutos_secos_regadio": {
+          "tipo_cultivo": "Frutos Secos (ej. Almendro)",
+          "modalidad": "Regadío",
+          "valor_eur_ha": 18300,
+          "denominacion_oficial": "Frutos Secos (ej. Almendro)",
+          "notas": "Incluye almendro y otros frutos secos"
+        },
+        "olivar_secano": {
+          "tipo_cultivo": "Olivar",
+          "modalidad": "Secano",
+          "valor_eur_ha": 12200,
+          "denominacion_oficial": "Olivar",
+          "notas": ""
+        },
+        "vinedo_secano": {
+          "tipo_cultivo": "Viñedo",
+          "modalidad": "Secano",
+          "valor_eur_ha": 9200,
+          "denominacion_oficial": "Viñedo",
+          "notas": ""
+        },
+        "frutos_secos_secano": {
+          "tipo_cultivo": "Frutos Secos (ej. Almendro)",
+          "modalidad": "Secano",
+          "valor_eur_ha": 6100,
+          "denominacion_oficial": "Frutos Secos (ej. Almendro)",
+          "notas": ""
+        },
+        "labor_labradio_secano": {
+          "tipo_cultivo": "Labor o Labradío",
+          "modalidad": "Secano",
+          "valor_eur_ha": 4900,
+          "denominacion_oficial": "Labor o Labradío",
+          "notas": "Tierras de labor sin cultivo específico"
+        },
+        "pastos": {
+          "tipo_cultivo": "Pastos",
+          "modalidad": "Secano",
+          "valor_eur_ha": 3000,
+          "denominacion_oficial": "Pastos",
+          "notas": ""
+        },
+        "improductivo": {
+          "tipo_cultivo": "Improductivo / Matorral",
+          "modalidad": "Secano",
+          "valor_eur_ha": 600,
+          "denominacion_oficial": "Improductivo / Matorral",
+          "notas": "Terrenos improductivos o con matorral"
+        }
+      }
+    },
+    "ambito_17_marina_alta_interior": {
+      "numero_ambito": 17,
+      "nombre": "Marina Alta-Interior",
+      "provincia": "Alicante/Alacant",
+      "municipios_incluidos": [
+        "Vall de Gallinera"
+      ],
+      "caracteristicas": "Zona interior de la Marina Alta",
+      "modulos_valor_rustico": {
+        "agrios_regadio": {
+          "tipo_cultivo": "Agrios",
+          "modalidad": "Regadío",
+          "valor_eur_ha": 39000,
+          "denominacion_oficial": "Agrios",
+          "notas": "Cítricos en regadío - zona interior"
+        },
+        "frutales_regadio": {
+          "tipo_cultivo": "Frutales (hueso, pepita)",
+          "modalidad": "Regadío",
+          "valor_eur_ha": 26000,
+          "denominacion_oficial": "Frutales (hueso, pepita)",
+          "notas": "Frutales de hueso y pepita"
+        },
+        "horticolas_regadio": {
+          "tipo_cultivo": "Hortícolas",
+          "modalidad": "Regadío",
+          "valor_eur_ha": 26000,
+          "denominacion_oficial": "Hortícolas",
+          "notas": ""
+        },
+        "olivar_regadio": {
+          "tipo_cultivo": "Olivar",
+          "modalidad": "Regadío",
+          "valor_eur_ha": 19500,
+          "denominacion_oficial": "Olivar",
+          "notas": ""
+        },
+        "frutos_secos_regadio": {
+          "tipo_cultivo": "Frutos Secos (ej. Almendro)",
+          "modalidad": "Regadío",
+          "valor_eur_ha": 19500,
+          "denominacion_oficial": "Frutos Secos (ej. Almendro)",
+          "notas": ""
+        },
+        "vinedo_regadio": {
+          "tipo_cultivo": "Viñedo",
+          "modalidad": "Regadío",
+          "valor_eur_ha": 15600,
+          "denominacion_oficial": "Viñedo",
+          "notas": ""
+        },
+        "olivar_secano": {
+          "tipo_cultivo": "Olivar",
+          "modalidad": "Secano",
+          "valor_eur_ha": 15600,
+          "denominacion_oficial": "Olivar",
+          "notas": ""
+        },
+        "frutos_secos_secano": {
+          "tipo_cultivo": "Frutos Secos (ej. Almendro)",
+          "modalidad": "Secano",
+          "valor_eur_ha": 7800,
+          "denominacion_oficial": "Frutos Secos (ej. Almendro)",
+          "notas": ""
+        },
+        "vinedo_secano": {
+          "tipo_cultivo": "Viñedo",
+          "modalidad": "Secano",
+          "valor_eur_ha": 7800,
+          "denominacion_oficial": "Viñedo",
+          "notas": ""
+        },
+        "labor_labradio_secano": {
+          "tipo_cultivo": "Labor o Labradío",
+          "modalidad": "Secano",
+          "valor_eur_ha": 6200,
+          "denominacion_oficial": "Labor o Labradío",
+          "notas": ""
+        },
+        "pastos": {
+          "tipo_cultivo": "Pastos",
+          "modalidad": "Secano",
+          "valor_eur_ha": 3100,
+          "denominacion_oficial": "Pastos",
+          "notas": ""
+        },
+        "improductivo": {
+          "tipo_cultivo": "Improductivo / Matorral",
+          "modalidad": "Secano",
+          "valor_eur_ha": 600,
+          "denominacion_oficial": "Improductivo / Matorral",
+          "notas": ""
+        }
+      }
+    }
+  },
+  "municipios": {
+    "oliva": {
+      "nombre_oficial": "Oliva",
+      "provincia": "Valencia/València",
+      "codigo_ine": null,
+      "ambito_territorial": "ambito_13_safor_litoral",
+      "numero_ambito": 13,
+      "nombre_ambito": "Safor-Litoral",
+      "otros_municipios_ambito": ["Piles"],
+      "rustico": {
+        "descripcion": "Valores por tipo de cultivo en euros por hectárea - Ámbito 13: Safor-Litoral",
+        "unidad": "€/ha",
+        "fuente_valores": "Anejo II - Normas Técnicas de Valoración 2025",
+        "valores": {
+          "agrios_regadio": {
+            "valor": 50800,
+            "denominacion_oficial": "Agrios",
+            "modalidad": "Regadío",
+            "notas": "Cítricos"
+          },
+          "frutales_regadio": {
+            "valor": 30500,
+            "denominacion_oficial": "Frutales (hueso, pepita, subtropicales)",
+            "modalidad": "Regadío",
+            "notas": ""
+          },
+          "horticolas_regadio": {
+            "valor": 30500,
+            "denominacion_oficial": "Hortícolas (aire libre)",
+            "modalidad": "Regadío",
+            "notas": ""
+          },
+          "olivar_regadio": {
+            "valor": 24400,
+            "denominacion_oficial": "Olivar",
+            "modalidad": "Regadío",
+            "notas": ""
+          },
+          "arroz_regadio": {
+            "valor": 18300,
+            "denominacion_oficial": "Arroz",
+            "modalidad": "Regadío",
+            "notas": ""
+          },
+          "vinedo_regadio": {
+            "valor": 18300,
+            "denominacion_oficial": "Viñedo",
+            "modalidad": "Regadío",
+            "notas": ""
+          },
+          "almendro_regadio": {
+            "valor": 18300,
+            "denominacion_oficial": "Frutos Secos (ej. Almendro)",
+            "modalidad": "Regadío",
+            "notas": ""
+          },
+          "olivar_secano": {
+            "valor": 12200,
+            "denominacion_oficial": "Olivar",
+            "modalidad": "Secano",
+            "notas": ""
+          },
+          "vinedo_secano": {
+            "valor": 9200,
+            "denominacion_oficial": "Viñedo",
+            "modalidad": "Secano",
+            "notas": ""
+          },
+          "almendro_secano": {
+            "valor": 6100,
+            "denominacion_oficial": "Frutos Secos (ej. Almendro)",
+            "modalidad": "Secano",
+            "notas": ""
+          },
+          "labor_secano": {
+            "valor": 4900,
+            "denominacion_oficial": "Labor o Labradío",
+            "modalidad": "Secano",
+            "notas": ""
+          },
+          "pastos": {
+            "valor": 3000,
+            "denominacion_oficial": "Pastos",
+            "modalidad": "Secano",
+            "notas": ""
+          },
+          "improductivo": {
+            "valor": 600,
+            "denominacion_oficial": "Improductivo / Matorral",
+            "modalidad": "Secano",
+            "notas": ""
+          }
+        }
+      },
+      "urbano": {
+        "descripcion": "Coeficientes multiplicadores del valor catastral",
+        "formula": "Valor Mercado = Valor Catastral × Coeficiente",
+        "valores": {
+          "vivienda": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "notas": "Pendiente de obtener del documento oficial"
+          },
+          "local_comercial": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "notas": "Pendiente de obtener del documento oficial"
+          },
+          "garaje": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "notas": "Pendiente de obtener del documento oficial"
+          }
+        }
+      }
+    },
+    "piles": {
+      "nombre_oficial": "Piles",
+      "provincia": "Valencia/València",
+      "codigo_ine": null,
+      "ambito_territorial": "ambito_13_safor_litoral",
+      "numero_ambito": 13,
+      "nombre_ambito": "Safor-Litoral",
+      "otros_municipios_ambito": ["Oliva"],
+      "rustico": {
+        "descripcion": "Valores por tipo de cultivo en euros por hectárea - Ámbito 13: Safor-Litoral",
+        "unidad": "€/ha",
+        "fuente_valores": "Anejo II - Normas Técnicas de Valoración 2025",
+        "valores": {
+          "agrios_regadio": {
+            "valor": 50800,
+            "denominacion_oficial": "Agrios",
+            "modalidad": "Regadío",
+            "notas": "Cítricos"
+          },
+          "frutales_regadio": {
+            "valor": 30500,
+            "denominacion_oficial": "Frutales (hueso, pepita, subtropicales)",
+            "modalidad": "Regadío",
+            "notas": ""
+          },
+          "horticolas_regadio": {
+            "valor": 30500,
+            "denominacion_oficial": "Hortícolas (aire libre)",
+            "modalidad": "Regadío",
+            "notas": ""
+          },
+          "olivar_regadio": {
+            "valor": 24400,
+            "denominacion_oficial": "Olivar",
+            "modalidad": "Regadío",
+            "notas": ""
+          },
+          "arroz_regadio": {
+            "valor": 18300,
+            "denominacion_oficial": "Arroz",
+            "modalidad": "Regadío",
+            "notas": ""
+          },
+          "vinedo_regadio": {
+            "valor": 18300,
+            "denominacion_oficial": "Viñedo",
+            "modalidad": "Regadío",
+            "notas": ""
+          },
+          "almendro_regadio": {
+            "valor": 18300,
+            "denominacion_oficial": "Frutos Secos (ej. Almendro)",
+            "modalidad": "Regadío",
+            "notas": ""
+          },
+          "olivar_secano": {
+            "valor": 12200,
+            "denominacion_oficial": "Olivar",
+            "modalidad": "Secano",
+            "notas": ""
+          },
+          "vinedo_secano": {
+            "valor": 9200,
+            "denominacion_oficial": "Viñedo",
+            "modalidad": "Secano",
+            "notas": ""
+          },
+          "almendro_secano": {
+            "valor": 6100,
+            "denominacion_oficial": "Frutos Secos (ej. Almendro)",
+            "modalidad": "Secano",
+            "notas": ""
+          },
+          "labor_secano": {
+            "valor": 4900,
+            "denominacion_oficial": "Labor o Labradío",
+            "modalidad": "Secano",
+            "notas": ""
+          },
+          "pastos": {
+            "valor": 3000,
+            "denominacion_oficial": "Pastos",
+            "modalidad": "Secano",
+            "notas": ""
+          },
+          "improductivo": {
+            "valor": 600,
+            "denominacion_oficial": "Improductivo / Matorral",
+            "modalidad": "Secano",
+            "notas": ""
+          }
+        }
+      },
+      "urbano": {
+        "descripcion": "Coeficientes multiplicadores del valor catastral",
+        "formula": "Valor Mercado = Valor Catastral × Coeficiente",
+        "valores": {
+          "vivienda": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "notas": "Pendiente de obtener del documento oficial"
+          }
+        }
+      }
+    },
+    "vall_de_gallinera": {
+      "nombre_oficial": "Vall de Gallinera",
+      "provincia": "Alicante/Alacant",
+      "codigo_ine": null,
+      "ambito_territorial": "ambito_17_marina_alta_interior",
+      "numero_ambito": 17,
+      "nombre_ambito": "Marina Alta-Interior",
+      "otros_municipios_ambito": [],
+      "rustico": {
+        "descripcion": "Valores por tipo de cultivo en euros por hectárea - Ámbito 17: Marina Alta-Interior",
+        "unidad": "€/ha",
+        "fuente_valores": "Anejo II - Normas Técnicas de Valoración 2025",
+        "valores": {
+          "agrios_regadio": {
+            "valor": 39000,
+            "denominacion_oficial": "Agrios",
+            "modalidad": "Regadío",
+            "notas": "Cítricos"
+          },
+          "frutales_regadio": {
+            "valor": 26000,
+            "denominacion_oficial": "Frutales (hueso, pepita)",
+            "modalidad": "Regadío",
+            "notas": ""
+          },
+          "horticolas_regadio": {
+            "valor": 26000,
+            "denominacion_oficial": "Hortícolas",
+            "modalidad": "Regadío",
+            "notas": ""
+          },
+          "olivar_regadio": {
+            "valor": 19500,
+            "denominacion_oficial": "Olivar",
+            "modalidad": "Regadío",
+            "notas": ""
+          },
+          "almendro_regadio": {
+            "valor": 19500,
+            "denominacion_oficial": "Frutos Secos (ej. Almendro)",
+            "modalidad": "Regadío",
+            "notas": ""
+          },
+          "vinedo_regadio": {
+            "valor": 15600,
+            "denominacion_oficial": "Viñedo",
+            "modalidad": "Regadío",
+            "notas": ""
+          },
+          "olivar_secano": {
+            "valor": 15600,
+            "denominacion_oficial": "Olivar",
+            "modalidad": "Secano",
+            "notas": ""
+          },
+          "almendro_secano": {
+            "valor": 7800,
+            "denominacion_oficial": "Frutos Secos (ej. Almendro)",
+            "modalidad": "Secano",
+            "notas": ""
+          },
+          "vinedo_secano": {
+            "valor": 7800,
+            "denominacion_oficial": "Viñedo",
+            "modalidad": "Secano",
+            "notas": ""
+          },
+          "labor_secano": {
+            "valor": 6200,
+            "denominacion_oficial": "Labor o Labradío",
+            "modalidad": "Secano",
+            "notas": ""
+          },
+          "pastos": {
+            "valor": 3100,
+            "denominacion_oficial": "Pastos",
+            "modalidad": "Secano",
+            "notas": ""
+          },
+          "improductivo": {
+            "valor": 600,
+            "denominacion_oficial": "Improductivo / Matorral",
+            "modalidad": "Secano",
+            "notas": ""
+          }
+        }
+      },
+      "urbano": {
+        "descripcion": "Coeficientes multiplicadores del valor catastral",
+        "formula": "Valor Mercado = Valor Catastral × Coeficiente",
+        "valores": {
+          "vivienda": {
+            "coeficiente": null,
+            "denominacion_oficial": "",
+            "notas": "Pendiente de obtener del documento oficial"
+          }
+        }
+      }
+    },
+    "planes": {
+      "nombre_oficial": "Planes",
+      "provincia": "Alicante/Alacant",
+      "codigo_ine": null,
+      "ambito_territorial": null,
+      "numero_ambito": null,
+      "nombre_ambito": null,
+      "notas": "Municipio no mencionado en la información proporcionada. Pendiente de identificar ámbito territorial.",
+      "rustico": {
+        "descripcion": "Valores pendientes de obtener del documento oficial",
+        "unidad": "€/ha",
+        "valores": {}
+      },
+      "urbano": {
+        "descripcion": "Coeficientes pendientes de obtener del documento oficial",
+        "valores": {}
+      }
+    }
+  },
+  "mapeo_cultivos": {
+    "descripcion": "Mapeo entre denominaciones del catastro y tipos de cultivo en las normas técnicas",
+    "olivar": {
+      "denominaciones_catastro": ["OV", "O-", "OLIVOS", "OLIVAR"],
+      "secano": "olivar_secano",
+      "regadio": "olivar_regadio"
+    },
+    "almendro": {
+      "denominaciones_catastro": ["AM", "ALMENDRO", "ALMENDROS"],
+      "secano": "almendro_secano",
+      "regadio": "almendro_regadio"
+    },
+    "vinedo": {
+      "denominaciones_catastro": ["VÑ", "V-", "VIÑA", "VIÑEDO"],
+      "secano": "vinedo_secano",
+      "regadio": "vinedo_regadio"
+    },
+    "agrios": {
+      "denominaciones_catastro": ["AG", "CITRICOS", "NARANJOS", "AGRIOS"],
+      "regadio": "agrios_regadio"
+    },
+    "frutales": {
+      "denominaciones_catastro": ["FR", "FRUTALES"],
+      "secano": "frutales_secano",
+      "regadio": "frutales_regadio"
+    },
+    "horticolas": {
+      "denominaciones_catastro": ["HR", "HORTICOLA", "HUERTA"],
+      "regadio": "horticolas_regadio"
+    },
+    "pastos": {
+      "denominaciones_catastro": ["PS", "PASTOS", "PRADO"],
+      "tipo": "pastos"
+    },
+    "labor": {
+      "denominaciones_catastro": ["LABOR", "LABRADIO", "T-"],
+      "secano": "labor_secano"
+    },
+    "improductivo": {
+      "denominaciones_catastro": ["IMPRODUCTIVO", "MATORRAL", "ERIAL", "MT"],
+      "tipo": "improductivo"
+    }
+  },
+  "notas": {
+    "metodologia": "La valoración de parcelas agrícolas (rústicas) a efectos fiscales en la Comunitat Valenciana se determina por Ámbitos Territoriales que agrupan municipios con características agronómicas similares.",
+    "actualizacion": "Valores actualizados anualmente por la Generalitat Valenciana",
+    "aplicacion": "Estos valores son de aplicación obligatoria para ITP, ISD y AJD en la Comunidad Valenciana",
+    "formula_calculo": "Valor = Superficie (hectáreas) × Módulo de valor (€/ha)",
+    "observaciones": [
+      "Oliva y Piles pertenecen al Ámbito 13: Safor-Litoral",
+      "Vall de Gallinera pertenece al Ámbito 17: Marina Alta-Interior",
+      "Los ámbitos territoriales agrupan municipios con características agronómicas similares",
+      "Los valores urbanos (coeficientes) están pendientes de extraer del documento oficial"
+    ]
+  }
+}

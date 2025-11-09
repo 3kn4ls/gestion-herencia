@@ -1,0 +1,31 @@
+{
+  "referencia_catastral": "03136A003000430000ZW",
+  "fecha_extraccion": "2025-11-08T15:06:04.017228",
+  "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A003000430000ZW&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A003000430000ZW&final=&del=3&mun=136",
+  "datos_descriptivos": {
+    "referencia_catastral": "03136A003000430000ZW",
+    "localizacion": {
+      "texto_completo": "Polígono 3 Parcela 43\nSOLANA. VALL DE GALLINERA (ALICANTE)",
+      "poligono": "3",
+      "parcela": "43",
+      "partida": "SOLANA",
+      "municipio": "VALL DE GALLINERA",
+      "provincia": "ALICANTE"
+    },
+    "clase": "Rústico",
+    "uso_principal": "Agrario",
+    "superficie_construida": "76 m2",
+    "año_construcción": "1998"
+  },
+  "parcela_catastral": {
+    "superficie_gráfica": "204 m2"
+  },
+  "cultivos": [
+    {
+      "subparcela": "0",
+      "cultivo_aprovechamiento": "I- Improductivo",
+      "intensidad_productiva": "00",
+      "superficie_m2": "128"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "referencia_catastral": "03136A004002310000ZD",
+  "fecha_extraccion": "2025-11-08T15:04:31.639202",
+  "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A004002310000ZD&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A004002310000ZD&final=&del=3&mun=136",
+  "datos_descriptivos": {
+    "referencia_catastral": "03136A004002310000ZD",
+    "localizacion": {
+      "texto_completo": "Polígono 4 Parcela 231\nGARRIGAS. VALL DE GALLINERA (ALICANTE)",
+      "poligono": "4",
+      "parcela": "231",
+      "partida": "GARRIGAS",
+      "municipio": "VALL DE GALLINERA",
+      "provincia": "ALICANTE"
+    },
+    "clase": "Rústico",
+    "uso_principal": "Agrario"
+  },
+  "parcela_catastral": {
+    "superficie_gráfica": "598 m2"
+  },
+  "cultivos": [
+    {
+      "subparcela": "0",
+      "cultivo_aprovechamiento": "MM Pinar maderable",
+      "intensidad_productiva": "01",
+      "superficie_m2": "598"
+    }
+  ]
+}

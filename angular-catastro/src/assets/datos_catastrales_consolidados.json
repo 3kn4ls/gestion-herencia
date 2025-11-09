@@ -1,0 +1,1085 @@
+[
+  {
+    "referencia_catastral": "03106A002000090000YL",
+    "fecha_extraccion": "2025-11-08T15:03:33.353316",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03106A002000090000YL&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03106A002000090000YL&final=&del=3&mun=106",
+    "datos_descriptivos": {
+      "referencia_catastral": "03106A002000090000YL",
+      "localizacion": {
+        "texto_completo": "Polígono 2 Parcela 9\nEL LLOMBO. PLANES (ALICANTE)",
+        "poligono": "2",
+        "parcela": "9",
+        "partida": "EL LLOMBO",
+        "municipio": "PLANES",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "1.197 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "O- Olivos secano",
+        "intensidad_productiva": "02",
+        "superficie_m2": "1.197"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "03106A002001800000YO",
+    "fecha_extraccion": "2025-11-08T15:03:41.753013",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03106A002001800000YO&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03106A002001800000YO&final=&del=3&mun=106",
+    "datos_descriptivos": {
+      "referencia_catastral": "03106A002001800000YO",
+      "localizacion": {
+        "texto_completo": "Polígono 2 Parcela 180\nEL LLOMBO. PLANES (ALICANTE)",
+        "poligono": "2",
+        "parcela": "180",
+        "partida": "EL LLOMBO",
+        "municipio": "PLANES",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "9.682 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "a",
+        "cultivo_aprovechamiento": "O- Olivos secano",
+        "intensidad_productiva": "02",
+        "superficie_m2": "4.992"
+      },
+      {
+        "subparcela": "b",
+        "cultivo_aprovechamiento": "MM Pinar maderable",
+        "intensidad_productiva": "02",
+        "superficie_m2": "1.124"
+      },
+      {
+        "subparcela": "c",
+        "cultivo_aprovechamiento": "O- Olivos secano",
+        "intensidad_productiva": "02",
+        "superficie_m2": "3.566"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "03136A007002810000ZT",
+    "fecha_extraccion": "2025-11-08T15:03:50.117003",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A007002810000ZT&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A007002810000ZT&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "03136A007002810000ZT",
+      "localizacion": {
+        "texto_completo": "Polígono 7 Parcela 281\nUMBRIA DE PATRO. VALL DE GALLINERA (ALICANTE)",
+        "poligono": "7",
+        "parcela": "281",
+        "partida": "UMBRIA DE PATRO",
+        "municipio": "VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "493 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "MM Pinar maderable",
+        "intensidad_productiva": "01",
+        "superficie_m2": "493"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "03136A004001200000ZY",
+    "fecha_extraccion": "2025-11-08T15:03:58.394005",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A004001200000ZY&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A004001200000ZY&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "03136A004001200000ZY",
+      "localizacion": {
+        "texto_completo": "Polígono 4 Parcela 120\nHUERTA VIEJA. VALL DE GALLINERA (ALICANTE)",
+        "poligono": "4",
+        "parcela": "120",
+        "partida": "HUERTA VIEJA",
+        "municipio": "VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "1.859 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "O- Olivos secano",
+        "intensidad_productiva": "01",
+        "superficie_m2": "1.859"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "03136A006002310000ZB",
+    "fecha_extraccion": "2025-11-08T15:04:06.648210",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A006002310000ZB&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A006002310000ZB&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "03136A006002310000ZB",
+      "localizacion": {
+        "texto_completo": "Polígono 6 Parcela 231\nHUERTAS GASCONES. VALL DE GALLINERA (ALICANTE)",
+        "poligono": "6",
+        "parcela": "231",
+        "partida": "HUERTAS GASCONES",
+        "municipio": "VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "791 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "CR Labor o labradío regadío",
+        "intensidad_productiva": "00",
+        "superficie_m2": "791"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "03136A004000090000ZE",
+    "fecha_extraccion": "2025-11-08T15:04:14.932601",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A004000090000ZE&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A004000090000ZE&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "03136A004000090000ZE",
+      "localizacion": {
+        "texto_completo": "Polígono 4 Parcela 9\nOLIVAR DE LLOMBAY. VALL DE GALLINERA (ALICANTE)",
+        "poligono": "4",
+        "parcela": "9",
+        "partida": "OLIVAR DE LLOMBAY",
+        "municipio": "VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "1.236 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "O- Olivos secano",
+        "intensidad_productiva": "01",
+        "superficie_m2": "1.236"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "03136A004002220000ZT",
+    "fecha_extraccion": "2025-11-08T15:04:23.284204",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A004002220000ZT&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A004002220000ZT&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "03136A004002220000ZT",
+      "localizacion": {
+        "texto_completo": "Polígono 4 Parcela 222\nGARRIGAS. VALL DE GALLINERA (ALICANTE)",
+        "poligono": "4",
+        "parcela": "222",
+        "partida": "GARRIGAS",
+        "municipio": "VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "10.098 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "MM Pinar maderable",
+        "intensidad_productiva": "01",
+        "superficie_m2": "10.098"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "03136A004002310000ZD",
+    "fecha_extraccion": "2025-11-08T15:04:31.639202",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A004002310000ZD&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A004002310000ZD&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "03136A004002310000ZD",
+      "localizacion": {
+        "texto_completo": "Polígono 4 Parcela 231\nGARRIGAS. VALL DE GALLINERA (ALICANTE)",
+        "poligono": "4",
+        "parcela": "231",
+        "partida": "GARRIGAS",
+        "municipio": "VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "598 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "MM Pinar maderable",
+        "intensidad_productiva": "01",
+        "superficie_m2": "598"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "03136A007001730000ZW",
+    "fecha_extraccion": "2025-11-08T15:04:40.053885",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A007001730000ZW&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A007001730000ZW&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "03136A007001730000ZW",
+      "localizacion": {
+        "texto_completo": "Polígono 7 Parcela 173\nEL BOSC. VALL DE GALLINERA (ALICANTE)",
+        "poligono": "7",
+        "parcela": "173",
+        "partida": "EL BOSC",
+        "municipio": "VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "4.605 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "E- Pastos",
+        "intensidad_productiva": "00",
+        "superficie_m2": "4.605"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "03136A004001250000ZT",
+    "fecha_extraccion": "2025-11-08T15:04:48.566680",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A004001250000ZT&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A004001250000ZT&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "03136A004001250000ZT",
+      "localizacion": {
+        "texto_completo": "Polígono 4 Parcela 125\nFUENTE VIEJA. VALL DE GALLINERA (ALICANTE)",
+        "poligono": "4",
+        "parcela": "125",
+        "partida": "FUENTE VIEJA",
+        "municipio": "VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "3.523 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "MT Matorral",
+        "intensidad_productiva": "00",
+        "superficie_m2": "3.523"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "03136A006001950000ZH",
+    "fecha_extraccion": "2025-11-08T15:04:57.031400",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A006001950000ZH&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A006001950000ZH&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "03136A006001950000ZH",
+      "localizacion": {
+        "texto_completo": "Polígono 6 Parcela 195\nHUERTAS DE LLOMBAY. VALL DE GALLINERA (ALICANTE)",
+        "poligono": "6",
+        "parcela": "195",
+        "partida": "HUERTAS DE LLOMBAY",
+        "municipio": "VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "428 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "CR Labor o labradío regadío",
+        "intensidad_productiva": "00",
+        "superficie_m2": "428"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "03136A007002280000ZS",
+    "fecha_extraccion": "2025-11-08T15:05:05.378119",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A007002280000ZS&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A007002280000ZS&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "03136A007002280000ZS",
+      "localizacion": {
+        "texto_completo": "Polígono 7 Parcela 228\nFOIAS DE PATRO. VALL DE GALLINERA (ALICANTE)",
+        "poligono": "7",
+        "parcela": "228",
+        "partida": "FOIAS DE PATRO",
+        "municipio": "VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "1.245 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "O- Olivos secano",
+        "intensidad_productiva": "01",
+        "superficie_m2": "1.245"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "03136A006002580000ZW",
+    "fecha_extraccion": "2025-11-08T15:05:13.696044",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A006002580000ZW&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A006002580000ZW&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "03136A006002580000ZW",
+      "localizacion": {
+        "texto_completo": "Polígono 6 Parcela 258\nLLOMBAY. VALL DE GALLINERA (ALICANTE)",
+        "poligono": "6",
+        "parcela": "258",
+        "partida": "LLOMBAY",
+        "municipio": "VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "9.161 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "F- Frutales secano",
+        "intensidad_productiva": "02",
+        "superficie_m2": "4.580"
+      },
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "O- Olivos secano",
+        "intensidad_productiva": "01",
+        "superficie_m2": "4.581"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "03136A006002600000ZH",
+    "fecha_extraccion": "2025-11-08T15:05:22.232065",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A006002600000ZH&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A006002600000ZH&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "03136A006002600000ZH",
+      "localizacion": {
+        "texto_completo": "Polígono 6 Parcela 260\nLLOMBAY. VALL DE GALLINERA (ALICANTE)",
+        "poligono": "6",
+        "parcela": "260",
+        "partida": "LLOMBAY",
+        "municipio": "VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "4.238 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "F- Frutales secano",
+        "intensidad_productiva": "02",
+        "superficie_m2": "2.119"
+      },
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "O- Olivos secano",
+        "intensidad_productiva": "01",
+        "superficie_m2": "2.119"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "03136A007003790000ZK",
+    "fecha_extraccion": "2025-11-08T15:05:30.713076",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A007003790000ZK&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A007003790000ZK&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "03136A007003790000ZK",
+      "localizacion": {
+        "texto_completo": "Polígono 7 Parcela 379\nLA FORADA. VALL DE GALLINERA (ALICANTE)",
+        "poligono": "7",
+        "parcela": "379",
+        "partida": "LA FORADA",
+        "municipio": "VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "1.565 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "F- Frutales secano",
+        "intensidad_productiva": "01",
+        "superficie_m2": "1.565"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "03136A007004240000ZU",
+    "fecha_extraccion": "2025-11-08T15:05:39.077978",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A007004240000ZU&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A007004240000ZU&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "03136A007004240000ZU",
+      "localizacion": {
+        "texto_completo": "Polígono 7 Parcela 424\nLA FORADA. VALL DE GALLINERA (ALICANTE)",
+        "poligono": "7",
+        "parcela": "424",
+        "partida": "LA FORADA",
+        "municipio": "VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "411 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "F- Frutales secano",
+        "intensidad_productiva": "02",
+        "superficie_m2": "411"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "03136A001000630000ZY",
+    "fecha_extraccion": "2025-11-08T15:05:47.380013",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A001000630000ZY&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A001000630000ZY&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "03136A001000630000ZY",
+      "localizacion": {
+        "texto_completo": "Polígono 1 Parcela 63\nSOLANA. VALL DE GALLINERA (ALICANTE)",
+        "poligono": "1",
+        "parcela": "63",
+        "partida": "SOLANA",
+        "municipio": "VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "8.862 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "MT Matorral",
+        "intensidad_productiva": "00",
+        "superficie_m2": "8.862"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "03136A001000670000ZL",
+    "fecha_extraccion": "2025-11-08T15:05:55.701290",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A001000670000ZL&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A001000670000ZL&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "03136A001000670000ZL",
+      "localizacion": {
+        "texto_completo": "Polígono 1 Parcela 67\nSIERRA. VALL DE GALLINERA (ALICANTE)",
+        "poligono": "1",
+        "parcela": "67",
+        "partida": "SIERRA",
+        "municipio": "VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "2.731 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "F- Frutales secano",
+        "intensidad_productiva": "04",
+        "superficie_m2": "2.731"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "03136A003000430000ZW",
+    "fecha_extraccion": "2025-11-08T15:06:04.017228",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A003000430000ZW&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A003000430000ZW&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "03136A003000430000ZW",
+      "localizacion": {
+        "texto_completo": "Polígono 3 Parcela 43\nSOLANA. VALL DE GALLINERA (ALICANTE)",
+        "poligono": "3",
+        "parcela": "43",
+        "partida": "SOLANA",
+        "municipio": "VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario",
+      "superficie_construida": "76 m2",
+      "año_construcción": "1998"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "204 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "I- Improductivo",
+        "intensidad_productiva": "00",
+        "superficie_m2": "128"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "03136A004000790000ZU",
+    "fecha_extraccion": "2025-11-08T15:06:12.523445",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A004000790000ZU&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A004000790000ZU&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "03136A004000790000ZU",
+      "localizacion": {
+        "texto_completo": "Polígono 4 Parcela 79\nBALAGUER. VALL DE GALLINERA (ALICANTE)",
+        "poligono": "4",
+        "parcela": "79",
+        "partida": "BALAGUER",
+        "municipio": "VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "2.919 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "F- Frutales secano",
+        "intensidad_productiva": "01",
+        "superficie_m2": "2.919"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "03136A004001880000ZL",
+    "fecha_extraccion": "2025-11-08T15:06:20.876555",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03136A004001880000ZL&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03136A004001880000ZL&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "03136A004001880000ZL",
+      "localizacion": {
+        "texto_completo": "Polígono 4 Parcela 188\nCASILLA VIUDOS. VALL DE GALLINERA (ALICANTE)",
+        "poligono": "4",
+        "parcela": "188",
+        "partida": "CASILLA VIUDOS",
+        "municipio": "VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "3.120 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "F- Frutales secano",
+        "intensidad_productiva": "01",
+        "superficie_m2": "3.120"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "7707306YJ3070N0001XS",
+    "fecha_extraccion": "2025-11-08T15:06:29.376001",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=U&RefC=7707306YJ3070N0001XS&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=7707306YJ3070N0001XS&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "7707306YJ3070N0001XS",
+      "localizacion": {
+        "texto_completo": "PZ MORERA ALPATRO 8\n03788 VALL DE GALLINERA (ALICANTE)",
+        "poligono": "",
+        "parcela": "",
+        "partida": "",
+        "municipio": "03788 VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Urbano",
+      "uso_principal": "Residencial",
+      "superficie_construida": "110 m2",
+      "año_construcción": "1890"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "127 m2"
+    },
+    "cultivos": []
+  },
+  {
+    "referencia_catastral": "7806511YJ3070N0001SS",
+    "fecha_extraccion": "2025-11-08T15:06:38.131346",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=U&RefC=7806511YJ3070N0001SS&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=7806511YJ3070N0001SS&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "7806511YJ3070N0001SS",
+      "localizacion": {
+        "texto_completo": "CL PURISIMA ALPATRO 17 Polígono 4 Parcela 11\nGARROFERAL. 03788 VALL DE GALLINERA (ALICANTE)",
+        "poligono": "4",
+        "parcela": "11",
+        "partida": "GARROFERAL",
+        "municipio": "03788 VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Urbano",
+      "uso_principal": "Industrial",
+      "superficie_construida": "224 m2",
+      "año_construcción": "1910"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "251 m2"
+    },
+    "cultivos": []
+  },
+  {
+    "referencia_catastral": "7806511YJ3070N0000AA",
+    "fecha_extraccion": "2025-11-08T15:06:46.481285",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=7806511YJ3070N0000AA&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=7806511YJ3070N0000AA&final=&del=3&mun=136",
+    "datos_descriptivos": {
+      "referencia_catastral": "7806511YJ3070N0000AA",
+      "localizacion": {
+        "texto_completo": "CL PURISIMA ALPATRO 17 Polígono 4 Parcela 11\nGARROFERAL. 03788 VALL DE GALLINERA (ALICANTE)",
+        "poligono": "4",
+        "parcela": "11",
+        "partida": "GARROFERAL",
+        "municipio": "03788 VALL DE GALLINERA",
+        "provincia": "ALICANTE"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "251 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "I- IMPRODUCTIVO",
+        "intensidad_productiva": "00",
+        "superficie_m2": "23"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "46183A020000880000HR",
+    "fecha_extraccion": "2025-11-08T15:06:54.925444",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=46183A020000880000HR&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=46183A020000880000HR&final=&del=46&mun=183",
+    "datos_descriptivos": {
+      "referencia_catastral": "46183A020000880000HR",
+      "localizacion": {
+        "texto_completo": "Polígono 20 Parcela 88\nLA PLANA. OLIVA (VALENCIA)",
+        "poligono": "20",
+        "parcela": "88",
+        "partida": "LA PLANA",
+        "municipio": "OLIVA",
+        "provincia": "VALENCIA"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "3.086 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "NR Agrios regadío",
+        "intensidad_productiva": "01",
+        "superficie_m2": "3.086"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "46197A001002690000FX",
+    "fecha_extraccion": "2025-11-08T15:07:03.443479",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=46197A001002690000FX&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=46197A001002690000FX&final=&del=46&mun=197",
+    "datos_descriptivos": {
+      "referencia_catastral": "46197A001002690000FX",
+      "localizacion": {
+        "texto_completo": "Polígono 1 Parcela 269\nMAYANS. PILES (VALENCIA)",
+        "poligono": "1",
+        "parcela": "269",
+        "partida": "MAYANS",
+        "municipio": "PILES",
+        "provincia": "VALENCIA"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "4.935 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "NR Agrios regadío",
+        "intensidad_productiva": "03",
+        "superficie_m2": "4.935"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "46183A008001360000HX",
+    "fecha_extraccion": "2025-11-08T15:07:11.841374",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=46183A008001360000HX&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=46183A008001360000HX&final=&del=46&mun=183",
+    "datos_descriptivos": {
+      "referencia_catastral": "46183A008001360000HX",
+      "localizacion": {
+        "texto_completo": "Polígono 8 Parcela 136\nFONT DEL MASET. OLIVA (VALENCIA)",
+        "poligono": "8",
+        "parcela": "136",
+        "partida": "FONT DEL MASET",
+        "municipio": "OLIVA",
+        "provincia": "VALENCIA"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "1.476 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "NR Agrios regadío",
+        "intensidad_productiva": "03",
+        "superficie_m2": "1.476"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "46183A003002660000HW",
+    "fecha_extraccion": "2025-11-08T15:07:20.131161",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=46183A003002660000HW&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=46183A003002660000HW&final=&del=46&mun=183",
+    "datos_descriptivos": {
+      "referencia_catastral": "46183A003002660000HW",
+      "localizacion": {
+        "texto_completo": "Polígono 3 Parcela 266\nBURGUERA. OLIVA (VALENCIA)",
+        "poligono": "3",
+        "parcela": "266",
+        "partida": "BURGUERA",
+        "municipio": "OLIVA",
+        "provincia": "VALENCIA"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "2.130 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "NR Agrios regadío",
+        "intensidad_productiva": "02",
+        "superficie_m2": "2.130"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "46183A010001180000HF",
+    "fecha_extraccion": "2025-11-08T15:07:28.552405",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=46183A010001180000HF&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=46183A010001180000HF&final=&del=46&mun=183",
+    "datos_descriptivos": {
+      "referencia_catastral": "46183A010001180000HF",
+      "localizacion": {
+        "texto_completo": "Polígono 10 Parcela 118\nRABDELLS. OLIVA (VALENCIA)",
+        "poligono": "10",
+        "parcela": "118",
+        "partida": "RABDELLS",
+        "municipio": "OLIVA",
+        "provincia": "VALENCIA"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "1.387 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "NR Agrios regadío",
+        "intensidad_productiva": "03",
+        "superficie_m2": "1.387"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "46183A008004210000HK",
+    "fecha_extraccion": "2025-11-08T15:07:36.996775",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=46183A008004210000HK&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=46183A008004210000HK&final=&del=46&mun=183",
+    "datos_descriptivos": {
+      "referencia_catastral": "46183A008004210000HK",
+      "localizacion": {
+        "texto_completo": "Polígono 8 Parcela 421\nJOVADES. OLIVA (VALENCIA)",
+        "poligono": "8",
+        "parcela": "421",
+        "partida": "JOVADES",
+        "municipio": "OLIVA",
+        "provincia": "VALENCIA"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "1.268 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "NR Agrios regadío",
+        "intensidad_productiva": "03",
+        "superficie_m2": "1.268"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "46183A009007320000HW",
+    "fecha_extraccion": "2025-11-08T15:07:45.461775",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=46183A009007320000HW&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=46183A009007320000HW&final=&del=46&mun=183",
+    "datos_descriptivos": {
+      "referencia_catastral": "46183A009007320000HW",
+      "localizacion": {
+        "texto_completo": "Polígono 9 Parcela 732\nFONT DEL MASET. OLIVA (VALENCIA)",
+        "poligono": "9",
+        "parcela": "732",
+        "partida": "FONT DEL MASET",
+        "municipio": "OLIVA",
+        "provincia": "VALENCIA"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "1.804 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "NR Agrios regadío",
+        "intensidad_productiva": "03",
+        "superficie_m2": "1.804"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "46183A009007330000HA",
+    "fecha_extraccion": "2025-11-08T15:07:53.854023",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=46183A009007330000HA&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=46183A009007330000HA&final=&del=46&mun=183",
+    "datos_descriptivos": {
+      "referencia_catastral": "46183A009007330000HA",
+      "localizacion": {
+        "texto_completo": "Polígono 9 Parcela 733\nFONT DEL MASET. OLIVA (VALENCIA)",
+        "poligono": "9",
+        "parcela": "733",
+        "partida": "FONT DEL MASET",
+        "municipio": "OLIVA",
+        "provincia": "VALENCIA"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "642 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "a",
+        "cultivo_aprovechamiento": "I- Improductivo",
+        "intensidad_productiva": "00",
+        "superficie_m2": "174"
+      },
+      {
+        "subparcela": "b",
+        "cultivo_aprovechamiento": "I- Improductivo",
+        "intensidad_productiva": "00",
+        "superficie_m2": "468"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "46183A009007340000HB",
+    "fecha_extraccion": "2025-11-08T15:08:02.360340",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=46183A009007340000HB&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=46183A009007340000HB&final=&del=46&mun=183",
+    "datos_descriptivos": {
+      "referencia_catastral": "46183A009007340000HB",
+      "localizacion": {
+        "texto_completo": "Polígono 9 Parcela 734\nFONT DEL MASET. OLIVA (VALENCIA)",
+        "poligono": "9",
+        "parcela": "734",
+        "partida": "FONT DEL MASET",
+        "municipio": "OLIVA",
+        "provincia": "VALENCIA"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "1.129 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "NR Agrios regadío",
+        "intensidad_productiva": "03",
+        "superficie_m2": "1.129"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "46183A009007350000HY",
+    "fecha_extraccion": "2025-11-08T15:08:10.767284",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=46183A009007350000HY&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=46183A009007350000HY&final=&del=46&mun=183",
+    "datos_descriptivos": {
+      "referencia_catastral": "46183A009007350000HY",
+      "localizacion": {
+        "texto_completo": "Polígono 9 Parcela 735\nFONT DEL MASET. OLIVA (VALENCIA)",
+        "poligono": "9",
+        "parcela": "735",
+        "partida": "FONT DEL MASET",
+        "municipio": "OLIVA",
+        "provincia": "VALENCIA"
+      },
+      "clase": "Rústico",
+      "uso_principal": "Agrario"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "1.183 m2"
+    },
+    "cultivos": [
+      {
+        "subparcela": "0",
+        "cultivo_aprovechamiento": "NR Agrios regadío",
+        "intensidad_productiva": "02",
+        "superficie_m2": "1.183"
+      }
+    ]
+  },
+  {
+    "referencia_catastral": "0119501YJ5101N0002AI",
+    "fecha_extraccion": "2025-11-08T15:08:19.227234",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=U&RefC=0119501YJ5101N0002AI&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=0119501YJ5101N0002AI&final=&del=46&mun=183",
+    "datos_descriptivos": {
+      "referencia_catastral": "0119501YJ5101N0002AI",
+      "localizacion": {
+        "texto_completo": "CL GOVERNADOR 48 Bl:A Es:1 Pl:01 Pt:01\n46780 OLIVA (VALENCIA)",
+        "poligono": "",
+        "parcela": "",
+        "partida": "",
+        "municipio": "46780 OLIVA",
+        "provincia": "VALENCIA"
+      },
+      "clase": "Urbano",
+      "uso_principal": "Residencial",
+      "superficie_construida": "144 m2",
+      "año_construcción": "1933"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "187 m2",
+      "participación_del_inmueble": "50,000000 %"
+    },
+    "cultivos": []
+  },
+  {
+    "referencia_catastral": "0119501YJ5101N0001PU",
+    "fecha_extraccion": "2025-11-08T15:08:27.740581",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=U&RefC=0119501YJ5101N0001PU&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=0119501YJ5101N0001PU&final=&del=46&mun=183",
+    "datos_descriptivos": {
+      "referencia_catastral": "0119501YJ5101N0001PU",
+      "localizacion": {
+        "texto_completo": "CL GOVERNADOR 48 Bl:A Es:1 Pl:00 Pt:01\n46780 OLIVA (VALENCIA)",
+        "poligono": "",
+        "parcela": "",
+        "partida": "",
+        "municipio": "46780 OLIVA",
+        "provincia": "VALENCIA"
+      },
+      "clase": "Urbano",
+      "uso_principal": "Residencial",
+      "superficie_construida": "218 m2",
+      "año_construcción": "1933"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "187 m2",
+      "participación_del_inmueble": "50,000000 %"
+    },
+    "cultivos": []
+  },
+  {
+    "referencia_catastral": "9324502YJ4192S0032FO",
+    "fecha_extraccion": "2025-11-08T15:08:36.307342",
+    "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=U&RefC=9324502YJ4192S0032FO&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=9324502YJ4192S0032FO&final=&del=46&mun=183",
+    "datos_descriptivos": {
+      "referencia_catastral": "9324502YJ4192S0032FO",
+      "localizacion": {
+        "texto_completo": "CL JOANOT MARTORELL 15 Bl:A Es:1 Pl:07 Pt:0A\n46780 OLIVA (VALENCIA)",
+        "poligono": "",
+        "parcela": "",
+        "partida": "",
+        "municipio": "46780 OLIVA",
+        "provincia": "VALENCIA"
+      },
+      "clase": "Urbano",
+      "uso_principal": "Residencial",
+      "superficie_construida": "141 m2",
+      "año_construcción": "1977"
+    },
+    "parcela_catastral": {
+      "superficie_gráfica": "527 m2",
+      "participación_del_inmueble": "2,810000 %"
+    },
+    "cultivos": []
+  }
+]

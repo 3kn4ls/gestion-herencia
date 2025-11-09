@@ -1,0 +1,29 @@
+{
+  "referencia_catastral": "46183A009007350000HY",
+  "fecha_extraccion": "2025-11-08T15:08:10.767284",
+  "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=46183A009007350000HY&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=46183A009007350000HY&final=&del=46&mun=183",
+  "datos_descriptivos": {
+    "referencia_catastral": "46183A009007350000HY",
+    "localizacion": {
+      "texto_completo": "Polígono 9 Parcela 735\nFONT DEL MASET. OLIVA (VALENCIA)",
+      "poligono": "9",
+      "parcela": "735",
+      "partida": "FONT DEL MASET",
+      "municipio": "OLIVA",
+      "provincia": "VALENCIA"
+    },
+    "clase": "Rústico",
+    "uso_principal": "Agrario"
+  },
+  "parcela_catastral": {
+    "superficie_gráfica": "1.183 m2"
+  },
+  "cultivos": [
+    {
+      "subparcela": "0",
+      "cultivo_aprovechamiento": "NR Agrios regadío",
+      "intensidad_productiva": "02",
+      "superficie_m2": "1.183"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "referencia_catastral": "46183A020000880000HR",
+  "fecha_extraccion": "2025-11-08T15:06:54.925444",
+  "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=46183A020000880000HR&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=46183A020000880000HR&final=&del=46&mun=183",
+  "datos_descriptivos": {
+    "referencia_catastral": "46183A020000880000HR",
+    "localizacion": {
+      "texto_completo": "Polígono 20 Parcela 88\nLA PLANA. OLIVA (VALENCIA)",
+      "poligono": "20",
+      "parcela": "88",
+      "partida": "LA PLANA",
+      "municipio": "OLIVA",
+      "provincia": "VALENCIA"
+    },
+    "clase": "Rústico",
+    "uso_principal": "Agrario"
+  },
+  "parcela_catastral": {
+    "superficie_gráfica": "3.086 m2"
+  },
+  "cultivos": [
+    {
+      "subparcela": "0",
+      "cultivo_aprovechamiento": "NR Agrios regadío",
+      "intensidad_productiva": "01",
+      "superficie_m2": "3.086"
+    }
+  ]
+}

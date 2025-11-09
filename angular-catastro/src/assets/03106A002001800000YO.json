@@ -1,0 +1,41 @@
+{
+  "referencia_catastral": "03106A002001800000YO",
+  "fecha_extraccion": "2025-11-08T15:03:41.753013",
+  "url_consultada": "https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCConCiud.aspx?UrbRus=R&RefC=03106A002001800000YO&esBice=&RCBice1=&RCBice2=&DenoBice=&from=OVCBusqueda&pest=rc&RCCompleta=03106A002001800000YO&final=&del=3&mun=106",
+  "datos_descriptivos": {
+    "referencia_catastral": "03106A002001800000YO",
+    "localizacion": {
+      "texto_completo": "Polígono 2 Parcela 180\nEL LLOMBO. PLANES (ALICANTE)",
+      "poligono": "2",
+      "parcela": "180",
+      "partida": "EL LLOMBO",
+      "municipio": "PLANES",
+      "provincia": "ALICANTE"
+    },
+    "clase": "Rústico",
+    "uso_principal": "Agrario"
+  },
+  "parcela_catastral": {
+    "superficie_gráfica": "9.682 m2"
+  },
+  "cultivos": [
+    {
+      "subparcela": "a",
+      "cultivo_aprovechamiento": "O- Olivos secano",
+      "intensidad_productiva": "02",
+      "superficie_m2": "4.992"
+    },
+    {
+      "subparcela": "b",
+      "cultivo_aprovechamiento": "MM Pinar maderable",
+      "intensidad_productiva": "02",
+      "superficie_m2": "1.124"
+    },
+    {
+      "subparcela": "c",
+      "cultivo_aprovechamiento": "O- Olivos secano",
+      "intensidad_productiva": "02",
+      "superficie_m2": "3.566"
+    }
+  ]
+}
