@@ -1,7 +1,23 @@
 <!-- Header -->
 <header class="app-header">
-  <h1>📋 Valoración de Propiedades Catastrales</h1>
-  <p class="subtitle">Sistema de valoración basado en cultivos y tasaciones oficiales</p>
+  <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+    <div>
+      <h1>📋 Valoración de Propiedades Catastrales</h1>
+      <p class="subtitle">
+        Sistema de valoración basado en cultivos y tasaciones oficiales
+        <span *ngIf="usandoValoresPersonalizados()" style="color: #f59e0b; font-weight: bold; margin-left: 1rem;">
+          ⚙️ Usando valores personalizados
+        </span>
+      </p>
+    </div>
+    <button
+      class="btn btn-config"
+      (click)="abrirConfiguracion()"
+      title="Configurar valores de tasación"
+    >
+      ⚙️ Configuración
+    </button>
+  </div>
 </header>
 
 <div class="container">
@@ -346,4 +362,90 @@
     <p>No hay propiedades cargadas</p>
   </section>
 
+</div>
+
+<!-- Modal de Configuración -->
+<div *ngIf="mostrarConfiguracion" class="modal-overlay" (click)="cerrarConfiguracion()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>⚙️ Configuración de Valores de Tasación</h2>
+      <button class="btn-close" (click)="cerrarConfiguracion()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="config-info">
+        <p><strong>📝 Nota:</strong> Modifica los valores de tasación por hectárea para cada tipo de cultivo y municipio.
+        Los cambios se guardarán localmente y se aplicarán automáticamente a todas las valoraciones.</p>
+      </div>
+
+      <div *ngIf="valoresEditables" class="config-content">
+        <!-- Por cada municipio -->
+        <div *ngFor="let municipio of municipios" class="municipio-section">
+          <h3>{{ municipio }}</h3>
+          <p class="municipio-info">
+            <strong>Provincia:</strong> {{ valoresEditables.municipios[municipio].provincia }} |
+            <strong>Código ATH:</strong> {{ valoresEditables.municipios[municipio].codigo_ath }}
+          </p>
+
+          <div class="cultivos-grid">
+            <div *ngFor="let codigo of getCodigosCultivo(municipio)" class="cultivo-item">
+              <label>
+                <strong>{{ codigo }}</strong> - {{ valoresEditables.municipios[municipio].cultivos[codigo].uso_catastral }}
+              </label>
+              <div class="input-group">
+                <input
+                  type="number"
+                  [(ngModel)]="valoresEditables.municipios[municipio].cultivos[codigo].valor_por_hectarea"
+                  min="0"
+                  step="100"
+                  class="input-valor"
+                />
+                <span class="input-suffix">€/ha</span>
+              </div>
+              <small class="cultivo-descripcion">
+                {{ valoresEditables.municipios[municipio].cultivos[codigo].descripcion }}
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Valores por defecto -->
+        <div class="municipio-section">
+          <h3>Valor por Defecto (cultivos no identificados)</h3>
+          <div class="cultivos-grid">
+            <div class="cultivo-item">
+              <label>
+                <strong>{{ valoresEditables.valores_por_defecto.codigo }}</strong> - {{ valoresEditables.valores_por_defecto.uso_catastral }}
+              </label>
+              <div class="input-group">
+                <input
+                  type="number"
+                  [(ngModel)]="valoresEditables.valores_por_defecto.valor_por_hectarea"
+                  min="0"
+                  step="100"
+                  class="input-valor"
+                />
+                <span class="input-suffix">€/ha</span>
+              </div>
+              <small class="cultivo-descripcion">
+                {{ valoresEditables.valores_por_defecto.descripcion }}
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="cerrarConfiguracion()">
+        Cancelar
+      </button>
+      <button class="btn btn-warning" (click)="resetearADefecto()" *ngIf="usandoValoresPersonalizados()">
+        🔄 Resetear a Defecto
+      </button>
+      <button class="btn btn-primary" (click)="guardarConfiguracion()">
+        💾 Guardar Configuración
+      </button>
+    </div>
+  </div>
 </div>

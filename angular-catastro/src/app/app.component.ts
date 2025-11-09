@@ -6,6 +6,7 @@ import { forkJoin } from 'rxjs';
 
 import { DataService, ValoresTasacion } from './services/data.service';
 import { ValoracionService } from './services/valoracion.service';
+import { ConfigService } from './services/config.service';
 import { Propiedad } from './models/propiedad.model';
 import { Valoracion, ResultadoValoracion } from './models/valoracion.model';
 
@@ -23,7 +24,13 @@ export class AppComponent implements OnInit {
   propiedades: Propiedad[] = [];
   propiedadesFiltradas: Propiedad[] = [];
   valoresTasacion: ValoresTasacion | null = null;
+  valoresTasacionDefecto: ValoresTasacion | null = null;
   resultadoValoracion: ResultadoValoracion | null = null;
+
+  // Configuración
+  mostrarConfiguracion = false;
+  valoresEditables: ValoresTasacion | null = null;
+  municipios: string[] = [];
 
   // Filtros
   filtros = {
@@ -48,7 +55,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    private valoracionService: ValoracionService
+    private valoracionService: ValoracionService,
+    private configService: ConfigService
   ) {}
 
   ngOnInit(): void {
@@ -67,12 +75,25 @@ export class AppComponent implements OnInit {
     }).subscribe({
       next: ({ propiedades, valores }) => {
         this.propiedades = propiedades;
-        this.valoresTasacion = valores;
+        this.valoresTasacionDefecto = valores;
+
+        // Verificar si hay valores personalizados guardados
+        const valoresPersonalizados = this.configService.getValores();
+        this.valoresTasacion = valoresPersonalizados || valores;
+
+        // Guardar lista de municipios para la configuración
+        this.municipios = Object.keys(valores.municipios);
+
         this.aplicarFiltros();
         this.construirFiltros();
         this.valorarAutomaticamente();
         this.cargandoDatos = false;
-        console.log(`✅ ${propiedades.length} propiedades cargadas y valoradas`);
+
+        if (valoresPersonalizados) {
+          console.log(`✅ ${propiedades.length} propiedades cargadas con valores personalizados`);
+        } else {
+          console.log(`✅ ${propiedades.length} propiedades cargadas con valores por defecto`);
+        }
       },
       error: (error) => {
         console.error('❌ Error al cargar datos:', error);
@@ -312,6 +333,77 @@ export class AppComponent implements OnInit {
       console.error('Error al exportar:', error);
       alert('❌ Error al copiar los datos. Verifica que tu navegador permita acceso al portapapeles.');
     }
+  }
+
+  /**
+   * Abre el modal de configuración
+   */
+  abrirConfiguracion(): void {
+    // Crear una copia profunda de los valores actuales para editarlos
+    this.valoresEditables = JSON.parse(JSON.stringify(this.valoresTasacion));
+    this.mostrarConfiguracion = true;
+  }
+
+  /**
+   * Cierra el modal de configuración sin guardar
+   */
+  cerrarConfiguracion(): void {
+    this.mostrarConfiguracion = false;
+    this.valoresEditables = null;
+  }
+
+  /**
+   * Guarda los valores editados y recalcula valoraciones
+   */
+  guardarConfiguracion(): void {
+    if (!this.valoresEditables) return;
+
+    // Actualizar fecha de modificación
+    this.valoresEditables.fecha = new Date().getFullYear().toString();
+
+    // Guardar en localStorage
+    this.configService.guardarValoresPersonalizados(this.valoresEditables);
+
+    // Aplicar los nuevos valores
+    this.valoresTasacion = this.valoresEditables;
+
+    // Recalcular valoraciones
+    this.valorarAutomaticamente();
+
+    // Cerrar modal
+    this.mostrarConfiguracion = false;
+    this.valoresEditables = null;
+
+    alert('✅ Configuración guardada. Las valoraciones se han recalculado con los nuevos valores.');
+  }
+
+  /**
+   * Resetea a valores por defecto
+   */
+  resetearADefecto(): void {
+    if (confirm('¿Estás seguro de que deseas resetear a los valores por defecto? Se perderán los valores personalizados.')) {
+      this.configService.resetearADefecto();
+      this.valoresTasacion = this.valoresTasacionDefecto;
+      this.valorarAutomaticamente();
+      this.cerrarConfiguracion();
+      alert('✅ Valores reseteados a por defecto');
+    }
+  }
+
+  /**
+   * Verifica si está usando valores personalizados
+   */
+  usandoValoresPersonalizados(): boolean {
+    return this.configService.tieneValoresPersonalizados();
+  }
+
+  /**
+   * Obtiene los códigos de cultivo de un municipio
+   */
+  getCodigosCultivo(municipio: string): string[] {
+    if (!this.valoresEditables) return [];
+    const cultivosMunicipio = this.valoresEditables.municipios[municipio]?.cultivos;
+    return cultivosMunicipio ? Object.keys(cultivosMunicipio) : [];
   }
 
   /**
