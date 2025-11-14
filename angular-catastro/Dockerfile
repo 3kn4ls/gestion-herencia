@@ -1,31 +1,35 @@
-# Stage 1: Build de la aplicación Angular
+# Multi-stage build optimizado para Raspberry Pi (ARM)
+# Stage 1: Build de Angular
 FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Copiar package.json y package-lock.json
+# Copiar package files
 COPY package*.json ./
 
 # Instalar dependencias
-RUN npm ci --legacy-peer-deps
+RUN npm ci --only=production
 
-# Copiar el código fuente
+# Copiar código fuente
 COPY . .
 
-# Build de producción con base-href para subpath
-RUN npm run build -- --base-href=/gestion-herencia/
+# Build de producción con base href /herencia/
+RUN npm run build -- --configuration production --base-href /herencia/
 
-# Stage 2: Servir con nginx
+# Stage 2: Servidor Nginx
 FROM nginx:alpine
 
-# Copiar archivos compilados
-COPY --from=builder /app/dist/angular-catastro /usr/share/nginx/html/gestion-herencia
+# Copiar archivos compilados desde el builder
+COPY --from=builder /app/dist/angular-catastro /usr/share/nginx/html/herencia
 
-# Copiar configuración personalizada de nginx
+# Copiar configuración personalizada de Nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Exponer puerto 80
 EXPOSE 80
 
-# Comando por defecto
+# Healthcheck
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget --quiet --tries=1 --spider http://localhost/herencia/ || exit 1
+
 CMD ["nginx", "-g", "daemon off;"]
