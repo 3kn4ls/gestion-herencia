@@ -1,36 +1,76 @@
 # 📋 Sistema de Gestión de Datos Catastrales
 
-Sistema completo para la extracción, almacenamiento y visualización de datos del Catastro español.
+Sistema completo para la extracción, almacenamiento y visualización de datos del Catastro español, con aplicación Angular moderna y sistema de valoración de herencias.
 
 ## 🎯 Características
 
 - ✅ Servicio de extracción de datos catastrales
 - ✅ Almacenamiento en formato JSON
+- ✅ **Aplicación Angular 17 moderna** con valoración de propiedades
 - ✅ Frontend web interactivo para visualización
 - ✅ Búsqueda y filtrado de propiedades
+- ✅ **Valoración automática** de propiedades rústicas y urbanas
+- ✅ Configuración personalizada de valores de tasación
 - ✅ Vista detallada de cada propiedad
 - ✅ Resumen con estadísticas generales
 - ✅ Diseño responsive y moderno
+- ✅ **Despliegue en Kubernetes (k3s)** optimizado para Raspberry Pi
 
 ## 📁 Estructura del Proyecto
 
 ```
 gestion-herencia/
-├── catastro_scraper_service.py   # Servicio principal de extracción
-├── catastro_service.py            # Cliente para API oficial (bloqueado)
+├── angular-catastro/              # 🆕 Aplicación Angular moderna
+│   ├── src/
+│   │   ├── app/                   # Componentes y servicios
+│   │   │   ├── services/          # Servicios de datos y valoración
+│   │   │   └── models/            # Modelos TypeScript
+│   │   ├── assets/                # Datos JSON y recursos
+│   │   └── index.html             # Configurado para /herencia/
+│   ├── Dockerfile                 # 🆕 Para build en contenedor
+│   ├── nginx.conf                 # 🆕 Configuración de Nginx
+│   └── package.json
+├── k8s/                           # 🆕 Manifiestos de Kubernetes
+│   ├── deployment.yaml            # Deployment del frontend
+│   ├── service.yaml               # Service de Kubernetes
+│   └── ingress.yaml               # Ingress con path /herencia
+├── catastro_scraper_service.py    # Servicio principal de extracción
+├── valorador_inmuebles.py         # Sistema de valoración
 ├── server.py                      # Servidor HTTP para desarrollo
 ├── requirements.txt               # Dependencias Python
 ├── data/                          # Directorio de datos JSON
 │   ├── datos_catastrales_consolidados.json
 │   ├── resumen_propiedades.json
 │   └── [referencia].json          # Datos individuales por referencia
-└── frontend/                      # Aplicación web
-    ├── index.html                 # Página principal
-    ├── styles.css                 # Estilos
-    └── app.js                     # Lógica de la aplicación
+├── frontend/                      # Aplicación web legacy
+│   ├── index.html
+│   ├── styles.css
+│   └── app.js
+├── DESPLIEGUE-K3S.md             # 🆕 Guía de despliegue en Kubernetes
+└── README.md
 ```
 
-## 🚀 Inicio Rápido
+## 🚀 Despliegue en Producción (k3s/Kubernetes)
+
+Para desplegar la aplicación Angular en un cluster k3s (ideal para Raspberry Pi), consulta la guía completa:
+
+📖 **[DESPLIEGUE-K3S.md](DESPLIEGUE-K3S.md)** - Guía completa de despliegue en Kubernetes
+
+**Resumen rápido:**
+```bash
+# En el servidor con k3s
+cd angular-catastro
+sudo docker build -t gestion-herencia-frontend:latest .
+sudo docker save gestion-herencia-frontend:latest | sudo k3s ctr images import -
+cd ..
+sudo kubectl apply -f k8s/ -n herencia
+
+# Acceso: http://TU_IP/herencia/
+```
+
+La aplicación estará disponible en `http://TU_HOST/herencia/`
+
+## 🚀 Inicio Rápido (Desarrollo Local)
 
 ### 1. Instalar dependencias
 
@@ -58,6 +98,23 @@ python3 server.py
 ### 4. Acceder al frontend
 
 Abre tu navegador en: `http://localhost:8000/frontend/`
+
+### 5. Desarrollo con Angular (Aplicación Moderna)
+
+```bash
+cd angular-catastro
+npm install
+npm start
+```
+
+La aplicación Angular estará disponible en: `http://localhost:4200/`
+
+**Nota**: La aplicación Angular incluye:
+- Sistema de valoración de propiedades rústicas y urbanas
+- Configuración personalizable de valores de tasación
+- Interfaz moderna y responsive
+- PWA con soporte offline
+- Búsqueda y filtrado avanzado
 
 ## 📖 Uso del Sistema
 

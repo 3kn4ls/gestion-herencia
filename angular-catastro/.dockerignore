@@ -1,8 +1,14 @@
 node_modules
 .angular
+dist
 .git
 .gitignore
 *.md
 !README.md
 .editorconfig
 .vscode
+npm-debug.log
+yarn-error.log
+coverage
+.DS_Store
+Thumbs.db
