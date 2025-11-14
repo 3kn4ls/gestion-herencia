@@ -1,0 +1,42 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gestion-herencia
+  namespace: default
+  annotations:
+    # Traefik annotations
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    # Redireccionar HTTP a HTTPS
+    traefik.ingress.kubernetes.io/redirect-scheme: https
+    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+    # Middleware para strip prefix si es necesario
+    # traefik.ingress.kubernetes.io/router.middlewares: default-strip-gestion-herencia@kubernetescrd
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /gestion-herencia
+        pathType: Prefix
+        backend:
+          service:
+            name: gestion-herencia
+            port:
+              number: 80
+  # Si tienes un dominio específico, descomenta y modifica:
+  # - host: tu-dominio.com
+  #   http:
+  #     paths:
+  #     - path: /gestion-herencia
+  #       pathType: Prefix
+  #       backend:
+  #         service:
+  #           name: gestion-herencia
+  #           port:
+  #             number: 80
+  tls:
+  - hosts:
+    - localhost
+    # Cambia esto por tu dominio si tienes uno
+    # - tu-dominio.com
+    # secretName: gestion-herencia-tls
