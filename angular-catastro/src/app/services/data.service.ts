@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { Propiedad } from '../models/propiedad.model';
+import { ApiService } from './api.service';
 
 /**
  * Interfaz para los valores de tasación
@@ -10,6 +11,7 @@ import { Propiedad } from '../models/propiedad.model';
 export interface ValoresTasacion {
   descripcion: string;
   fecha: string;
+  fuente?: string;
   municipios: {
     [municipio: string]: {
       codigo_ath: string;
@@ -35,18 +37,57 @@ export interface ValoresTasacion {
 
 /**
  * Servicio para carga y gestión de datos
+ * Ahora con soporte para backend API + fallback a assets
  */
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
-  constructor(private http: HttpClient) { }
+  private useBackend = true; // Flag para usar backend o assets
+
+  constructor(
+    private http: HttpClient,
+    private apiService: ApiService
+  ) { }
 
   /**
-   * Carga las propiedades desde el archivo por defecto
+   * Carga las propiedades (intenta backend, fallback a assets)
    */
   cargarPropiedades(): Observable<Propiedad[]> {
+    if (this.useBackend) {
+      return this.apiService.getPropiedades().pipe(
+        map(propiedades => propiedades.map(p => this.convertirDesdeBackend(p))),
+        catchError(error => {
+          console.warn('⚠️ Backend no disponible, cargando desde assets:', error.message);
+          return this.cargarPropiedadesDesdeAssets();
+        })
+      );
+    } else {
+      return this.cargarPropiedadesDesdeAssets();
+    }
+  }
+
+  /**
+   * Carga valores de tasación (intenta backend, fallback a assets)
+   */
+  cargarValoresTasacion(): Observable<ValoresTasacion> {
+    if (this.useBackend) {
+      return this.apiService.getValoresTasacion().pipe(
+        catchError(error => {
+          console.warn('⚠️ Backend no disponible, cargando desde assets:', error.message);
+          return this.cargarValoresTasacionDesdeAssets();
+        })
+      );
+    } else {
+      return this.cargarValoresTasacionDesdeAssets();
+    }
+  }
+
+  /**
+   * Carga las propiedades desde assets (fallback)
+   */
+  private cargarPropiedadesDesdeAssets(): Observable<Propiedad[]> {
     return this.http.get<any[]>('assets/datos_catastrales_mergeados.json').pipe(
       map(data => {
         return data.map((p: any) => this.normalizarPropiedad(p));
@@ -55,10 +96,23 @@ export class DataService {
   }
 
   /**
-   * Carga los valores de tasación por municipio
+   * Carga valores de tasación desde assets (fallback)
    */
-  cargarValoresTasacion(): Observable<ValoresTasacion> {
+  private cargarValoresTasacionDesdeAssets(): Observable<ValoresTasacion> {
     return this.http.get<ValoresTasacion>('assets/valores-tasacion-cultivos.json');
+  }
+
+  /**
+   * Convierte una propiedad del formato backend al formato frontend
+   */
+  private convertirDesdeBackend(prop: any): Propiedad {
+    // Si ya viene en formato correcto desde el backend, solo retornar
+    if (prop.localizacion && prop.datos_inmueble) {
+      return prop as Propiedad;
+    }
+
+    // Si viene en formato legacy, normalizar
+    return this.normalizarPropiedad(prop);
   }
 
   /**

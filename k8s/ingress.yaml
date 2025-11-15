@@ -12,6 +12,15 @@ spec:
   rules:
   - http:
       paths:
+      # API Backend - debe ir primero para tener prioridad
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: gestion-herencia-backend
+            port:
+              number: 3000
+      # Frontend Angular
       - path: /herencia
         pathType: Prefix
         backend:
