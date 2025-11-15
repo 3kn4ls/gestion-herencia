@@ -10,13 +10,23 @@
         </span>
       </p>
     </div>
-    <button
-      class="btn btn-config"
-      (click)="abrirConfiguracion()"
-      title="Configurar valores de tasación"
-    >
-      ⚙️ Configuración
-    </button>
+    <div style="display: flex; gap: 10px;">
+      <button
+        class="btn btn-reparto"
+        (click)="abrirReparto()"
+        title="Reparto de herencia entre herederos"
+        *ngIf="!mostrarReparto && propiedades.length > 0"
+      >
+        ⚖️ Reparto Herencia
+      </button>
+      <button
+        class="btn btn-config"
+        (click)="abrirConfiguracion()"
+        title="Configurar valores de tasación"
+      >
+        ⚙️ Configuración
+      </button>
+    </div>
   </div>
 </header>
 
@@ -506,5 +516,16 @@
         💾 Guardar Configuración
       </button>
     </div>
+  </div>
+</div>
+
+<!-- Módulo de Reparto de Herencia -->
+<div *ngIf="mostrarReparto" class="modal-reparto">
+  <div class="modal-reparto-contenido">
+    <button class="btn-cerrar-reparto" (click)="cerrarReparto()" title="Cerrar reparto">✕</button>
+    <app-reparto-herencia
+      [propiedades]="propiedades"
+      [valoraciones]="resultadoValoracion?.valoraciones || []">
+    </app-reparto-herencia>
   </div>
 </div>

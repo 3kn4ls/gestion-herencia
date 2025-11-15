@@ -9,11 +9,12 @@ import { ValoracionService } from './services/valoracion.service';
 import { ConfigService } from './services/config.service';
 import { Propiedad } from './models/propiedad.model';
 import { Valoracion, ResultadoValoracion } from './models/valoracion.model';
+import { RepartoHerenciaComponent } from './reparto-herencia/reparto-herencia.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, HttpClientModule, RepartoHerenciaComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -31,6 +32,9 @@ export class AppComponent implements OnInit {
   mostrarConfiguracion = false;
   valoresEditables: ValoresTasacion | null = null;
   municipios: string[] = [];
+
+  // Módulo de Reparto de Herencia
+  mostrarReparto = false;
 
   // Filtros
   filtros = {
@@ -479,5 +483,23 @@ export class AppComponent implements OnInit {
       minimumFractionDigits: 0,
       maximumFractionDigits: 2
     }).format(value);
+  }
+
+  /**
+   * Abre el módulo de reparto de herencia
+   */
+  abrirReparto(): void {
+    if (!this.resultadoValoracion || this.resultadoValoracion.valoraciones.length === 0) {
+      alert('No hay propiedades valoradas. Por favor, espera a que se complete la valoración.');
+      return;
+    }
+    this.mostrarReparto = true;
+  }
+
+  /**
+   * Cierra el módulo de reparto de herencia
+   */
+  cerrarReparto(): void {
+    this.mostrarReparto = false;
   }
 }
