@@ -37,7 +37,20 @@ const PropiedadSchema = new mongoose.Schema({
   cultivos: [CultivoSchema],
   valor_referencia: Number,
   url_consultada: String,
-  escritura: String
+  escritura: String,
+  // Nuevos campos personalizados
+  desc: {
+    type: String,
+    default: ''
+  },
+  precioManual: {
+    type: Number,
+    default: null
+  },
+  distanciaMar: {
+    type: Number,
+    default: null
+  }
 }, {
   timestamps: true,
   collection: 'propiedad'

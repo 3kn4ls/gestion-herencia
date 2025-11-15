@@ -168,6 +168,15 @@
         >
           📋 Copiar para Excel
         </button>
+        <!-- Botón crear propiedad -->
+        <button
+          class="btn btn-primary"
+          style="background: #2563eb; color: white;"
+          (click)="crearNuevaPropiedad()"
+          title="Crear nueva propiedad"
+        >
+          ➕ Nueva Propiedad
+        </button>
       </div>
     </div>
 
@@ -176,6 +185,7 @@
       <table class="properties-data-table">
         <thead>
           <tr>
+            <th>Acciones</th>
             <th>Catastro</th>
             <th>Ref. Catastral</th>
             <th>Provincia</th>
@@ -207,6 +217,14 @@
                 [class.first-row]="i === 0"
                 [class.subparcela-row]="i > 0"
               >
+                <td *ngIf="i === 0" [attr.rowspan]="propiedad.cultivos!.length" class="actions-cell">
+                  <button class="btn-action btn-edit" (click)="editarPropiedad(propiedad)" title="Editar">
+                    ✏️
+                  </button>
+                  <button class="btn-action btn-delete" (click)="eliminarPropiedad(propiedad)" title="Eliminar">
+                    🗑️
+                  </button>
+                </td>
                 <td *ngIf="i === 0" [attr.rowspan]="propiedad.cultivos!.length" class="btn-cell">
                   <button class="btn-catastro" (click)="abrirCatastro(propiedad)" title="Ver en Catastro">
                     🔗
@@ -264,6 +282,14 @@
             </ng-container>
             <ng-template #sinCultivos>
               <tr class="first-row">
+                <td class="actions-cell">
+                  <button class="btn-action btn-edit" (click)="editarPropiedad(propiedad)" title="Editar">
+                    ✏️
+                  </button>
+                  <button class="btn-action btn-delete" (click)="eliminarPropiedad(propiedad)" title="Eliminar">
+                    🗑️
+                  </button>
+                </td>
                 <td class="btn-cell">
                   <button class="btn-catastro" (click)="abrirCatastro(propiedad)" title="Ver en Catastro">
                     🔗
@@ -515,6 +541,281 @@
       </button>
       <button class="btn btn-primary" (click)="guardarConfiguracion()">
         💾 Guardar Configuración
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal CRUD de Propiedad -->
+<div *ngIf="mostrarModalPropiedad" class="modal-overlay" (click)="cerrarModalPropiedad()">
+  <div class="modal-content modal-propiedad" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ modoEdicion === 'crear' ? '➕ Nueva Propiedad' : '✏️ Editar Propiedad' }}</h2>
+      <button class="btn-close" (click)="cerrarModalPropiedad()">✕</button>
+    </div>
+
+    <div class="modal-body" *ngIf="propiedadEditando">
+      <form class="form-propiedad">
+        <!-- Sección: Datos Básicos -->
+        <div class="form-section">
+          <h3 class="section-title">📋 Datos Básicos</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="referencia">Referencia Catastral *</label>
+              <input
+                type="text"
+                id="referencia"
+                [(ngModel)]="propiedadEditando.referencia_catastral"
+                name="referencia"
+                class="form-control"
+                [readonly]="modoEdicion === 'editar'"
+                required>
+            </div>
+            <div class="form-group">
+              <label for="escritura">Escritura</label>
+              <input
+                type="text"
+                id="escritura"
+                [(ngModel)]="propiedadEditando.escritura"
+                name="escritura"
+                class="form-control">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label for="descripcion">Descripción de la Parcela</label>
+              <textarea
+                id="descripcion"
+                [(ngModel)]="propiedadEditando.desc"
+                name="descripcion"
+                class="form-control"
+                rows="3"
+                placeholder="Descripción detallada de la parcela..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección: Localización -->
+        <div class="form-section">
+          <h3 class="section-title">📍 Localización</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="provincia">Provincia</label>
+              <input
+                type="text"
+                id="provincia"
+                [(ngModel)]="propiedadEditando.localizacion!.provincia"
+                name="provincia"
+                class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="municipio">Municipio</label>
+              <input
+                type="text"
+                id="municipio"
+                [(ngModel)]="propiedadEditando.localizacion!.municipio"
+                name="municipio"
+                class="form-control">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="partida">Partida</label>
+              <input
+                type="text"
+                id="partida"
+                [(ngModel)]="propiedadEditando.localizacion!.partida"
+                name="partida"
+                class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="poligono">Polígono</label>
+              <input
+                type="text"
+                id="poligono"
+                [(ngModel)]="propiedadEditando.localizacion!.poligono"
+                name="poligono"
+                class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="parcela">Parcela</label>
+              <input
+                type="text"
+                id="parcela"
+                [(ngModel)]="propiedadEditando.localizacion!.parcela"
+                name="parcela"
+                class="form-control">
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección: Datos del Inmueble -->
+        <div class="form-section">
+          <h3 class="section-title">🏠 Datos del Inmueble</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="clase">Clase</label>
+              <input
+                type="text"
+                id="clase"
+                [(ngModel)]="propiedadEditando.datos_inmueble!.clase"
+                name="clase"
+                class="form-control"
+                placeholder="Ej: Rústico, Urbano">
+            </div>
+            <div class="form-group">
+              <label for="uso">Uso Principal</label>
+              <input
+                type="text"
+                id="uso"
+                [(ngModel)]="propiedadEditando.datos_inmueble!.uso_principal"
+                name="uso"
+                class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="superficie">Superficie Construida (m²)</label>
+              <input
+                type="number"
+                id="superficie"
+                [(ngModel)]="propiedadEditando.datos_inmueble!.superficie_construida"
+                name="superficie"
+                class="form-control"
+                step="0.01">
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección: Valoración -->
+        <div class="form-section">
+          <h3 class="section-title">💶 Valoración</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="valorRef">Valor Catastral Oficial (€)</label>
+              <input
+                type="number"
+                id="valorRef"
+                [(ngModel)]="propiedadEditando.valor_referencia"
+                name="valorRef"
+                class="form-control"
+                step="0.01">
+            </div>
+            <div class="form-group">
+              <label for="precioManual">
+                Precio Manual (€)
+                <span class="label-hint">Para herencias</span>
+              </label>
+              <input
+                type="number"
+                id="precioManual"
+                [(ngModel)]="propiedadEditando.precioManual"
+                name="precioManual"
+                class="form-control"
+                step="0.01"
+                placeholder="Opcional - Sobreescribe el calculado">
+              <small class="help-text">
+                Si se especifica, este valor se usará en el reparto de herencias en lugar del calculado
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección: Información Adicional -->
+        <div class="form-section">
+          <h3 class="section-title">🌊 Información Adicional</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="distanciaMar">Distancia al Mar (metros)</label>
+              <input
+                type="number"
+                id="distanciaMar"
+                [(ngModel)]="propiedadEditando.distanciaMar"
+                name="distanciaMar"
+                class="form-control"
+                step="1"
+                min="0"
+                placeholder="Distancia en metros">
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección: Cultivos -->
+        <div class="form-section">
+          <h3 class="section-title">
+            🌾 Cultivos
+            <button
+              type="button"
+              class="btn btn-sm btn-success"
+              (click)="añadirCultivo()"
+              style="margin-left: auto;">
+              ➕ Añadir Cultivo
+            </button>
+          </h3>
+
+          <div *ngIf="propiedadEditando.cultivos && propiedadEditando.cultivos.length > 0" class="cultivos-list">
+            <div *ngFor="let cultivo of propiedadEditando.cultivos; let i = index" class="cultivo-item">
+              <div class="cultivo-header">
+                <span class="cultivo-number">Cultivo #{{ i + 1 }}</span>
+                <button
+                  type="button"
+                  class="btn-delete-cultivo"
+                  (click)="eliminarCultivo(i)"
+                  title="Eliminar cultivo">
+                  🗑️
+                </button>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Subparcela</label>
+                  <input
+                    type="text"
+                    [(ngModel)]="cultivo.subparcela"
+                    [name]="'subparcela_' + i"
+                    class="form-control form-control-sm">
+                </div>
+                <div class="form-group">
+                  <label>Cultivo/Aprovechamiento</label>
+                  <input
+                    type="text"
+                    [(ngModel)]="cultivo.cultivo_aprovechamiento"
+                    [name]="'cultivo_' + i"
+                    class="form-control form-control-sm">
+                </div>
+                <div class="form-group">
+                  <label>Intensidad Productiva</label>
+                  <input
+                    type="text"
+                    [(ngModel)]="cultivo.intensidad_productiva"
+                    [name]="'intensidad_' + i"
+                    class="form-control form-control-sm">
+                </div>
+                <div class="form-group">
+                  <label>Superficie (m²)</label>
+                  <input
+                    type="number"
+                    [(ngModel)]="cultivo.superficie_m2"
+                    [name]="'superficie_m2_' + i"
+                    class="form-control form-control-sm"
+                    step="0.01">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="!propiedadEditando.cultivos || propiedadEditando.cultivos.length === 0" class="no-cultivos">
+            <p>No hay cultivos definidos. Haz clic en "Añadir Cultivo" para agregar uno.</p>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="cerrarModalPropiedad()">
+        Cancelar
+      </button>
+      <button class="btn btn-primary" (click)="guardarPropiedad()">
+        {{ modoEdicion === 'crear' ? '➕ Crear' : '💾 Guardar' }}
       </button>
     </div>
   </div>

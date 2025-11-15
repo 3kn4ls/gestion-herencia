@@ -40,4 +40,8 @@ export interface Propiedad {
   parcela_catastral?: ParcelaCatastral;
   valor_referencia?: number | null;
   escritura?: string;
+  // Nuevos campos personalizados
+  desc?: string;              // Descripción de la parcela
+  precioManual?: number;      // Precio manual para valoración personalizada
+  distanciaMar?: number;      // Distancia al mar en metros
 }

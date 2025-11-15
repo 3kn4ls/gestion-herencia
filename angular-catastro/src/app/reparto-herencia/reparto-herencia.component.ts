@@ -66,10 +66,13 @@ export class RepartoHerenciaComponent implements OnInit {
         const tipo = this.determinarTipo(p);
         const superficie = this.calcularSuperficie(p);
 
+        // Usar precio manual si existe, sino usar el calculado
+        const valorFinal = p.precioManual || valoracion.valor_estimado_euros || 0;
+
         return {
           propiedad: p,
           valoracion,
-          valor: valoracion.valor_estimado_euros || 0,
+          valor: valorFinal,
           superficie,
           tipo
         } as PropiedadAsignada;

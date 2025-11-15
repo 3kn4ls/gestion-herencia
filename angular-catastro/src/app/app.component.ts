@@ -624,7 +624,11 @@ export class AppComponent implements OnInit {
         superficie_construida: 0
       },
       cultivos: [],
-      valor_referencia: 0
+      valor_referencia: 0,
+      // Nuevos campos
+      desc: '',
+      precioManual: undefined,
+      distanciaMar: undefined
     };
     this.mostrarModalPropiedad = true;
   }
