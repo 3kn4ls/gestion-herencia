@@ -15,7 +15,7 @@ export interface DatosInmueble {
   clase?: string;
   uso_principal?: string;
   superficie_construida?: number;
-  año_construccion?: string;
+  ano_construccion?: string;
 }
 
 export interface Cultivo {

@@ -733,7 +733,7 @@ export class AppComponent implements OnInit {
   /**
    * Añade un cultivo a la propiedad que se está editando
    */
-  añadirCultivo(): void {
+  anadirCultivo(): void {
     if (!this.propiedadEditando) return;
 
     if (!this.propiedadEditando.cultivos) {
