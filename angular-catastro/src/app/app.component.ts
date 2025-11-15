@@ -404,7 +404,7 @@ export class AppComponent implements OnInit {
    */
   abrirConfiguracion(): void {
     // Crear una copia profunda de los valores actuales para editarlos
-    this.valoresEditables = JSON.parse(JSON.stringify(this.valoresTasacion));
+    this.valoresEditables = {...this.valoresTasacion};
     this.mostrarConfiguracion = true;
   }
 
