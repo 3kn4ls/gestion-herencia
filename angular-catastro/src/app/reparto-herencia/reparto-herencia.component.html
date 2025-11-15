@@ -1,0 +1,241 @@
+<!-- Modal de Configuración -->
+<div class="modal-configuracion" *ngIf="mostrarConfiguracion">
+  <div class="modal-contenido">
+    <h2>⚖️ Configurar Reparto de Herencia</h2>
+
+    <div class="formulario">
+      <div class="campo">
+        <label for="numeroHerederos">Número de herederos:</label>
+        <input
+          type="number"
+          id="numeroHerederos"
+          [(ngModel)]="config.numeroHerederos"
+          min="1"
+          max="10"
+          class="input-numero">
+        <small>Entre 1 y 10 herederos</small>
+      </div>
+
+      <div class="campo">
+        <label for="criterioBalance">Criterio de balanceo:</label>
+        <select id="criterioBalance" [(ngModel)]="config.criterioBalance" class="select">
+          <option value="valor">Solo valor económico</option>
+          <option value="mixto">Mixto (valor + tipo de propiedad)</option>
+        </select>
+        <small>
+          <span *ngIf="config.criterioBalance === 'valor'">
+            Las propiedades se distribuyen solo por su valor económico
+          </span>
+          <span *ngIf="config.criterioBalance === 'mixto'">
+            Se intenta equilibrar tanto el valor como el tipo de propiedades (rústicas/urbanas)
+          </span>
+        </small>
+      </div>
+
+      <div class="campo">
+        <label for="desequilibrio">Desequilibrio máximo permitido:</label>
+        <input
+          type="number"
+          id="desequilibrio"
+          [(ngModel)]="config.porcentajeDesequilibrioMaximo"
+          min="0"
+          max="50"
+          class="input-numero">
+        <small>Porcentaje máximo de diferencia entre herederos (recomendado: 10%)</small>
+      </div>
+
+      <div class="botones-modal">
+        <button (click)="iniciarReparto()" class="btn btn-primary btn-grande">
+          🚀 Iniciar Reparto
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Vista Principal de Reparto -->
+<div class="contenedor-reparto" *ngIf="!mostrarConfiguracion">
+
+  <!-- Barra de herramientas -->
+  <div class="barra-herramientas">
+    <div class="titulo-seccion">
+      <h2>⚖️ Reparto de Herencia</h2>
+      <span class="badge">{{ herederos.length }} herederos</span>
+    </div>
+
+    <div class="botones-accion">
+      <button (click)="repartirAutomaticamente()" class="btn btn-success" title="Reparto automático balanceado">
+        🤖 Reparto Automático
+      </button>
+      <button (click)="resetearReparto()" class="btn btn-warning" title="Volver todas las propiedades a disponibles">
+        🔄 Resetear
+      </button>
+      <button (click)="exportarReparto()" class="btn btn-info" title="Exportar reparto a texto">
+        📄 Exportar
+      </button>
+      <button (click)="volverAConfiguracion()" class="btn btn-secondary" title="Cambiar configuración">
+        ⚙️ Configurar
+      </button>
+    </div>
+  </div>
+
+  <!-- Estadísticas Generales -->
+  <div class="estadisticas-generales" *ngIf="estadisticas">
+    <div class="card-estadistica">
+      <div class="stat-label">Valor Total</div>
+      <div class="stat-value">{{ formatCurrency(estadisticas.valorTotal) }}</div>
+    </div>
+
+    <div class="card-estadistica">
+      <div class="stat-label">Promedio por Heredero</div>
+      <div class="stat-value">{{ formatCurrency(estadisticas.valorPromedioPorHeredero) }}</div>
+    </div>
+
+    <div class="card-estadistica">
+      <div class="stat-label">Diferencia Máx-Mín</div>
+      <div class="stat-value">{{ formatCurrency(estadisticas.diferenciaMaxMin) }}</div>
+    </div>
+
+    <div class="card-estadistica" [class.equilibrado]="estadisticas.equilibrado" [class.desequilibrado]="!estadisticas.equilibrado">
+      <div class="stat-label">Estado</div>
+      <div class="stat-value">
+        <span *ngIf="estadisticas.equilibrado">✅ Equilibrado</span>
+        <span *ngIf="!estadisticas.equilibrado">⚠️ Desequilibrado</span>
+      </div>
+      <div class="stat-detail">{{ estadisticas.desviacionPorcentual.toFixed(2) }}% desviación</div>
+    </div>
+  </div>
+
+  <!-- Área de Reparto con Drag & Drop -->
+  <div class="area-reparto">
+
+    <!-- Propiedades Disponibles (Tabla Maestra) -->
+    <div class="columna columna-disponibles">
+      <div class="header-columna">
+        <h3>📋 Propiedades Disponibles</h3>
+        <span class="contador">{{ propiedadesDisponibles.length }} propiedades</span>
+      </div>
+
+      <div
+        class="lista-propiedades"
+        cdkDropList
+        #disponiblesList="cdkDropList"
+        [cdkDropListData]="propiedadesDisponibles"
+        [cdkDropListConnectedTo]="getListasConectadas()"
+        (cdkDropListDropped)="onDrop($event)">
+
+        <div
+          class="card-propiedad disponible"
+          *ngFor="let prop of propiedadesDisponibles"
+          cdkDrag>
+
+          <div class="drag-handle" cdkDragHandle>⋮⋮</div>
+
+          <div class="propiedad-info">
+            <div class="propiedad-ref">{{ prop.propiedad.referencia_catastral }}</div>
+            <div class="propiedad-detalle">
+              <span class="badge" [class.badge-rustico]="prop.tipo === 'rustico'" [class.badge-urbano]="prop.tipo === 'urbano'">
+                {{ prop.tipo === 'rustico' ? '🌾 Rústica' : '🏠 Urbana' }}
+              </span>
+              <span class="municipio">{{ prop.propiedad.localizacion?.municipio }}</span>
+            </div>
+            <div class="propiedad-valores">
+              <div class="valor-principal">{{ formatCurrency(prop.valor) }}</div>
+              <div class="superficie">{{ formatNumber(prop.superficie, 4) }} ha</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mensaje-vacio" *ngIf="propiedadesDisponibles.length === 0">
+          <p>✅ Todas las propiedades han sido asignadas</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Columnas de Herederos -->
+    <div class="columnas-herederos">
+      <div class="columna columna-heredero" *ngFor="let heredero of herederos">
+
+        <div class="header-columna header-heredero" [class.heredero-activo]="heredero.propiedades.length > 0">
+          <div class="heredero-titulo">
+            <h3>{{ heredero.nombre }}</h3>
+            <input
+              type="text"
+              [(ngModel)]="heredero.nombre"
+              class="input-nombre-heredero"
+              placeholder="Nombre del heredero">
+          </div>
+
+          <div class="heredero-resumen">
+            <div class="resumen-item">
+              <span class="label">Valor:</span>
+              <span class="value">{{ formatCurrency(heredero.valorTotal) }}</span>
+            </div>
+            <div class="resumen-item">
+              <span class="label">Propiedades:</span>
+              <span class="value">{{ heredero.propiedades.length }}</span>
+            </div>
+            <div class="resumen-item pequeño">
+              <span class="badge badge-rustico-small">🌾 {{ heredero.cantidadRusticas }}</span>
+              <span class="badge badge-urbano-small">🏠 {{ heredero.cantidadUrbanas }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="lista-propiedades lista-heredero"
+          cdkDropList
+          [id]="'heredero-' + heredero.id"
+          [cdkDropListData]="heredero.propiedades"
+          [cdkDropListConnectedTo]="getListasConectadas()"
+          (cdkDropListDropped)="onDrop($event, heredero)">
+
+          <div
+            class="card-propiedad asignada"
+            *ngFor="let prop of heredero.propiedades"
+            cdkDrag>
+
+            <div class="drag-handle" cdkDragHandle>⋮⋮</div>
+
+            <div class="propiedad-info">
+              <div class="propiedad-ref">{{ prop.propiedad.referencia_catastral }}</div>
+              <div class="propiedad-detalle">
+                <span class="badge" [class.badge-rustico]="prop.tipo === 'rustico'" [class.badge-urbano]="prop.tipo === 'urbano'">
+                  {{ prop.tipo === 'rustico' ? '🌾' : '🏠' }}
+                </span>
+                <span class="municipio">{{ prop.propiedad.localizacion?.municipio }}</span>
+              </div>
+              <div class="propiedad-valores">
+                <div class="valor-principal">{{ formatCurrency(prop.valor) }}</div>
+                <div class="superficie">{{ formatNumber(prop.superficie, 4) }} ha</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mensaje-vacio-heredero" *ngIf="heredero.propiedades.length === 0">
+            <p>👆 Arrastra propiedades aquí</p>
+          </div>
+        </div>
+
+        <!-- Total del Heredero -->
+        <div class="footer-heredero">
+          <div class="total-label">Total:</div>
+          <div class="total-value">{{ formatCurrency(heredero.valorTotal) }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Información de Ayuda -->
+  <div class="info-ayuda">
+    <div class="ayuda-item">
+      <strong>💡 Consejo:</strong> Arrastra y suelta las propiedades entre columnas para asignarlas manualmente
+    </div>
+    <div class="ayuda-item">
+      <strong>🤖 Reparto Automático:</strong> Distribuye las propiedades de forma equilibrada según el criterio seleccionado
+    </div>
+    <div class="ayuda-item">
+      <strong>⚖️ Balance:</strong> El sistema intenta equilibrar tanto el valor como el tipo de propiedades
+    </div>
+  </div>
+</div>
