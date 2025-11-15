@@ -26,5 +26,24 @@
         ]
       }
     }
+  ],
+  "dataGroups": [
+    {
+      "name": "api",
+      "urls": [
+        "/herencia/api/**"
+      ],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxSize": 0,
+        "maxAge": "0u",
+        "timeout": "10s"
+      }
+    }
+  ],
+  "navigationUrls": [
+    "!/**/*.*",
+    "!/**/api/**",
+    "/**"
   ]
 }

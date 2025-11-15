@@ -3,9 +3,12 @@ kind: Ingress
 metadata:
   name: gestion-herencia
   annotations:
-    # Para k3s con Traefik - HTTP y HTTPS
-    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    # Certificado SSL
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    # Middleware para eliminar el prefijo /herencia/api del API
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-https-redirect@kubernetescrd,herencia-strip-herencia-api@kubernetescrd
 spec:
+  ingressClassName: traefik
   rules:
   # Regla para acceso externo por dominio
   - host: northr3nd.duckdns.org

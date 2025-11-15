@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gestion-herencia-frontend
+  namespace: herencia
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-https-redirect@kubernetescrd
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: northr3nd.duckdns.org
+    http:
+      paths:
+      - path: /herencia
+        pathType: Prefix
+        backend:
+          service:
+            name: gestion-herencia
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - northr3nd.duckdns.org
+    secretName: northr3nd-tls

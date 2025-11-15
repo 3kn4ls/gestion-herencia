@@ -143,6 +143,33 @@ if [ "$DEPLOY_BACKEND" = true ]; then
 fi
 
 #############################################
+# CONFIGURACIÓN KUBERNETES
+#############################################
+echo ""
+echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${BLUE}  ⚙️  CONFIGURACIÓN KUBERNETES${NC}"
+echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+
+echo -e "${YELLOW}📋 Aplicando configuraciones de Kubernetes...${NC}"
+
+# Aplicar middleware
+sudo kubectl apply -f "$K8S_DIR/middleware.yaml"
+
+# Aplicar services
+sudo kubectl apply -f "$K8S_DIR/service.yaml"
+sudo kubectl apply -f "$K8S_DIR/backend-service.yaml"
+
+# Aplicar deployments
+sudo kubectl apply -f "$K8S_DIR/deployment.yaml"
+sudo kubectl apply -f "$K8S_DIR/backend-deployment.yaml"
+
+# Aplicar ingress
+sudo kubectl apply -f "$K8S_DIR/ingress-frontend.yaml"
+sudo kubectl apply -f "$K8S_DIR/ingress-backend.yaml"
+
+echo -e "${GREEN}✅ Configuraciones de Kubernetes aplicadas${NC}"
+
+#############################################
 # VERIFICACIÓN
 #############################################
 echo ""
