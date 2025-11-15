@@ -53,3 +53,23 @@ test*.html
 tmp/
 temp/
 *.backup
+
+# Environment variables and secrets
+.env
+backend/.env
+**/.env.local
+**/.env.*.local
+
+# Docker images exports
+*.tar
+*.tar.gz
+
+# Kubernetes secrets (solo si los tienes como archivos)
+k8s/secrets.yaml
+k8s/secret-*.yaml
+
+# Node.js en directorio raíz (scripts temporales)
+/node_modules/
+/package.json
+/package-lock.json
+/import-data.js

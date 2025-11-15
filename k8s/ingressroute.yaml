@@ -1,0 +1,23 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: gestion-herencia-local
+  namespace: herencia
+spec:
+  entryPoints:
+    - web
+  routes:
+  # Ruta para API - más específica, debe ir primero
+  - match: PathPrefix(`/herencia/api`)
+    kind: Rule
+    services:
+    - name: gestion-herencia-backend
+      port: 3000
+    middlewares:
+    - name: strip-herencia-api
+  # Ruta para Frontend - menos específica
+  - match: PathPrefix(`/herencia`)
+    kind: Rule
+    services:
+    - name: gestion-herencia
+      port: 80

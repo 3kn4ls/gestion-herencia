@@ -28,7 +28,10 @@ spec:
         - name: PORT
           value: "3000"
         - name: MONGODB_URI
-          value: "mongodb://192.168.1.95:27017/herencia"
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-credentials
+              key: mongodb-uri
         resources:
           requests:
             cpu: 50m

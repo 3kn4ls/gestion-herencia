@@ -22,6 +22,9 @@ FROM nginx:alpine
 # Copiar archivos compilados desde el builder
 COPY --from=builder /app/dist/angular-catastro /usr/share/nginx/html/herencia
 
+# Copiar página de limpieza de caché
+COPY clear-sw.html /usr/share/nginx/html/clear-sw.html
+
 # Copiar configuración personalizada de Nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 

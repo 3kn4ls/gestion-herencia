@@ -3,24 +3,25 @@ kind: Ingress
 metadata:
   name: gestion-herencia
   annotations:
-    # Para k3s con Traefik
-    traefik.ingress.kubernetes.io/router.entrypoints: web
-    # Opcional: Si tienes HTTPS configurado
-    # traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    # traefik.ingress.kubernetes.io/router.tls: "true"
+    # Para k3s con Traefik - HTTP y HTTPS
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    # Middleware para strip prefix en el API
+    traefik.ingress.kubernetes.io/router.middlewares: herencia-strip-herencia-api@kubernetescrd
 spec:
   rules:
-  - http:
+  # Regla para acceso externo por dominio
+  - host: northr3nd.duckdns.org
+    http:
       paths:
-      # API Backend - debe ir primero para tener prioridad
-      - path: /api
+      # API Backend bajo /herencia/api (debe ir primero, más específico)
+      - path: /herencia/api
         pathType: Prefix
         backend:
           service:
             name: gestion-herencia-backend
             port:
               number: 3000
-      # Frontend Angular
+      # Frontend Angular (menos específico, va después)
       - path: /herencia
         pathType: Prefix
         backend:
@@ -28,3 +29,8 @@ spec:
             name: gestion-herencia
             port:
               number: 80
+  # TLS configuration
+  tls:
+  - hosts:
+    - northr3nd.duckdns.org
+    secretName: northr3nd-tls
