@@ -1,14 +1,15 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: gestion-herencia-local
+  name: gestion-herencia-https
   namespace: herencia
 spec:
   entryPoints:
     - web
+    - websecure
   routes:
   # Ruta para API - más específica, debe ir primero
-  - match: PathPrefix(`/herencia/api`)
+  - match: Host(`northr3nd.duckdns.org`) && PathPrefix(`/herencia/api`)
     kind: Rule
     services:
     - name: gestion-herencia-backend
@@ -16,8 +17,10 @@ spec:
     middlewares:
     - name: strip-herencia-api
   # Ruta para Frontend - menos específica
-  - match: PathPrefix(`/herencia`)
+  - match: Host(`northr3nd.duckdns.org`) && PathPrefix(`/herencia`)
     kind: Rule
     services:
     - name: gestion-herencia
       port: 80
+  tls:
+    secretName: northr3nd-tls

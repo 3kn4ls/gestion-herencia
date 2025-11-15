@@ -5,8 +5,6 @@ metadata:
   annotations:
     # Para k3s con Traefik - HTTP y HTTPS
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
-    # Middleware para strip prefix en el API
-    traefik.ingress.kubernetes.io/router.middlewares: herencia-strip-herencia-api@kubernetescrd
 spec:
   rules:
   # Regla para acceso externo por dominio

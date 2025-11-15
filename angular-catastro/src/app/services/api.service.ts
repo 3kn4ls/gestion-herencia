@@ -39,7 +39,7 @@ export interface RepartoBackend {
 })
 export class ApiService {
   // URL base del API - se puede configurar según el entorno
-  private apiUrl = '/api'; // En producción k8s, usar /api directamente
+  private apiUrl = '/herencia/api'; // En producción k8s, usar /herencia/api
   // private apiUrl = 'http://localhost:3000/api'; // Para desarrollo local
 
   private httpOptions = {
