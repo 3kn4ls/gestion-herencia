@@ -136,7 +136,8 @@ export class DataService {
       superficie_m2: this.parseAreaToNumber(c.superficie_m2)
     }));
 
-    return {
+    // Construir objeto base preservando _id de MongoDB si existe
+    const propiedadNormalizada: any = {
       referencia_catastral: prop.referencia_catastral,
       fecha_extraccion: prop.fecha_extraccion,
       url_consultada: prop.url_consultada,
@@ -158,8 +159,19 @@ export class DataService {
       parcela_catastral: parcela,
       // Usar valor_referencia directamente del JSON
       valor_referencia: prop.valor_referencia,
-      escritura: prop.escritura
+      escritura: prop.escritura,
+      // Nuevos campos personalizados
+      desc: prop.desc || '',
+      precioManual: prop.precioManual,
+      distanciaMar: prop.distanciaMar
     };
+
+    // Preservar el _id de MongoDB si existe
+    if (prop._id) {
+      propiedadNormalizada._id = prop._id;
+    }
+
+    return propiedadNormalizada;
   }
 
   /**

@@ -564,8 +564,10 @@
           <div *ngIf="modoEdicion === 'editar' && propiedadEditando" class="info-id">
             <small>
               <strong>ID MongoDB:</strong>
-              <code>{{ (propiedadEditando | json).includes('_id') ? 'Presente ✓' : 'No encontrado ✗' }}</code>
-              {{ propiedadEditando['_id'] ? '(' + propiedadEditando['_id'] + ')' : '' }}
+              <code>{{ propiedadEditando['_id'] ? 'Presente ✓' : 'No encontrado ✗' }}</code>
+              <span *ngIf="propiedadEditando['_id']" style="color: #64748b; margin-left: 8px;">
+                ({{ propiedadEditando['_id'] }})
+              </span>
             </small>
           </div>
 
