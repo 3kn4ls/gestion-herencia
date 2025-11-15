@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: angular-catastro
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: traefik
+  tls:
+  - hosts:
+    - northr3nd.duckdns.org
+    secretName: angular-catastro-tls
+  rules:
+  - host: northr3nd.duckdns.org
+    http:
+      paths:
+      - path: /herencia
+        pathType: Prefix
+        backend:
+          service:
+            name: angular-catastro
+            port:
+              number: 80
