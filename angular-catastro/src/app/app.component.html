@@ -559,6 +559,16 @@
         <!-- Sección: Datos Básicos -->
         <div class="form-section">
           <h3 class="section-title">📋 Datos Básicos</h3>
+
+          <!-- Mostrar ID de MongoDB en modo edición -->
+          <div *ngIf="modoEdicion === 'editar' && propiedadEditando" class="info-id">
+            <small>
+              <strong>ID MongoDB:</strong>
+              <code>{{ (propiedadEditando | json).includes('_id') ? 'Presente ✓' : 'No encontrado ✗' }}</code>
+              {{ propiedadEditando['_id'] ? '(' + propiedadEditando['_id'] + ')' : '' }}
+            </small>
+          </div>
+
           <div class="form-row">
             <div class="form-group">
               <label for="referencia">Referencia Catastral *</label>

@@ -638,7 +638,14 @@ export class AppComponent implements OnInit {
    */
   editarPropiedad(propiedad: Propiedad): void {
     this.modoEdicion = 'editar';
-    this.propiedadEditando = JSON.parse(JSON.stringify(propiedad)); // Deep copy
+    // Deep copy preservando el _id de MongoDB
+    this.propiedadEditando = JSON.parse(JSON.stringify(propiedad));
+
+    // Preservar el _id que puede perderse en la serialización
+    if ((propiedad as any)._id) {
+      (this.propiedadEditando as any)._id = (propiedad as any)._id;
+    }
+
     this.mostrarModalPropiedad = true;
   }
 

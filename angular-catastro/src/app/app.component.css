@@ -535,6 +535,26 @@
   align-items: center;
 }
 
+.info-id {
+  background: #f0f9ff;
+  border-left: 3px solid #0284c7;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #0c4a6e;
+}
+
+.info-id code {
+  background: #e0f2fe;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  color: #075985;
+  margin: 0 4px;
+}
+
 .form-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
