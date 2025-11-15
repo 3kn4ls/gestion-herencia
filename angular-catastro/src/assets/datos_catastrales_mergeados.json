@@ -616,7 +616,7 @@
       "clase": "Rústico",
       "uso_principal": "Agrario",
       "superficie_construida": "76 m2",
-      "año_construcción": "1998"
+      "ano_construccion": "1998"
     },
     "parcela_catastral": {
       "superficie_gráfica": "204 m2"
@@ -714,7 +714,7 @@
       "clase": "Urbano",
       "uso_principal": "Residencial",
       "superficie_construida": "110 m2",
-      "año_construcción": "1890"
+      "ano_construccion": "1890"
     },
     "parcela_catastral": {
       "superficie_gráfica": "127 m2"
@@ -741,7 +741,7 @@
       "clase": "Urbano",
       "uso_principal": "Industrial",
       "superficie_construida": "224 m2",
-      "año_construcción": "1910"
+      "ano_construccion": "1910"
     },
     "parcela_catastral": {
       "superficie_gráfica": "251 m2"
@@ -1126,7 +1126,7 @@
       "clase": "Urbano",
       "uso_principal": "Residencial",
       "superficie_construida": "144 m2",
-      "año_construcción": "1933"
+      "ano_construccion": "1933"
     },
     "parcela_catastral": {
       "superficie_gráfica": "187 m2",
@@ -1154,7 +1154,7 @@
       "clase": "Urbano",
       "uso_principal": "Residencial",
       "superficie_construida": "218 m2",
-      "año_construcción": "1933"
+      "ano_construccion": "1933"
     },
     "parcela_catastral": {
       "superficie_gráfica": "187 m2",
@@ -1182,7 +1182,7 @@
       "clase": "Urbano",
       "uso_principal": "Residencial",
       "superficie_construida": "141 m2",
-      "año_construcción": "1977"
+      "ano_construccion": "1977"
     },
     "parcela_catastral": {
       "superficie_gráfica": "527 m2",

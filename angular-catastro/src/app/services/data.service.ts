@@ -152,7 +152,7 @@ export class DataService {
         clase: prop.datos_descriptivos?.clase || '',
         uso_principal: prop.datos_descriptivos?.uso_principal || '',
         superficie_construida: superficie,
-        año_construccion: prop.datos_descriptivos?.año_construcción
+        ano_construccion: prop.datos_descriptivos?.ano_construccion
       },
       cultivos: cultivos,
       parcela_catastral: parcela,
