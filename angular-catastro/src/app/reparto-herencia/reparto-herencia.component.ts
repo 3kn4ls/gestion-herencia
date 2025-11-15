@@ -7,6 +7,7 @@ import { Propiedad } from '../models/propiedad.model';
 import { Valoracion } from '../models/valoracion.model';
 import { Heredero, PropiedadAsignada, ConfiguracionReparto, EstadisticasReparto } from '../models/reparto.model';
 import { RepartoService } from '../services/reparto.service';
+import { ApiService, RepartoBackend } from '../services/api.service';
 
 @Component({
   selector: 'app-reparto-herencia',
@@ -36,7 +37,18 @@ export class RepartoHerenciaComponent implements OnInit {
   // IDs para drag and drop
   listasHerederos: string[] = [];
 
-  constructor(private repartoService: RepartoService) {}
+  // Estado para guardar/cargar
+  mostrarModalGuardar = false;
+  mostrarModalCargar = false;
+  nombreReparto = '';
+  descripcionReparto = '';
+  repartoActualId: string | null = null;
+  repartosGuardados: RepartoBackend[] = [];
+
+  constructor(
+    private repartoService: RepartoService,
+    private apiService: ApiService
+  ) {}
 
   ngOnInit(): void {
     this.inicializarPropiedadesDisponibles();
@@ -307,6 +319,201 @@ export class RepartoHerenciaComponent implements OnInit {
     });
   }
 
+  // =====================================================
+  // GUARDAR/CARGAR REPARTOS
+  // =====================================================
+
+  /**
+   * Abre el modal para guardar reparto
+   */
+  abrirModalGuardar(): void {
+    if (!this.estadisticas) {
+      alert('No hay reparto para guardar');
+      return;
+    }
+
+    if (this.herederos.every(h => h.propiedades.length === 0)) {
+      alert('El reparto está vacío. Asigna propiedades antes de guardar.');
+      return;
+    }
+
+    this.mostrarModalGuardar = true;
+    if (!this.nombreReparto) {
+      this.nombreReparto = `Reparto ${new Date().toLocaleDateString('es-ES')}`;
+    }
+  }
+
+  /**
+   * Guarda el reparto actual en el backend
+   */
+  guardarReparto(): void {
+    if (!this.nombreReparto.trim()) {
+      alert('Debes proporcionar un nombre para el reparto');
+      return;
+    }
+
+    if (!this.estadisticas) {
+      alert('No hay estadísticas calculadas');
+      return;
+    }
+
+    const reparto: Partial<RepartoBackend> = {
+      nombre: this.nombreReparto.trim(),
+      descripcion: this.descripcionReparto.trim() || undefined,
+      herederos: this.herederos,
+      configuracion: this.config,
+      estadisticas: this.estadisticas
+    };
+
+    // Si existe un ID, es una actualización, sino es creación
+    if (this.repartoActualId) {
+      this.apiService.updateReparto(this.repartoActualId, reparto).subscribe({
+        next: (repartoGuardado) => {
+          this.repartoActualId = repartoGuardado._id || null;
+          this.mostrarModalGuardar = false;
+          alert('✅ Reparto actualizado correctamente');
+        },
+        error: (error) => {
+          console.error('Error al actualizar reparto:', error);
+          alert(`❌ Error al actualizar: ${error.message}`);
+        }
+      });
+    } else {
+      this.apiService.createReparto(reparto).subscribe({
+        next: (repartoGuardado) => {
+          this.repartoActualId = repartoGuardado._id || null;
+          this.mostrarModalGuardar = false;
+          alert('✅ Reparto guardado correctamente');
+        },
+        error: (error) => {
+          console.error('Error al guardar reparto:', error);
+          alert(`❌ Error al guardar: ${error.message}`);
+        }
+      });
+    }
+  }
+
+  /**
+   * Abre el modal para cargar reparto
+   */
+  abrirModalCargar(): void {
+    this.mostrarModalCargar = true;
+    this.cargarListaRepartos();
+  }
+
+  /**
+   * Carga la lista de repartos guardados
+   */
+  cargarListaRepartos(): void {
+    this.apiService.getRepartos().subscribe({
+      next: (repartos) => {
+        this.repartosGuardados = repartos.sort((a, b) => {
+          const dateA = a.fechaModificacion ? new Date(a.fechaModificacion).getTime() : 0;
+          const dateB = b.fechaModificacion ? new Date(b.fechaModificacion).getTime() : 0;
+          return dateB - dateA; // Más recientes primero
+        });
+      },
+      error: (error) => {
+        console.error('Error al cargar repartos:', error);
+        alert(`❌ Error al cargar repartos: ${error.message}`);
+      }
+    });
+  }
+
+  /**
+   * Carga un reparto seleccionado
+   */
+  cargarReparto(reparto: RepartoBackend): void {
+    if (confirm(`¿Deseas cargar el reparto "${reparto.nombre}"? Se perderá el reparto actual.`)) {
+      // Cargar configuración
+      this.config = reparto.configuracion;
+      this.herederos = reparto.herederos;
+      this.estadisticas = reparto.estadisticas;
+      this.repartoActualId = reparto._id || null;
+      this.nombreReparto = reparto.nombre;
+      this.descripcionReparto = reparto.descripcion || '';
+
+      // Actualizar listas de drag & drop
+      this.listasHerederos = this.herederos.map(h => `heredero-${h.id}`);
+      this.listasHerederos.push('disponibles');
+
+      // Recalcular propiedades disponibles (las que no están asignadas)
+      const propiedadesAsignadas = new Set<string>();
+      this.herederos.forEach(h => {
+        h.propiedades.forEach(p => {
+          propiedadesAsignadas.add(p.propiedad.referencia_catastral);
+        });
+      });
+
+      this.propiedadesDisponibles = this.propiedades
+        .filter(p => !propiedadesAsignadas.has(p.referencia_catastral))
+        .map(p => {
+          const valoracion = this.valoraciones.find(v => v.referencia_catastral === p.referencia_catastral);
+          if (!valoracion) return null;
+
+          const tipo = this.determinarTipo(p);
+          const superficie = this.calcularSuperficie(p);
+
+          return {
+            propiedad: p,
+            valoracion,
+            valor: valoracion.valor_estimado_euros || 0,
+            superficie,
+            tipo
+          } as PropiedadAsignada;
+        })
+        .filter(p => p !== null) as PropiedadAsignada[];
+
+      this.mostrarConfiguracion = false;
+      this.mostrarModalCargar = false;
+      alert('✅ Reparto cargado correctamente');
+    }
+  }
+
+  /**
+   * Elimina un reparto guardado
+   */
+  eliminarRepartoGuardado(reparto: RepartoBackend, event: Event): void {
+    event.stopPropagation();
+
+    if (confirm(`¿Estás seguro de eliminar el reparto "${reparto.nombre}"?`)) {
+      if (!reparto._id) {
+        alert('Error: ID de reparto no válido');
+        return;
+      }
+
+      this.apiService.deleteReparto(reparto._id).subscribe({
+        next: () => {
+          this.repartosGuardados = this.repartosGuardados.filter(r => r._id !== reparto._id);
+          alert('✅ Reparto eliminado correctamente');
+
+          // Si eliminamos el reparto actual, limpiar ID
+          if (this.repartoActualId === reparto._id) {
+            this.repartoActualId = null;
+          }
+        },
+        error: (error) => {
+          console.error('Error al eliminar reparto:', error);
+          alert(`❌ Error al eliminar: ${error.message}`);
+        }
+      });
+    }
+  }
+
+  /**
+   * Cierra el modal de guardar
+   */
+  cerrarModalGuardar(): void {
+    this.mostrarModalGuardar = false;
+  }
+
+  /**
+   * Cierra el modal de cargar
+   */
+  cerrarModalCargar(): void {
+    this.mostrarModalCargar = false;
+  }
+
   /**
    * Formatea moneda
    */
@@ -327,5 +534,19 @@ export class RepartoHerenciaComponent implements OnInit {
       minimumFractionDigits: 0,
       maximumFractionDigits: decimals
     }).format(value);
+  }
+
+  /**
+   * Formatea fecha
+   */
+  formatDate(date: Date | undefined): string {
+    if (!date) return '-';
+    return new Date(date).toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   }
 }

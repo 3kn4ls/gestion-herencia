@@ -64,6 +64,12 @@
     </div>
 
     <div class="botones-accion">
+      <button (click)="abrirModalGuardar()" class="btn btn-primary" title="Guardar reparto en el servidor">
+        💾 Guardar
+      </button>
+      <button (click)="abrirModalCargar()" class="btn btn-primary" title="Cargar reparto guardado">
+        📂 Cargar
+      </button>
       <button (click)="repartirAutomaticamente()" class="btn btn-success" title="Reparto automático balanceado">
         🤖 Reparto Automático
       </button>
@@ -236,6 +242,119 @@
     </div>
     <div class="ayuda-item">
       <strong>⚖️ Balance:</strong> El sistema intenta equilibrar tanto el valor como el tipo de propiedades
+    </div>
+  </div>
+</div>
+
+<!-- Modal Guardar Reparto -->
+<div class="modal-overlay" *ngIf="mostrarModalGuardar" (click)="cerrarModalGuardar()">
+  <div class="modal-contenido modal-guardar" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>💾 Guardar Reparto</h3>
+      <button class="btn-cerrar" (click)="cerrarModalGuardar()">✖</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="campo">
+        <label for="nombreReparto">Nombre del reparto: *</label>
+        <input
+          type="text"
+          id="nombreReparto"
+          [(ngModel)]="nombreReparto"
+          placeholder="Ej: Reparto Principal"
+          class="input-texto"
+          maxlength="100">
+      </div>
+
+      <div class="campo">
+        <label for="descripcionReparto">Descripción (opcional):</label>
+        <textarea
+          id="descripcionReparto"
+          [(ngModel)]="descripcionReparto"
+          placeholder="Agrega notas o comentarios sobre este reparto"
+          class="input-textarea"
+          rows="4"
+          maxlength="500"></textarea>
+      </div>
+
+      <div class="info-guardado" *ngIf="repartoActualId">
+        <small>
+          ℹ️ Este reparto ya está guardado. Al guardar nuevamente se actualizará.
+        </small>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button (click)="cerrarModalGuardar()" class="btn btn-secondary">
+        Cancelar
+      </button>
+      <button (click)="guardarReparto()" class="btn btn-primary">
+        <span *ngIf="!repartoActualId">💾 Guardar</span>
+        <span *ngIf="repartoActualId">💾 Actualizar</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Cargar Reparto -->
+<div class="modal-overlay" *ngIf="mostrarModalCargar" (click)="cerrarModalCargar()">
+  <div class="modal-contenido modal-cargar" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>📂 Cargar Reparto</h3>
+      <button class="btn-cerrar" (click)="cerrarModalCargar()">✖</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="lista-repartos" *ngIf="repartosGuardados.length > 0">
+        <div
+          class="item-reparto"
+          *ngFor="let reparto of repartosGuardados"
+          (click)="cargarReparto(reparto)">
+          <div class="item-header">
+            <div class="item-nombre">{{ reparto.nombre }}</div>
+            <button
+              class="btn-eliminar-mini"
+              (click)="eliminarRepartoGuardado(reparto, $event)"
+              title="Eliminar reparto">
+              🗑️
+            </button>
+          </div>
+
+          <div class="item-info" *ngIf="reparto.descripcion">
+            <small>{{ reparto.descripcion }}</small>
+          </div>
+
+          <div class="item-detalles">
+            <span class="detalle-badge">
+              👥 {{ reparto.herederos.length }} herederos
+            </span>
+            <span class="detalle-badge">
+              💶 {{ formatCurrency(reparto.estadisticas.valorTotal) }}
+            </span>
+            <span class="detalle-badge" *ngIf="reparto.estadisticas.equilibrado">
+              ✅ Equilibrado
+            </span>
+            <span class="detalle-badge desequilibrado" *ngIf="!reparto.estadisticas.equilibrado">
+              ⚠️ Desequilibrado
+            </span>
+          </div>
+
+          <div class="item-fecha">
+            <small>📅 {{ formatDate(reparto.fechaModificacion || reparto.fechaCreacion) }}</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="sin-repartos" *ngIf="repartosGuardados.length === 0">
+        <p>📭 No hay repartos guardados</p>
+        <small>Crea un reparto y guárdalo para verlo aquí</small>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button (click)="cerrarModalCargar()" class="btn btn-secondary">
+        Cerrar
+      </button>
     </div>
   </div>
 </div>

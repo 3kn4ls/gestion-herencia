@@ -13,6 +13,8 @@
 #   --skip-build       Omite la compilación de Angular
 #   --skip-docker      Omite la construcción de la imagen Docker
 #   --skip-import      Omite la importación a k3s
+#   --backend-only     Solo despliega el backend
+#   --frontend-only    Solo despliega el frontend
 #   --namespace NAME   Namespace de k3s (default: herencia)
 #   --help             Muestra esta ayuda
 #
@@ -31,8 +33,11 @@ NC='\033[0m' # No Color
 SKIP_BUILD=false
 SKIP_DOCKER=false
 SKIP_IMPORT=false
+BACKEND_ONLY=false
+FRONTEND_ONLY=false
 NAMESPACE="herencia"
-IMAGE_NAME="gestion-herencia-frontend"
+FRONTEND_IMAGE="gestion-herencia-frontend"
+BACKEND_IMAGE="gestion-herencia-backend"
 IMAGE_TAG="latest"
 
 # Función para imprimir mensajes
@@ -68,11 +73,15 @@ show_help() {
     echo "  --skip-build       Omite la compilación de Angular"
     echo "  --skip-docker      Omite la construcción de la imagen Docker"
     echo "  --skip-import      Omite la importación a k3s"
+    echo "  --backend-only     Solo despliega el backend"
+    echo "  --frontend-only    Solo despliega el frontend (default: ambos)"
     echo "  --namespace NAME   Namespace de k3s (default: herencia)"
     echo "  --help             Muestra esta ayuda"
     echo ""
     echo "Ejemplos:"
-    echo "  ./deploy.sh                              # Deploy completo"
+    echo "  ./deploy.sh                              # Deploy completo (frontend + backend)"
+    echo "  ./deploy.sh --frontend-only              # Solo frontend"
+    echo "  ./deploy.sh --backend-only               # Solo backend"
     echo "  ./deploy.sh --skip-build                 # Solo Docker y k8s"
     echo "  ./deploy.sh --namespace mi-namespace     # Deploy en namespace personalizado"
     exit 0
@@ -93,6 +102,16 @@ while [[ $# -gt 0 ]]; do
             SKIP_IMPORT=true
             shift
             ;;
+        --backend-only)
+            BACKEND_ONLY=true
+            FRONTEND_ONLY=false
+            shift
+            ;;
+        --frontend-only)
+            FRONTEND_ONLY=true
+            BACKEND_ONLY=false
+            shift
+            ;;
         --namespace)
             NAMESPACE="$2"
             shift 2
@@ -107,6 +126,18 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# Determinar qué desplegar
+DEPLOY_FRONTEND=true
+DEPLOY_BACKEND=true
+
+if [ "$FRONTEND_ONLY" = true ]; then
+    DEPLOY_BACKEND=false
+fi
+
+if [ "$BACKEND_ONLY" = true ]; then
+    DEPLOY_FRONTEND=false
+fi
+
 # Banner inicial
 clear
 echo ""
@@ -119,7 +150,8 @@ echo ""
 
 print_info "Configuración:"
 echo "  • Namespace: $NAMESPACE"
-echo "  • Imagen: $IMAGE_NAME:$IMAGE_TAG"
+echo "  • Desplegar Frontend: $DEPLOY_FRONTEND"
+echo "  • Desplegar Backend: $DEPLOY_BACKEND"
 echo "  • Skip build: $SKIP_BUILD"
 echo "  • Skip docker: $SKIP_DOCKER"
 echo "  • Skip import: $SKIP_IMPORT"
@@ -147,11 +179,11 @@ if [ ! -f "Dockerfile" ]; then
 fi
 
 ###############################################################################
-# PASO 1: Compilar la aplicación Angular
+# PASO 1: Compilar la aplicación Angular (Frontend)
 ###############################################################################
 
-if [ "$SKIP_BUILD" = false ]; then
-    print_header "PASO 1: Compilar aplicación Angular"
+if [ "$DEPLOY_FRONTEND" = true ] && [ "$SKIP_BUILD" = false ]; then
+    print_header "PASO 1: Compilar aplicación Angular (Frontend)"
 
     print_info "Verificando dependencias de Node.js..."
 
@@ -183,16 +215,18 @@ if [ "$SKIP_BUILD" = false ]; then
     fi
 
     print_success "Build generado en dist/angular-catastro"
+elif [ "$DEPLOY_FRONTEND" = false ]; then
+    print_header "PASO 1: Compilar aplicación Angular (NO REQUERIDO)"
 else
     print_header "PASO 1: Compilar aplicación Angular (OMITIDO)"
 fi
 
 ###############################################################################
-# PASO 2: Construir imagen Docker
+# PASO 2: Construir imágenes Docker
 ###############################################################################
 
 if [ "$SKIP_DOCKER" = false ]; then
-    print_header "PASO 2: Construir imagen Docker"
+    print_header "PASO 2: Construir imágenes Docker"
 
     print_info "Verificando Docker..."
 
@@ -203,35 +237,67 @@ if [ "$SKIP_DOCKER" = false ]; then
 
     print_success "Docker instalado"
 
-    print_info "Construyendo imagen $IMAGE_NAME:$IMAGE_TAG..."
-    print_warning "Esto puede tardar varios minutos en Raspberry Pi..."
+    # Construir imagen del frontend
+    if [ "$DEPLOY_FRONTEND" = true ]; then
+        print_info "Construyendo imagen frontend $FRONTEND_IMAGE:$IMAGE_TAG..."
+        print_warning "Esto puede tardar varios minutos en Raspberry Pi..."
 
-    START_TIME=$(date +%s)
+        START_TIME=$(date +%s)
 
-    sudo docker build -t $IMAGE_NAME:$IMAGE_TAG .
+        sudo docker build -t $FRONTEND_IMAGE:$IMAGE_TAG .
 
-    END_TIME=$(date +%s)
-    DURATION=$((END_TIME - START_TIME))
+        END_TIME=$(date +%s)
+        DURATION=$((END_TIME - START_TIME))
 
-    print_success "Imagen construida en $DURATION segundos"
+        print_success "Imagen frontend construida en $DURATION segundos"
 
-    # Verificar que la imagen se creó
-    if ! sudo docker images | grep -q $IMAGE_NAME; then
-        print_error "Error: La imagen no se creó correctamente"
-        exit 1
+        # Verificar que la imagen se creó
+        if ! sudo docker images | grep -q $FRONTEND_IMAGE; then
+            print_error "Error: La imagen frontend no se creó correctamente"
+            exit 1
+        fi
+
+        print_success "Imagen $FRONTEND_IMAGE:$IMAGE_TAG creada"
     fi
 
-    print_success "Imagen $IMAGE_NAME:$IMAGE_TAG creada"
+    # Construir imagen del backend
+    if [ "$DEPLOY_BACKEND" = true ]; then
+        print_info "Construyendo imagen backend $BACKEND_IMAGE:$IMAGE_TAG..."
+
+        if [ ! -d "../backend" ]; then
+            print_error "Error: No se encuentra el directorio backend"
+            exit 1
+        fi
+
+        START_TIME=$(date +%s)
+
+        cd ../backend
+        sudo docker build -t $BACKEND_IMAGE:$IMAGE_TAG .
+        cd ../angular-catastro
+
+        END_TIME=$(date +%s)
+        DURATION=$((END_TIME - START_TIME))
+
+        print_success "Imagen backend construida en $DURATION segundos"
+
+        # Verificar que la imagen se creó
+        if ! sudo docker images | grep -q $BACKEND_IMAGE; then
+            print_error "Error: La imagen backend no se creó correctamente"
+            exit 1
+        fi
+
+        print_success "Imagen $BACKEND_IMAGE:$IMAGE_TAG creada"
+    fi
 else
-    print_header "PASO 2: Construir imagen Docker (OMITIDO)"
+    print_header "PASO 2: Construir imágenes Docker (OMITIDO)"
 fi
 
 ###############################################################################
-# PASO 3: Importar imagen a k3s
+# PASO 3: Importar imágenes a k3s
 ###############################################################################
 
 if [ "$SKIP_IMPORT" = false ]; then
-    print_header "PASO 3: Importar imagen a k3s"
+    print_header "PASO 3: Importar imágenes a k3s"
 
     print_info "Verificando k3s..."
 
@@ -242,21 +308,41 @@ if [ "$SKIP_IMPORT" = false ]; then
 
     print_success "k3s instalado"
 
-    print_info "Importando imagen a k3s..."
+    # Importar imagen frontend
+    if [ "$DEPLOY_FRONTEND" = true ]; then
+        print_info "Importando imagen frontend a k3s..."
 
-    sudo docker save $IMAGE_NAME:$IMAGE_TAG | sudo k3s ctr images import -
+        sudo docker save $FRONTEND_IMAGE:$IMAGE_TAG | sudo k3s ctr images import -
 
-    print_success "Imagen importada a k3s"
+        print_success "Imagen frontend importada a k3s"
 
-    # Verificar que la imagen está en k3s
-    if ! sudo k3s ctr images ls | grep -q $IMAGE_NAME; then
-        print_error "Error: La imagen no se importó correctamente a k3s"
-        exit 1
+        # Verificar que la imagen está en k3s
+        if ! sudo k3s ctr images ls | grep -q $FRONTEND_IMAGE; then
+            print_error "Error: La imagen frontend no se importó correctamente a k3s"
+            exit 1
+        fi
+
+        print_success "Imagen frontend disponible en k3s"
     fi
 
-    print_success "Imagen disponible en k3s"
+    # Importar imagen backend
+    if [ "$DEPLOY_BACKEND" = true ]; then
+        print_info "Importando imagen backend a k3s..."
+
+        sudo docker save $BACKEND_IMAGE:$IMAGE_TAG | sudo k3s ctr images import -
+
+        print_success "Imagen backend importada a k3s"
+
+        # Verificar que la imagen está en k3s
+        if ! sudo k3s ctr images ls | grep -q $BACKEND_IMAGE; then
+            print_error "Error: La imagen backend no se importó correctamente a k3s"
+            exit 1
+        fi
+
+        print_success "Imagen backend disponible en k3s"
+    fi
 else
-    print_header "PASO 3: Importar imagen a k3s (OMITIDO)"
+    print_header "PASO 3: Importar imágenes a k3s (OMITIDO)"
 fi
 
 ###############################################################################
@@ -294,17 +380,39 @@ fi
 # Aplicar manifiestos
 print_info "Aplicando manifiestos de Kubernetes..."
 
-sudo kubectl apply -f ../k8s/ -n $NAMESPACE
+# Aplicar manifiestos específicos según lo que se está desplegando
+if [ "$DEPLOY_FRONTEND" = true ]; then
+    sudo kubectl apply -f ../k8s/deployment.yaml -n $NAMESPACE
+    sudo kubectl apply -f ../k8s/service.yaml -n $NAMESPACE
+    print_success "Manifiestos frontend aplicados"
+fi
 
-print_success "Manifiestos aplicados"
+if [ "$DEPLOY_BACKEND" = true ]; then
+    sudo kubectl apply -f ../k8s/backend-deployment.yaml -n $NAMESPACE
+    sudo kubectl apply -f ../k8s/backend-service.yaml -n $NAMESPACE
+    print_success "Manifiestos backend aplicados"
+fi
+
+# Aplicar Ingress (siempre, ya que define rutas para ambos)
+sudo kubectl apply -f ../k8s/ingress.yaml -n $NAMESPACE
+print_success "Ingress aplicado"
 
 # Esperar a que los pods estén listos
 print_info "Esperando a que los pods estén listos..."
 
-sudo kubectl wait --for=condition=ready pod -l app=gestion-herencia -n $NAMESPACE --timeout=120s || {
-    print_warning "Timeout esperando pods. Verificando estado..."
-    sudo kubectl get pods -n $NAMESPACE
-}
+if [ "$DEPLOY_FRONTEND" = true ]; then
+    sudo kubectl wait --for=condition=ready pod -l app=gestion-herencia -n $NAMESPACE --timeout=120s || {
+        print_warning "Timeout esperando pods frontend. Verificando estado..."
+        sudo kubectl get pods -l app=gestion-herencia -n $NAMESPACE
+    }
+fi
+
+if [ "$DEPLOY_BACKEND" = true ]; then
+    sudo kubectl wait --for=condition=ready pod -l app=gestion-herencia-backend -n $NAMESPACE --timeout=120s || {
+        print_warning "Timeout esperando pods backend. Verificando estado..."
+        sudo kubectl get pods -l app=gestion-herencia-backend -n $NAMESPACE
+    }
+fi
 
 ###############################################################################
 # PASO 5: Verificar despliegue
@@ -312,16 +420,32 @@ sudo kubectl wait --for=condition=ready pod -l app=gestion-herencia -n $NAMESPAC
 
 print_header "PASO 5: Verificar despliegue"
 
-print_info "Estado del deployment:"
-sudo kubectl get deployment gestion-herencia -n $NAMESPACE
+if [ "$DEPLOY_FRONTEND" = true ]; then
+    print_info "Estado del deployment frontend:"
+    sudo kubectl get deployment gestion-herencia -n $NAMESPACE
 
-echo ""
-print_info "Pods:"
-sudo kubectl get pods -l app=gestion-herencia -n $NAMESPACE
+    echo ""
+    print_info "Pods frontend:"
+    sudo kubectl get pods -l app=gestion-herencia -n $NAMESPACE
 
-echo ""
-print_info "Servicio:"
-sudo kubectl get service gestion-herencia -n $NAMESPACE
+    echo ""
+    print_info "Servicio frontend:"
+    sudo kubectl get service gestion-herencia -n $NAMESPACE
+fi
+
+if [ "$DEPLOY_BACKEND" = true ]; then
+    echo ""
+    print_info "Estado del deployment backend:"
+    sudo kubectl get deployment gestion-herencia-backend -n $NAMESPACE
+
+    echo ""
+    print_info "Pods backend:"
+    sudo kubectl get pods -l app=gestion-herencia-backend -n $NAMESPACE
+
+    echo ""
+    print_info "Servicio backend:"
+    sudo kubectl get service gestion-herencia-backend -n $NAMESPACE
+fi
 
 echo ""
 print_info "Ingress:"
@@ -333,16 +457,32 @@ sudo kubectl get ingress gestion-herencia -n $NAMESPACE
 
 print_header "RESUMEN DEL DEPLOY"
 
-# Obtener información del deployment
-REPLICAS=$(sudo kubectl get deployment gestion-herencia -n $NAMESPACE -o jsonpath='{.status.readyReplicas}' 2>/dev/null || echo "0")
-DESIRED=$(sudo kubectl get deployment gestion-herencia -n $NAMESPACE -o jsonpath='{.status.replicas}' 2>/dev/null || echo "0")
-
 echo ""
 print_success "Deploy completado exitosamente"
 echo ""
-echo "  📦 Imagen:     $IMAGE_NAME:$IMAGE_TAG"
+
+if [ "$DEPLOY_FRONTEND" = true ]; then
+    # Obtener información del deployment frontend
+    FRONTEND_REPLICAS=$(sudo kubectl get deployment gestion-herencia -n $NAMESPACE -o jsonpath='{.status.readyReplicas}' 2>/dev/null || echo "0")
+    FRONTEND_DESIRED=$(sudo kubectl get deployment gestion-herencia -n $NAMESPACE -o jsonpath='{.status.replicas}' 2>/dev/null || echo "0")
+
+    echo "  📦 Frontend:"
+    echo "     Imagen:    $FRONTEND_IMAGE:$IMAGE_TAG"
+    echo "     Réplicas:  $FRONTEND_REPLICAS/$FRONTEND_DESIRED listas"
+fi
+
+if [ "$DEPLOY_BACKEND" = true ]; then
+    # Obtener información del deployment backend
+    BACKEND_REPLICAS=$(sudo kubectl get deployment gestion-herencia-backend -n $NAMESPACE -o jsonpath='{.status.readyReplicas}' 2>/dev/null || echo "0")
+    BACKEND_DESIRED=$(sudo kubectl get deployment gestion-herencia-backend -n $NAMESPACE -o jsonpath='{.status.replicas}' 2>/dev/null || echo "0")
+
+    echo "  📦 Backend:"
+    echo "     Imagen:    $BACKEND_IMAGE:$IMAGE_TAG"
+    echo "     Réplicas:  $BACKEND_REPLICAS/$BACKEND_DESIRED listas"
+fi
+
+echo ""
 echo "  🏷️  Namespace:  $NAMESPACE"
-echo "  📊 Réplicas:   $REPLICAS/$DESIRED listas"
 echo ""
 
 # Obtener la IP del nodo
@@ -350,21 +490,42 @@ NODE_IP=$(hostname -I | awk '{print $1}')
 
 print_info "Acceso a la aplicación:"
 echo ""
-echo "  🌐 URL Local:   http://localhost/herencia/"
-echo "  🌐 URL Red:     http://$NODE_IP/herencia/"
+if [ "$DEPLOY_FRONTEND" = true ]; then
+    echo "  🌐 Frontend Local:  http://localhost/herencia/"
+    echo "  🌐 Frontend Red:    http://$NODE_IP/herencia/"
+fi
+if [ "$DEPLOY_BACKEND" = true ]; then
+    echo "  🔧 API Local:       http://localhost/api/"
+    echo "  🔧 API Red:         http://$NODE_IP/api/"
+    echo "  ❤️  Health Check:   http://localhost/health"
+fi
 echo ""
 
 print_info "Comandos útiles:"
 echo ""
-echo "  Ver logs:"
-echo "    sudo kubectl logs -f -l app=gestion-herencia -n $NAMESPACE"
-echo ""
+if [ "$DEPLOY_FRONTEND" = true ]; then
+    echo "  Ver logs frontend:"
+    echo "    sudo kubectl logs -f -l app=gestion-herencia -n $NAMESPACE"
+    echo ""
+fi
+if [ "$DEPLOY_BACKEND" = true ]; then
+    echo "  Ver logs backend:"
+    echo "    sudo kubectl logs -f -l app=gestion-herencia-backend -n $NAMESPACE"
+    echo ""
+fi
 echo "  Ver estado de pods:"
 echo "    sudo kubectl get pods -n $NAMESPACE"
 echo ""
-echo "  Reiniciar deployment:"
-echo "    sudo kubectl rollout restart deployment/gestion-herencia -n $NAMESPACE"
-echo ""
+if [ "$DEPLOY_FRONTEND" = true ]; then
+    echo "  Reiniciar frontend:"
+    echo "    sudo kubectl rollout restart deployment/gestion-herencia -n $NAMESPACE"
+    echo ""
+fi
+if [ "$DEPLOY_BACKEND" = true ]; then
+    echo "  Reiniciar backend:"
+    echo "    sudo kubectl rollout restart deployment/gestion-herencia-backend -n $NAMESPACE"
+    echo ""
+fi
 echo "  Eliminar deployment:"
 echo "    sudo kubectl delete -f ../k8s/ -n $NAMESPACE"
 echo ""

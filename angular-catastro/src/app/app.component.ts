@@ -7,6 +7,7 @@ import { forkJoin } from 'rxjs';
 import { DataService, ValoresTasacion } from './services/data.service';
 import { ValoracionService } from './services/valoracion.service';
 import { ConfigService } from './services/config.service';
+import { ApiService } from './services/api.service';
 import { Propiedad } from './models/propiedad.model';
 import { Valoracion, ResultadoValoracion } from './models/valoracion.model';
 import { RepartoHerenciaComponent } from './reparto-herencia/reparto-herencia.component';
@@ -36,6 +37,11 @@ export class AppComponent implements OnInit {
   // Módulo de Reparto de Herencia
   mostrarReparto = false;
 
+  // Modal CRUD de propiedad
+  mostrarModalPropiedad = false;
+  propiedadEditando: Propiedad | null = null;
+  modoEdicion: 'crear' | 'editar' = 'crear';
+
   // Filtros
   filtros = {
     clase: 'all',
@@ -60,7 +66,8 @@ export class AppComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private valoracionService: ValoracionService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private apiService: ApiService
   ) {}
 
   ngOnInit(): void {
@@ -418,20 +425,45 @@ export class AppComponent implements OnInit {
     // Actualizar fecha de modificación
     this.valoresEditables.fecha = new Date().getFullYear().toString();
 
-    // Guardar en localStorage
-    this.configService.guardarValoresPersonalizados(this.valoresEditables);
+    // Intentar guardar en el backend
+    this.apiService.updateValoresTasacion(this.valoresEditables).subscribe({
+      next: (valoresActualizados) => {
+        console.log('✅ Valores guardados en backend');
 
-    // Aplicar los nuevos valores
-    this.valoresTasacion = this.valoresEditables;
+        // También guardar en localStorage como backup
+        this.configService.guardarValoresPersonalizados(valoresActualizados);
 
-    // Recalcular valoraciones
-    this.valorarAutomaticamente();
+        // Aplicar los nuevos valores
+        this.valoresTasacion = valoresActualizados;
 
-    // Cerrar modal
-    this.mostrarConfiguracion = false;
-    this.valoresEditables = null;
+        // Recalcular valoraciones
+        this.valorarAutomaticamente();
 
-    alert('✅ Configuración guardada. Las valoraciones se han recalculado con los nuevos valores.');
+        // Cerrar modal
+        this.mostrarConfiguracion = false;
+        this.valoresEditables = null;
+
+        alert('✅ Configuración guardada en el servidor. Las valoraciones se han recalculado.');
+      },
+      error: (error) => {
+        console.warn('⚠️ No se pudo guardar en backend, guardando solo en localStorage:', error.message);
+
+        // Fallback: guardar solo en localStorage
+        this.configService.guardarValoresPersonalizados(this.valoresEditables!);
+
+        // Aplicar los nuevos valores
+        this.valoresTasacion = this.valoresEditables;
+
+        // Recalcular valoraciones
+        this.valorarAutomaticamente();
+
+        // Cerrar modal
+        this.mostrarConfiguracion = false;
+        this.valoresEditables = null;
+
+        alert('⚠️ Configuración guardada localmente (backend no disponible).');
+      }
+    });
   }
 
   /**
@@ -554,5 +586,157 @@ export class AppComponent implements OnInit {
    */
   cerrarReparto(): void {
     this.mostrarReparto = false;
+  }
+
+  // =====================================================
+  // CRUD DE PROPIEDADES
+  // =====================================================
+
+  /**
+   * Abre modal para crear nueva propiedad
+   */
+  crearNuevaPropiedad(): void {
+    this.modoEdicion = 'crear';
+    this.propiedadEditando = {
+      referencia_catastral: '',
+      localizacion: {
+        provincia: '',
+        municipio: '',
+        partida: '',
+        poligono: '',
+        parcela: ''
+      },
+      datos_inmueble: {
+        clase: '',
+        uso_principal: '',
+        superficie_construida: 0
+      },
+      cultivos: [],
+      valor_referencia: 0
+    };
+    this.mostrarModalPropiedad = true;
+  }
+
+  /**
+   * Abre modal para editar propiedad existente
+   */
+  editarPropiedad(propiedad: Propiedad): void {
+    this.modoEdicion = 'editar';
+    this.propiedadEditando = JSON.parse(JSON.stringify(propiedad)); // Deep copy
+    this.mostrarModalPropiedad = true;
+  }
+
+  /**
+   * Guarda propiedad (crear o actualizar)
+   */
+  guardarPropiedad(): void {
+    if (!this.propiedadEditando) return;
+
+    if (!this.propiedadEditando.referencia_catastral) {
+      alert('La referencia catastral es obligatoria');
+      return;
+    }
+
+    if (this.modoEdicion === 'crear') {
+      // Crear nueva propiedad
+      this.apiService.createPropiedad(this.propiedadEditando).subscribe({
+        next: (propiedad) => {
+          this.propiedades.push(propiedad);
+          this.aplicarFiltros();
+          this.valorarAutomaticamente();
+          this.mostrarModalPropiedad = false;
+          this.propiedadEditando = null;
+          alert('✅ Propiedad creada correctamente');
+        },
+        error: (error) => {
+          alert(`❌ Error al crear propiedad: ${error.message}`);
+        }
+      });
+    } else {
+      // Actualizar propiedad existente
+      const id = (this.propiedadEditando as any)._id;
+      if (!id) {
+        alert('Error: No se puede actualizar una propiedad sin ID');
+        return;
+      }
+
+      this.apiService.updatePropiedad(id, this.propiedadEditando).subscribe({
+        next: (propiedadActualizada) => {
+          const index = this.propiedades.findIndex((p: any) => p._id === id);
+          if (index !== -1) {
+            this.propiedades[index] = propiedadActualizada;
+          }
+          this.aplicarFiltros();
+          this.valorarAutomaticamente();
+          this.mostrarModalPropiedad = false;
+          this.propiedadEditando = null;
+          alert('✅ Propiedad actualizada correctamente');
+        },
+        error: (error) => {
+          alert(`❌ Error al actualizar propiedad: ${error.message}`);
+        }
+      });
+    }
+  }
+
+  /**
+   * Elimina una propiedad
+   */
+  eliminarPropiedad(propiedad: any): void {
+    if (!confirm(`¿Estás seguro de que deseas eliminar la propiedad ${propiedad.referencia_catastral}?`)) {
+      return;
+    }
+
+    const id = propiedad._id;
+    if (!id) {
+      alert('Error: No se puede eliminar una propiedad sin ID');
+      return;
+    }
+
+    this.apiService.deletePropiedad(id).subscribe({
+      next: () => {
+        this.propiedades = this.propiedades.filter((p: any) => p._id !== id);
+        this.aplicarFiltros();
+        this.valorarAutomaticamente();
+        alert('✅ Propiedad eliminada correctamente');
+      },
+      error: (error) => {
+        alert(`❌ Error al eliminar propiedad: ${error.message}`);
+      }
+    });
+  }
+
+  /**
+   * Cierra modal de propiedad
+   */
+  cerrarModalPropiedad(): void {
+    this.mostrarModalPropiedad = false;
+    this.propiedadEditando = null;
+  }
+
+  /**
+   * Añade un cultivo a la propiedad que se está editando
+   */
+  añadirCultivo(): void {
+    if (!this.propiedadEditando) return;
+
+    if (!this.propiedadEditando.cultivos) {
+      this.propiedadEditando.cultivos = [];
+    }
+
+    this.propiedadEditando.cultivos.push({
+      subparcela: '',
+      cultivo_aprovechamiento: '',
+      intensidad_productiva: '',
+      superficie_m2: 0
+    });
+  }
+
+  /**
+   * Elimina un cultivo de la propiedad que se está editando
+   */
+  eliminarCultivo(index: number): void {
+    if (!this.propiedadEditando || !this.propiedadEditando.cultivos) return;
+    this.propiedadEditando.cultivos.splice(index, 1);
   }
 }
