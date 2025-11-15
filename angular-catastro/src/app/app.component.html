@@ -449,7 +449,7 @@
 
       <div *ngIf="valoresEditables" class="config-content">
         <!-- Por cada grupo de municipios -->
-        <div *ngFor="let grupo of getMunicipiosPrincipales()" class="municipio-section">
+        <div *ngFor="let grupo of municipiosPrincipales" class="municipio-section">
           <h3>{{ grupo.nombre }}</h3>
           <p class="municipio-info">
             <strong>Provincia:</strong> {{ grupo.provincia }} |

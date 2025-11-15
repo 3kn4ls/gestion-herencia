@@ -33,6 +33,7 @@ export class AppComponent implements OnInit {
   mostrarConfiguracion = false;
   valoresEditables: ValoresTasacion | null = null;
   municipios: string[] = [];
+  municipiosPrincipales: Array<{nombre: string, municipios: string[], codigoAth: string, provincia: string}> = [];
 
   // Módulo de Reparto de Herencia
   mostrarReparto = false;
@@ -404,7 +405,11 @@ export class AppComponent implements OnInit {
    */
   abrirConfiguracion(): void {
     // Crear una copia profunda de los valores actuales para editarlos
-    this.valoresEditables = {...this.valoresTasacion};
+    this.valoresEditables = JSON.parse(JSON.stringify(this.valoresTasacion));
+
+    // Calcular municipios principales UNA SOLA VEZ para evitar bucles infinitos
+    this.calcularMunicipiosPrincipales();
+
     this.mostrarConfiguracion = true;
   }
 
@@ -414,6 +419,7 @@ export class AppComponent implements OnInit {
   cerrarConfiguracion(): void {
     this.mostrarConfiguracion = false;
     this.valoresEditables = null;
+    this.municipiosPrincipales = []; // Limpiar datos calculados
   }
 
   /**
@@ -442,6 +448,7 @@ export class AppComponent implements OnInit {
         // Cerrar modal
         this.mostrarConfiguracion = false;
         this.valoresEditables = null;
+        this.municipiosPrincipales = []; // Limpiar datos calculados
 
         alert('✅ Configuración guardada en el servidor. Las valoraciones se han recalculado.');
       },
@@ -460,6 +467,7 @@ export class AppComponent implements OnInit {
         // Cerrar modal
         this.mostrarConfiguracion = false;
         this.valoresEditables = null;
+        this.municipiosPrincipales = []; // Limpiar datos calculados
 
         alert('⚠️ Configuración guardada localmente (backend no disponible).');
       }
@@ -487,10 +495,14 @@ export class AppComponent implements OnInit {
   }
 
   /**
-   * Obtiene los municipios principales (sin alias) agrupados
+   * Calcula los municipios principales (sin alias) agrupados
+   * Se ejecuta una sola vez al abrir el modal para evitar bucles infinitos
    */
-  getMunicipiosPrincipales(): Array<{nombre: string, municipios: string[], codigoAth: string, provincia: string}> {
-    if (!this.valoresEditables) return [];
+  private calcularMunicipiosPrincipales(): void {
+    if (!this.valoresEditables) {
+      this.municipiosPrincipales = [];
+      return;
+    }
 
     const grupos: Array<{nombre: string, municipios: string[], codigoAth: string, provincia: string}> = [];
     const procesados = new Set<string>();
@@ -523,7 +535,7 @@ export class AppComponent implements OnInit {
       }
     });
 
-    return grupos;
+    this.municipiosPrincipales = grupos;
   }
 
   /**
