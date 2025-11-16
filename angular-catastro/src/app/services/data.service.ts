@@ -164,7 +164,8 @@ export class DataService {
       desc: prop.desc || '',
       precioManual: prop.precioManual,
       distanciaMar: prop.distanciaMar,
-      codGrupo: prop.codGrupo || ''
+      codGrupo: prop.codGrupo || '',
+      precioValidado: prop.precioValidado || false
     };
 
     // Preservar el _id de MongoDB si existe

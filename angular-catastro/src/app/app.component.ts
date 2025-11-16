@@ -252,6 +252,8 @@ export class AppComponent implements OnInit {
           municipio: propiedad.localizacion?.municipio || '',
           partida: propiedad.localizacion?.partida || '',
           escritura: propiedad.escritura || '',
+          codGrupo: propiedad.codGrupo || '',
+          precioValidado: propiedad.precioValidado || false,
           superficie_m2: superficieTotalM2,
           superficie_ha: superficieTotalHa,
           precio_medio_ha: precioMedioHa,
@@ -629,7 +631,8 @@ export class AppComponent implements OnInit {
       desc: '',
       precioManual: undefined,
       distanciaMar: undefined,
-      codGrupo: ''
+      codGrupo: '',
+      precioValidado: false
     };
     this.mostrarModalPropiedad = true;
   }

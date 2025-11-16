@@ -197,6 +197,7 @@
             <th>Uso</th>
             <th>Escritura</th>
             <th>Grupo</th>
+            <th>✓ Valid.</th>
             <th>Subparcela</th>
             <th>Cultivo/Aprovechamiento</th>
             <th>Código</th>
@@ -242,6 +243,9 @@
                 <td class="escritura">{{ propiedad.escritura }}</td>
                 <td class="cod-grupo">
                   <span *ngIf="propiedad.codGrupo" class="badge-grupo-table">{{ propiedad.codGrupo }}</span>
+                </td>
+                <td class="precio-validado">
+                  <span *ngIf="propiedad.precioValidado" class="check-validado">✓</span>
                 </td>
                 <td>{{ cultivo.subparcela }}</td>
                 <td class="cultivo">{{ cultivo.cultivo_aprovechamiento }}</td>
@@ -310,6 +314,9 @@
                 <td class="escritura">{{ propiedad.escritura }}</td>
                 <td class="cod-grupo">
                   <span *ngIf="propiedad.codGrupo" class="badge-grupo-table">{{ propiedad.codGrupo }}</span>
+                </td>
+                <td class="precio-validado">
+                  <span *ngIf="propiedad.precioValidado" class="check-validado">✓</span>
                 </td>
                 <td></td><td></td><td></td><td></td><td></td><td></td>
                 <ng-container *ngIf="getValoracion(propiedad.referencia_catastral) as valoracion">
@@ -426,6 +433,8 @@
             <th>Municipio</th>
             <th>Partida</th>
             <th>Escritura</th>
+            <th>Grupo</th>
+            <th>✓ Valid.</th>
             <th>Sup. (m²)</th>
             <th>Sup. (ha)</th>
             <th>€/ha Medio</th>
@@ -444,6 +453,12 @@
             <td>{{ item.municipio }}</td>
             <td>{{ item.partida }}</td>
             <td class="escritura">{{ item.escritura }}</td>
+            <td class="cod-grupo">
+              <span *ngIf="item.codGrupo" class="badge-grupo-table">{{ item.codGrupo }}</span>
+            </td>
+            <td class="precio-validado">
+              <span *ngIf="item.precioValidado" class="check-validado">✓</span>
+            </td>
             <td class="numeric">{{ formatNumber(item.superficie_m2) }}</td>
             <td class="numeric">{{ item.superficie_ha.toFixed(4) }}</td>
             <td class="numeric">{{ formatNumber(item.precio_medio_ha) }}</td>
@@ -735,6 +750,22 @@
                 placeholder="Opcional - Sobreescribe el calculado">
               <small class="help-text">
                 Si se especifica, este valor se usará en el reparto de herencias en lugar del calculado
+              </small>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  id="precioValidado"
+                  [(ngModel)]="propiedadEditando.precioValidado"
+                  name="precioValidado"
+                  class="form-checkbox">
+                <span class="checkbox-text">✓ Precio validado</span>
+              </label>
+              <small class="help-text">
+                Marca si el precio de esta propiedad ha sido verificado y validado
               </small>
             </div>
           </div>

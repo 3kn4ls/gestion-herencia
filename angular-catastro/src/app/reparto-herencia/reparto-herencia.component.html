@@ -152,6 +152,9 @@
             <div class="propiedad-grupo" *ngIf="prop.propiedad.codGrupo">
               <span class="badge-grupo">🏷️ {{ prop.propiedad.codGrupo }}</span>
             </div>
+            <div class="propiedad-validado" *ngIf="prop.propiedad.precioValidado">
+              <span class="badge-validado">✓ Validado</span>
+            </div>
             <div class="propiedad-valores">
               <div class="valor-principal">{{ formatCurrency(prop.valor) }}</div>
               <div class="superficie">{{ formatNumber(prop.superficie, 4) }} ha</div>
@@ -224,6 +227,9 @@
               </div>
               <div class="propiedad-grupo" *ngIf="prop.propiedad.codGrupo">
                 <span class="badge-grupo">🏷️ {{ prop.propiedad.codGrupo }}</span>
+              </div>
+              <div class="propiedad-validado" *ngIf="prop.propiedad.precioValidado">
+                <span class="badge-validado">✓ Validado</span>
               </div>
               <div class="propiedad-valores">
                 <div class="valor-principal">{{ formatCurrency(prop.valor) }}</div>

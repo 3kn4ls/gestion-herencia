@@ -54,6 +54,10 @@ const PropiedadSchema = new mongoose.Schema({
   codGrupo: {
     type: String,
     default: ''
+  },
+  precioValidado: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true,

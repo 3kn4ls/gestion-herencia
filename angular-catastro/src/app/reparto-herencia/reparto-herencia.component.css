@@ -459,6 +459,22 @@
   box-shadow: 0 2px 4px rgba(139, 92, 246, 0.3);
 }
 
+.propiedad-validado {
+  margin-top: 4px;
+}
+
+.badge-validado {
+  display: inline-block;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+}
+
 .badge-rustico {
   background: #fef3c7;
   color: #92400e;
