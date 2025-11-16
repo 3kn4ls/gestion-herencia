@@ -44,4 +44,5 @@ export interface Propiedad {
   desc?: string;              // Descripción de la parcela
   precioManual?: number;      // Precio manual para valoración personalizada
   distanciaMar?: number;      // Distancia al mar en metros
+  codGrupo?: string;          // Código de grupo para agrupar propiedades en reparto
 }

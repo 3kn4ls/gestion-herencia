@@ -749,6 +749,23 @@
                 min="0"
                 placeholder="Distancia en metros">
             </div>
+            <div class="form-group">
+              <label for="codGrupo">
+                Código de Grupo
+                <span class="label-hint">Para reparto automático</span>
+              </label>
+              <input
+                type="text"
+                id="codGrupo"
+                [(ngModel)]="propiedadEditando.codGrupo"
+                name="codGrupo"
+                class="form-control"
+                placeholder="Ej: GRUPO_A"
+                maxlength="20">
+              <small class="help-text">
+                Propiedades con el mismo código se agruparán en el reparto automático
+              </small>
+            </div>
           </div>
         </div>
 

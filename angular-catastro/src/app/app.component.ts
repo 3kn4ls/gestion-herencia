@@ -628,7 +628,8 @@ export class AppComponent implements OnInit {
       // Nuevos campos
       desc: '',
       precioManual: undefined,
-      distanciaMar: undefined
+      distanciaMar: undefined,
+      codGrupo: ''
     };
     this.mostrarModalPropiedad = true;
   }

@@ -163,7 +163,8 @@ export class DataService {
       // Nuevos campos personalizados
       desc: prop.desc || '',
       precioManual: prop.precioManual,
-      distanciaMar: prop.distanciaMar
+      distanciaMar: prop.distanciaMar,
+      codGrupo: prop.codGrupo || ''
     };
 
     // Preservar el _id de MongoDB si existe

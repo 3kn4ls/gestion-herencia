@@ -50,6 +50,10 @@ const PropiedadSchema = new mongoose.Schema({
   distanciaMar: {
     type: Number,
     default: null
+  },
+  codGrupo: {
+    type: String,
+    default: ''
   }
 }, {
   timestamps: true,

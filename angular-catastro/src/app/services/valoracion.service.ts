@@ -42,14 +42,22 @@ export class ValoracionService {
   private valorarPropiedad(propiedad: Propiedad, valoresTasacion: ValoresTasacion): Valoracion | null {
     const clase = propiedad.datos_inmueble?.clase?.toLowerCase() || '';
 
-    // Solo valorar propiedades rústicas
+    // Calcular valoración normal primero
+    let valoracion: Valoracion | null = null;
+
     if (clase.includes('rústico') || clase.includes('rustico')) {
-      return this.valorarRustico(propiedad, valoresTasacion);
+      valoracion = this.valorarRustico(propiedad, valoresTasacion);
     } else if (clase.includes('urbano')) {
-      return this.valorarUrbano(propiedad);
+      valoracion = this.valorarUrbano(propiedad);
     }
 
-    return null;
+    // Si tiene precio manual, sobreescribir el valor estimado pero mantener detalles
+    if (valoracion && propiedad.precioManual !== undefined && propiedad.precioManual !== null) {
+      valoracion.valor_estimado_euros = propiedad.precioManual;
+      valoracion.metodo_valoracion = 'precio_manual';
+    }
+
+    return valoracion;
   }
 
   /**
