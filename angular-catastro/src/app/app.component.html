@@ -196,6 +196,7 @@
             <th>Clase</th>
             <th>Uso</th>
             <th>Escritura</th>
+            <th>Grupo</th>
             <th>Subparcela</th>
             <th>Cultivo/Aprovechamiento</th>
             <th>Código</th>
@@ -239,6 +240,9 @@
                 <td>{{ propiedad.datos_inmueble?.clase }}</td>
                 <td>{{ propiedad.datos_inmueble?.uso_principal }}</td>
                 <td class="escritura">{{ propiedad.escritura }}</td>
+                <td class="cod-grupo">
+                  <span *ngIf="propiedad.codGrupo" class="badge-grupo-table">{{ propiedad.codGrupo }}</span>
+                </td>
                 <td>{{ cultivo.subparcela }}</td>
                 <td class="cultivo">{{ cultivo.cultivo_aprovechamiento }}</td>
                 <ng-container *ngIf="getValoracion(propiedad.referencia_catastral) as valoracion">
@@ -304,7 +308,10 @@
                 <td>{{ propiedad.datos_inmueble?.clase }}</td>
                 <td>{{ propiedad.datos_inmueble?.uso_principal }}</td>
                 <td class="escritura">{{ propiedad.escritura }}</td>
-                <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                <td class="cod-grupo">
+                  <span *ngIf="propiedad.codGrupo" class="badge-grupo-table">{{ propiedad.codGrupo }}</span>
+                </td>
+                <td></td><td></td><td></td><td></td><td></td><td></td>
                 <ng-container *ngIf="getValoracion(propiedad.referencia_catastral) as valoracion">
                   <td class="numeric valor-calculado">{{ formatCurrency(valoracion.valor_estimado_euros) }}</td>
                   <td class="numeric valor-oficial">{{ formatCurrency(propiedad.valor_referencia) }}</td>

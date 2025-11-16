@@ -748,6 +748,24 @@ textarea.form-control {
   box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
 }
 
+/* Badge de código de grupo en tabla */
+.cod-grupo {
+  text-align: center;
+}
+
+.badge-grupo-table {
+  display: inline-block;
+  background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+  color: white;
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: 0 1px 3px rgba(139, 92, 246, 0.3);
+}
+
 /* Responsive para modal de propiedades */
 @media (max-width: 768px) {
   .modal-propiedad {

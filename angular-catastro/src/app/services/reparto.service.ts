@@ -142,8 +142,146 @@ export class RepartoService {
   }
 
   /**
+   * Agrupa propiedades por código de grupo
+   * @returns Objeto con grupos (propiedades agrupadas) y propiedades individuales (sin grupo)
+   */
+  private agruparPorCodigo(propiedades: PropiedadAsignada[]): {
+    grupos: PropiedadAsignada[][],
+    propiedadesIndividuales: PropiedadAsignada[]
+  } {
+    // Mapa para agrupar por codGrupo
+    const gruposMap = new Map<string, PropiedadAsignada[]>();
+    const individuales: PropiedadAsignada[] = [];
+
+    propiedades.forEach(p => {
+      const codGrupo = p.propiedad.codGrupo?.trim();
+
+      if (codGrupo) {
+        // Tiene código de grupo - agrupar
+        if (!gruposMap.has(codGrupo)) {
+          gruposMap.set(codGrupo, []);
+        }
+        gruposMap.get(codGrupo)!.push(p);
+      } else {
+        // Sin código de grupo - tratar individualmente
+        individuales.push(p);
+      }
+    });
+
+    // Convertir el mapa a array de grupos
+    const grupos = Array.from(gruposMap.values());
+
+    return { grupos, propiedadesIndividuales: individuales };
+  }
+
+  /**
+   * Calcula el valor total de un grupo de propiedades
+   */
+  private calcularValorGrupo(grupo: PropiedadAsignada[]): number {
+    return grupo.reduce((sum, p) => sum + p.valor, 0);
+  }
+
+  /**
+   * Balanceo mixto que respeta grupos de propiedades
+   */
+  private balanceoMixtoConGrupos(
+    grupos: PropiedadAsignada[][],
+    propiedadesIndividuales: PropiedadAsignada[],
+    herederos: Heredero[]
+  ): void {
+    // Separar grupos por tipo mayoritario
+    const gruposRusticos = grupos.filter(g => {
+      const rusticas = g.filter(p => p.tipo === 'rustico').length;
+      return rusticas > g.length / 2;
+    }).sort((a, b) => this.calcularValorGrupo(b) - this.calcularValorGrupo(a));
+
+    const gruposUrbanos = grupos.filter(g => {
+      const rusticas = g.filter(p => p.tipo === 'rustico').length;
+      return rusticas <= g.length / 2;
+    }).sort((a, b) => this.calcularValorGrupo(b) - this.calcularValorGrupo(a));
+
+    // Separar propiedades individuales por tipo
+    const rusticasInd = propiedadesIndividuales.filter(p => p.tipo === 'rustico')
+      .sort((a, b) => b.valor - a.valor);
+
+    const urbanasInd = propiedadesIndividuales.filter(p => p.tipo === 'urbano')
+      .sort((a, b) => b.valor - a.valor);
+
+    // Distribuir grupos rústicos
+    gruposRusticos.forEach(grupo => this.asignarGrupo(grupo, herederos));
+
+    // Distribuir propiedades rústicas individuales
+    this.distribuirPropiedades(rusticasInd, herederos);
+
+    // Distribuir grupos urbanos
+    gruposUrbanos.forEach(grupo => this.asignarGrupo(grupo, herederos));
+
+    // Distribuir propiedades urbanas individuales
+    this.distribuirPropiedades(urbanasInd, herederos);
+  }
+
+  /**
+   * Balanceo por valor que respeta grupos de propiedades
+   */
+  private balanceoPorValorConGrupos(
+    grupos: PropiedadAsignada[][],
+    propiedadesIndividuales: PropiedadAsignada[],
+    herederos: Heredero[]
+  ): void {
+    // Ordenar grupos por valor total (mayor a menor)
+    const gruposOrdenados = grupos.sort((a, b) =>
+      this.calcularValorGrupo(b) - this.calcularValorGrupo(a)
+    );
+
+    // Ordenar propiedades individuales por valor
+    const individualesOrdenadas = propiedadesIndividuales.sort((a, b) => b.valor - a.valor);
+
+    // Mezclar grupos e individuales en una lista ordenada por valor
+    const todosMezclados: (PropiedadAsignada | PropiedadAsignada[])[] = [];
+
+    gruposOrdenados.forEach(g => todosMezclados.push(g));
+    individualesOrdenadas.forEach(p => todosMezclados.push(p));
+
+    // Reordenar todo por valor
+    todosMezclados.sort((a, b) => {
+      const valorA = Array.isArray(a) ? this.calcularValorGrupo(a) : a.valor;
+      const valorB = Array.isArray(b) ? this.calcularValorGrupo(b) : b.valor;
+      return valorB - valorA;
+    });
+
+    // Distribuir en orden
+    todosMezclados.forEach(item => {
+      if (Array.isArray(item)) {
+        // Es un grupo
+        this.asignarGrupo(item, herederos);
+      } else {
+        // Es una propiedad individual
+        this.distribuirPropiedades([item], herederos);
+      }
+    });
+  }
+
+  /**
+   * Asigna un grupo completo de propiedades al heredero con menor valor total
+   */
+  private asignarGrupo(grupo: PropiedadAsignada[], herederos: Heredero[]): void {
+    // Encontrar el heredero con menor valor total
+    const herederoMenor = herederos.reduce((min, h) =>
+      h.valorTotal < min.valorTotal ? h : min
+    );
+
+    // Asignar todas las propiedades del grupo a ese heredero
+    grupo.forEach(propiedad => {
+      herederoMenor.propiedades.push(propiedad);
+    });
+
+    this.recalcularTotales(herederoMenor);
+  }
+
+  /**
    * Realiza el reparto automático de propiedades
    * Algoritmo: Balanceo por valor y tipo usando greedy approach optimizado
+   * Respeta grupos definidos por codGrupo (propiedades con mismo código se asignan juntas)
    */
   repartirAutomaticamente(
     propiedades: Propiedad[],
@@ -158,16 +296,31 @@ export class RepartoService {
       .map(p => {
         const valoracion = valoraciones.find(v => v.referencia_catastral === p.referencia_catastral);
         if (!valoracion) return null;
-        return this.crearPropiedadAsignada(p, valoracion);
+
+        // Usar precio manual si existe, sino usar el calculado
+        const valorFinal = p.precioManual || valoracion.valor_estimado_euros || 0;
+        const tipo = this.determinarTipo(p);
+        const superficie = this.calcularSuperficie(p);
+
+        return {
+          propiedad: p,
+          valoracion,
+          valor: valorFinal,
+          superficie,
+          tipo
+        } as PropiedadAsignada;
       })
       .filter(p => p !== null) as PropiedadAsignada[];
 
+    // Agrupar propiedades por codGrupo
+    const { grupos, propiedadesIndividuales } = this.agruparPorCodigo(propiedadesAsignables);
+
     if (config.criterioBalance === 'mixto') {
       // Algoritmo de balanceo mixto: primero por tipo, luego por valor
-      this.balanceoMixto(propiedadesAsignables, herederos);
+      this.balanceoMixtoConGrupos(grupos, propiedadesIndividuales, herederos);
     } else {
       // Algoritmo de balanceo por valor únicamente
-      this.balanceoPorValor(propiedadesAsignables, herederos);
+      this.balanceoPorValorConGrupos(grupos, propiedadesIndividuales, herederos);
     }
 
     return herederos;
