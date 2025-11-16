@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: gestion-herencia-backend
+  namespace: herencia
   labels:
     app: gestion-herencia-backend
 spec:

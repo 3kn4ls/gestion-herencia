@@ -145,6 +145,13 @@
               </span>
               <span class="municipio">{{ prop.propiedad.localizacion?.municipio }}</span>
             </div>
+            <div class="propiedad-ubicacion" *ngIf="prop.propiedad.localizacion?.partida">
+              <span class="label-small">Partida:</span>
+              <span class="valor-small">{{ prop.propiedad.localizacion.partida }}</span>
+            </div>
+            <div class="propiedad-grupo" *ngIf="prop.propiedad.codGrupo">
+              <span class="badge-grupo">🏷️ {{ prop.propiedad.codGrupo }}</span>
+            </div>
             <div class="propiedad-valores">
               <div class="valor-principal">{{ formatCurrency(prop.valor) }}</div>
               <div class="superficie">{{ formatNumber(prop.superficie, 4) }} ha</div>
@@ -210,6 +217,13 @@
                   {{ prop.tipo === 'rustico' ? '🌾' : '🏠' }}
                 </span>
                 <span class="municipio">{{ prop.propiedad.localizacion?.municipio }}</span>
+              </div>
+              <div class="propiedad-ubicacion" *ngIf="prop.propiedad.localizacion?.partida">
+                <span class="label-small">Partida:</span>
+                <span class="valor-small">{{ prop.propiedad.localizacion.partida }}</span>
+              </div>
+              <div class="propiedad-grupo" *ngIf="prop.propiedad.codGrupo">
+                <span class="badge-grupo">🏷️ {{ prop.propiedad.codGrupo }}</span>
               </div>
               <div class="propiedad-valores">
                 <div class="valor-principal">{{ formatCurrency(prop.valor) }}</div>
