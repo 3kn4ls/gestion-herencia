@@ -904,3 +904,105 @@
     flex-direction: column;
   }
 }
+
+/* ===========================================
+   ESTILOS PARA GRUPOS DE PROPIEDADES
+   =========================================== */
+
+/* Card de grupo - destaca visualmente */
+.card-grupo {
+  border: 2px solid #8b5cf6 !important;
+  background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%) !important;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15) !important;
+}
+
+.card-grupo.asignada {
+  background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%) !important;
+}
+
+.card-grupo:hover {
+  border-color: #7c3aed !important;
+  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.25) !important;
+}
+
+/* Header del grupo */
+.grupo-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.badge-grupo-grande {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.grupo-count {
+  background: #ddd6fe;
+  color: #6d28d9;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Lista de referencias dentro del grupo */
+.grupo-propiedades-lista {
+  background: rgba(139, 92, 246, 0.08);
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin: 8px 0;
+  font-size: 11px;
+  line-height: 1.6;
+  color: #5b21b6;
+  max-height: 60px;
+  overflow-y: auto;
+}
+
+.grupo-ref-mini {
+  display: inline;
+  word-break: break-all;
+}
+
+/* Scrollbar personalizado para lista de grupos */
+.grupo-propiedades-lista::-webkit-scrollbar {
+  width: 4px;
+}
+
+.grupo-propiedades-lista::-webkit-scrollbar-track {
+  background: #ede9fe;
+  border-radius: 2px;
+}
+
+.grupo-propiedades-lista::-webkit-scrollbar-thumb {
+  background: #a78bfa;
+  border-radius: 2px;
+}
+
+/* Ajustes para grupos en columnas de herederos (más compactos) */
+.lista-heredero .card-grupo .grupo-propiedades-lista {
+  max-height: 40px;
+  font-size: 10px;
+  padding: 6px 8px;
+}
+
+.lista-heredero .card-grupo .grupo-header {
+  margin-bottom: 6px;
+}
+
+.lista-heredero .card-grupo .badge-grupo-grande {
+  font-size: 11px;
+  padding: 3px 8px;
+}
+
+.lista-heredero .card-grupo .grupo-count {
+  font-size: 10px;
+}

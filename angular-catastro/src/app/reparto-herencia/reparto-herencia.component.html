@@ -130,37 +130,60 @@
         [cdkDropListConnectedTo]="getListasConectadas()"
         (cdkDropListDropped)="onDrop($event)">
 
-        <div
-          class="card-propiedad disponible"
-          *ngFor="let prop of propiedadesDisponibles"
-          cdkDrag>
+        <!-- Iterar sobre elementos agrupados -->
+        <ng-container *ngFor="let elemento of getElementosDisponiblesAgrupados()">
 
-          <div class="drag-handle" cdkDragHandle>⋮⋮</div>
-
-          <div class="propiedad-info">
-            <div class="propiedad-ref">{{ prop.propiedad.referencia_catastral }}</div>
-            <div class="propiedad-detalle">
-              <span class="badge" [class.badge-rustico]="prop.tipo === 'rustico'" [class.badge-urbano]="prop.tipo === 'urbano'">
-                {{ prop.tipo === 'rustico' ? '🌾 Rústica' : '🏠 Urbana' }}
-              </span>
-              <span class="municipio">{{ prop.propiedad.localizacion?.municipio }}</span>
-            </div>
-            <div class="propiedad-ubicacion" *ngIf="prop.propiedad.localizacion?.partida">
-              <span class="label-small">Partida:</span>
-              <span class="valor-small">{{ prop.propiedad.localizacion.partida }}</span>
-            </div>
-            <div class="propiedad-grupo" *ngIf="prop.propiedad.codGrupo">
-              <span class="badge-grupo">🏷️ {{ prop.propiedad.codGrupo }}</span>
-            </div>
-            <div class="propiedad-validado" *ngIf="prop.propiedad.precioValidado">
-              <span class="badge-validado">✓ Validado</span>
-            </div>
-            <div class="propiedad-valores">
-              <div class="valor-principal">{{ formatCurrency(prop.valor) }}</div>
-              <div class="superficie">{{ formatNumber(prop.superficie, 4) }} ha</div>
+          <!-- Vista de GRUPO (múltiples propiedades con mismo codGrupo) -->
+          <div *ngIf="elemento.esGrupo" class="card-propiedad disponible card-grupo" cdkDrag [cdkDragData]="elemento.propiedades">
+            <div class="drag-handle" cdkDragHandle>⋮⋮</div>
+            <div class="propiedad-info">
+              <div class="grupo-header">
+                <span class="badge-grupo-grande">🏷️ {{ elemento.codGrupo }}</span>
+                <span class="grupo-count">{{ elemento.propiedades.length }} propiedades</span>
+              </div>
+              <div class="propiedad-detalle">
+                <span class="badge" [class.badge-rustico]="elemento.tipoMayoritario === 'rustico'" [class.badge-urbano]="elemento.tipoMayoritario === 'urbano'">
+                  {{ elemento.tipoMayoritario === 'rustico' ? '🌾 Rústicas' : '🏠 Urbanas' }}
+                </span>
+              </div>
+              <div class="grupo-propiedades-lista">
+                <span *ngFor="let p of elemento.propiedades; let last = last" class="grupo-ref-mini">
+                  {{ p.propiedad.referencia_catastral }}{{ !last ? ', ' : '' }}
+                </span>
+              </div>
+              <div class="propiedad-valores">
+                <div class="valor-principal">{{ formatCurrency(elemento.valorTotal) }}</div>
+                <div class="superficie">{{ formatNumber(elemento.superficieTotal, 4) }} ha</div>
+              </div>
             </div>
           </div>
-        </div>
+
+          <!-- Vista de PROPIEDAD INDIVIDUAL (sin codGrupo) -->
+          <div *ngIf="!elemento.esGrupo" class="card-propiedad disponible" cdkDrag [cdkDragData]="elemento.propiedades">
+            <div class="drag-handle" cdkDragHandle>⋮⋮</div>
+            <div class="propiedad-info">
+              <div class="propiedad-ref">{{ elemento.propiedades[0].propiedad.referencia_catastral }}</div>
+              <div class="propiedad-detalle">
+                <span class="badge" [class.badge-rustico]="elemento.tipoMayoritario === 'rustico'" [class.badge-urbano]="elemento.tipoMayoritario === 'urbano'">
+                  {{ elemento.tipoMayoritario === 'rustico' ? '🌾 Rústica' : '🏠 Urbana' }}
+                </span>
+                <span class="municipio">{{ elemento.propiedades[0].propiedad.localizacion?.municipio }}</span>
+              </div>
+              <div class="propiedad-ubicacion" *ngIf="elemento.propiedades[0].propiedad.localizacion?.partida">
+                <span class="label-small">Partida:</span>
+                <span class="valor-small">{{ elemento.propiedades[0].propiedad.localizacion.partida }}</span>
+              </div>
+              <div class="propiedad-validado" *ngIf="elemento.propiedades[0].propiedad.precioValidado">
+                <span class="badge-validado">✓ Validado</span>
+              </div>
+              <div class="propiedad-valores">
+                <div class="valor-principal">{{ formatCurrency(elemento.valorTotal) }}</div>
+                <div class="superficie">{{ formatNumber(elemento.superficieTotal, 4) }} ha</div>
+              </div>
+            </div>
+          </div>
+
+        </ng-container>
 
         <div class="mensaje-vacio" *ngIf="propiedadesDisponibles.length === 0">
           <p>✅ Todas las propiedades han sido asignadas</p>
@@ -206,37 +229,60 @@
           [cdkDropListConnectedTo]="getListasConectadas()"
           (cdkDropListDropped)="onDrop($event, heredero)">
 
-          <div
-            class="card-propiedad asignada"
-            *ngFor="let prop of heredero.propiedades"
-            cdkDrag>
+          <!-- Iterar sobre elementos agrupados del heredero -->
+          <ng-container *ngFor="let elemento of getElementosHerederoAgrupados(heredero)">
 
-            <div class="drag-handle" cdkDragHandle>⋮⋮</div>
-
-            <div class="propiedad-info">
-              <div class="propiedad-ref">{{ prop.propiedad.referencia_catastral }}</div>
-              <div class="propiedad-detalle">
-                <span class="badge" [class.badge-rustico]="prop.tipo === 'rustico'" [class.badge-urbano]="prop.tipo === 'urbano'">
-                  {{ prop.tipo === 'rustico' ? '🌾' : '🏠' }}
-                </span>
-                <span class="municipio">{{ prop.propiedad.localizacion?.municipio }}</span>
-              </div>
-              <div class="propiedad-ubicacion" *ngIf="prop.propiedad.localizacion?.partida">
-                <span class="label-small">Partida:</span>
-                <span class="valor-small">{{ prop.propiedad.localizacion.partida }}</span>
-              </div>
-              <div class="propiedad-grupo" *ngIf="prop.propiedad.codGrupo">
-                <span class="badge-grupo">🏷️ {{ prop.propiedad.codGrupo }}</span>
-              </div>
-              <div class="propiedad-validado" *ngIf="prop.propiedad.precioValidado">
-                <span class="badge-validado">✓ Validado</span>
-              </div>
-              <div class="propiedad-valores">
-                <div class="valor-principal">{{ formatCurrency(prop.valor) }}</div>
-                <div class="superficie">{{ formatNumber(prop.superficie, 4) }} ha</div>
+            <!-- Vista de GRUPO asignado -->
+            <div *ngIf="elemento.esGrupo" class="card-propiedad asignada card-grupo" cdkDrag [cdkDragData]="elemento.propiedades">
+              <div class="drag-handle" cdkDragHandle>⋮⋮</div>
+              <div class="propiedad-info">
+                <div class="grupo-header">
+                  <span class="badge-grupo-grande">🏷️ {{ elemento.codGrupo }}</span>
+                  <span class="grupo-count">{{ elemento.propiedades.length }} props</span>
+                </div>
+                <div class="propiedad-detalle">
+                  <span class="badge" [class.badge-rustico]="elemento.tipoMayoritario === 'rustico'" [class.badge-urbano]="elemento.tipoMayoritario === 'urbano'">
+                    {{ elemento.tipoMayoritario === 'rustico' ? '🌾' : '🏠' }}
+                  </span>
+                </div>
+                <div class="grupo-propiedades-lista">
+                  <span *ngFor="let p of elemento.propiedades; let last = last" class="grupo-ref-mini">
+                    {{ p.propiedad.referencia_catastral }}{{ !last ? ', ' : '' }}
+                  </span>
+                </div>
+                <div class="propiedad-valores">
+                  <div class="valor-principal">{{ formatCurrency(elemento.valorTotal) }}</div>
+                  <div class="superficie">{{ formatNumber(elemento.superficieTotal, 4) }} ha</div>
+                </div>
               </div>
             </div>
-          </div>
+
+            <!-- Vista de PROPIEDAD INDIVIDUAL asignada -->
+            <div *ngIf="!elemento.esGrupo" class="card-propiedad asignada" cdkDrag [cdkDragData]="elemento.propiedades">
+              <div class="drag-handle" cdkDragHandle>⋮⋮</div>
+              <div class="propiedad-info">
+                <div class="propiedad-ref">{{ elemento.propiedades[0].propiedad.referencia_catastral }}</div>
+                <div class="propiedad-detalle">
+                  <span class="badge" [class.badge-rustico]="elemento.tipoMayoritario === 'rustico'" [class.badge-urbano]="elemento.tipoMayoritario === 'urbano'">
+                    {{ elemento.tipoMayoritario === 'rustico' ? '🌾' : '🏠' }}
+                  </span>
+                  <span class="municipio">{{ elemento.propiedades[0].propiedad.localizacion?.municipio }}</span>
+                </div>
+                <div class="propiedad-ubicacion" *ngIf="elemento.propiedades[0].propiedad.localizacion?.partida">
+                  <span class="label-small">Partida:</span>
+                  <span class="valor-small">{{ elemento.propiedades[0].propiedad.localizacion.partida }}</span>
+                </div>
+                <div class="propiedad-validado" *ngIf="elemento.propiedades[0].propiedad.precioValidado">
+                  <span class="badge-validado">✓ Validado</span>
+                </div>
+                <div class="propiedad-valores">
+                  <div class="valor-principal">{{ formatCurrency(elemento.valorTotal) }}</div>
+                  <div class="superficie">{{ formatNumber(elemento.superficieTotal, 4) }} ha</div>
+                </div>
+              </div>
+            </div>
+
+          </ng-container>
 
           <div class="mensaje-vacio-heredero" *ngIf="heredero.propiedades.length === 0">
             <p>👆 Arrastra propiedades aquí</p>

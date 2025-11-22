@@ -9,6 +9,19 @@ import { Heredero, PropiedadAsignada, ConfiguracionReparto, EstadisticasReparto 
 import { RepartoService } from '../services/reparto.service';
 import { ApiService, RepartoBackend } from '../services/api.service';
 
+/**
+ * Interfaz para representar un elemento en la vista de reparto
+ * Puede ser una propiedad individual o un grupo de propiedades
+ */
+export interface ElementoReparto {
+  esGrupo: boolean;
+  codGrupo?: string;
+  propiedades: PropiedadAsignada[];
+  valorTotal: number;
+  superficieTotal: number;
+  tipoMayoritario: 'rustico' | 'urbano';
+}
+
 @Component({
   selector: 'app-reparto-herencia',
   standalone: true,
@@ -555,5 +568,84 @@ export class RepartoHerenciaComponent implements OnInit {
       hour: '2-digit',
       minute: '2-digit'
     });
+  }
+
+  // =====================================================
+  // MÉTODOS DE AGRUPACIÓN PARA VISUALIZACIÓN
+  // =====================================================
+
+  /**
+   * Agrupa las propiedades disponibles por codGrupo para mostrar en la vista
+   * Las propiedades con el mismo codGrupo aparecen como un solo elemento
+   */
+  getElementosDisponiblesAgrupados(): ElementoReparto[] {
+    return this.agruparPropiedades(this.propiedadesDisponibles);
+  }
+
+  /**
+   * Agrupa las propiedades de un heredero por codGrupo para mostrar en la vista
+   */
+  getElementosHerederoAgrupados(heredero: Heredero): ElementoReparto[] {
+    return this.agruparPropiedades(heredero.propiedades);
+  }
+
+  /**
+   * Método privado que agrupa un array de propiedades por codGrupo
+   */
+  private agruparPropiedades(propiedades: PropiedadAsignada[]): ElementoReparto[] {
+    const gruposMap = new Map<string, PropiedadAsignada[]>();
+    const individuales: PropiedadAsignada[] = [];
+
+    // Separar propiedades con grupo de las individuales
+    propiedades.forEach(p => {
+      const codGrupo = p.propiedad.codGrupo?.trim();
+      if (codGrupo) {
+        if (!gruposMap.has(codGrupo)) {
+          gruposMap.set(codGrupo, []);
+        }
+        gruposMap.get(codGrupo)!.push(p);
+      } else {
+        individuales.push(p);
+      }
+    });
+
+    const elementos: ElementoReparto[] = [];
+
+    // Crear elementos para grupos
+    gruposMap.forEach((props, codGrupo) => {
+      const valorTotal = props.reduce((sum, p) => sum + p.valor, 0);
+      const superficieTotal = props.reduce((sum, p) => sum + p.superficie, 0);
+      const rusticas = props.filter(p => p.tipo === 'rustico').length;
+      const tipoMayoritario = rusticas > props.length / 2 ? 'rustico' : 'urbano';
+
+      elementos.push({
+        esGrupo: true,
+        codGrupo,
+        propiedades: props,
+        valorTotal,
+        superficieTotal,
+        tipoMayoritario
+      });
+    });
+
+    // Crear elementos para propiedades individuales
+    individuales.forEach(p => {
+      elementos.push({
+        esGrupo: false,
+        propiedades: [p],
+        valorTotal: p.valor,
+        superficieTotal: p.superficie,
+        tipoMayoritario: p.tipo
+      });
+    });
+
+    return elementos;
+  }
+
+  /**
+   * Obtiene el conteo total de propiedades (sumando las de los grupos)
+   */
+  getConteoTotalPropiedades(elementos: ElementoReparto[]): number {
+    return elementos.reduce((sum, e) => sum + e.propiedades.length, 0);
   }
 }
