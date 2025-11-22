@@ -1,7 +1,14 @@
 const mongoose = require('mongoose');
 
+// Schema flexible para almacenar la propiedad completa
 const PropiedadAsignadaSchema = new mongoose.Schema({
-  referencia_catastral: String,
+  propiedad: {
+    type: mongoose.Schema.Types.Mixed,
+    required: true
+  },
+  valoracion: {
+    type: mongoose.Schema.Types.Mixed
+  },
   valor: Number,
   superficie: Number,
   tipo: {

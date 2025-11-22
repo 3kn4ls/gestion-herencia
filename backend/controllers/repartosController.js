@@ -70,6 +70,9 @@ exports.createReparto = async (req, res) => {
 // @access  Public
 exports.updateReparto = async (req, res) => {
   try {
+    // Añadir fecha de modificación
+    req.body.fechaModificacion = new Date();
+
     const reparto = await Reparto.findByIdAndUpdate(
       req.params.id,
       req.body,
