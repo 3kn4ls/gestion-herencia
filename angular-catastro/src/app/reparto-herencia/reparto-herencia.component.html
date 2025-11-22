@@ -132,12 +132,18 @@
         (cdkDropListDropped)="onDrop($event)">
 
         <!-- Iterar sobre elementos agrupados -->
-        <ng-container *ngFor="let elemento of getElementosDisponiblesAgrupados()">
+        <div
+          *ngFor="let elemento of getElementosDisponiblesAgrupados()"
+          class="card-propiedad disponible"
+          [class.card-grupo]="elemento.esGrupo"
+          cdkDrag
+          [cdkDragData]="elemento.propiedades">
 
-          <!-- Vista de GRUPO (múltiples propiedades con mismo codGrupo) -->
-          <div *ngIf="elemento.esGrupo" class="card-propiedad disponible card-grupo" cdkDrag [cdkDragData]="elemento.propiedades">
-            <div class="drag-handle" cdkDragHandle>⋮⋮</div>
-            <div class="propiedad-info">
+          <div class="drag-handle" cdkDragHandle>⋮⋮</div>
+
+          <div class="propiedad-info">
+            <!-- Vista de GRUPO -->
+            <ng-container *ngIf="elemento.esGrupo">
               <div class="grupo-header">
                 <span class="badge-grupo-grande">🏷️ {{ elemento.codGrupo }}</span>
                 <span class="grupo-count">{{ elemento.propiedades.length }} propiedades</span>
@@ -152,17 +158,10 @@
                   {{ p.propiedad.referencia_catastral }}{{ !last ? ', ' : '' }}
                 </span>
               </div>
-              <div class="propiedad-valores">
-                <div class="valor-principal">{{ formatCurrency(elemento.valorTotal) }}</div>
-                <div class="superficie">{{ formatNumber(elemento.superficieTotal, 4) }} ha</div>
-              </div>
-            </div>
-          </div>
+            </ng-container>
 
-          <!-- Vista de PROPIEDAD INDIVIDUAL (sin codGrupo) -->
-          <div *ngIf="!elemento.esGrupo" class="card-propiedad disponible" cdkDrag [cdkDragData]="elemento.propiedades">
-            <div class="drag-handle" cdkDragHandle>⋮⋮</div>
-            <div class="propiedad-info">
+            <!-- Vista de PROPIEDAD INDIVIDUAL -->
+            <ng-container *ngIf="!elemento.esGrupo">
               <div class="propiedad-ref">{{ elemento.propiedades[0].propiedad.referencia_catastral }}</div>
               <div class="propiedad-detalle">
                 <span class="badge" [class.badge-rustico]="elemento.tipoMayoritario === 'rustico'" [class.badge-urbano]="elemento.tipoMayoritario === 'urbano'">
@@ -177,14 +176,15 @@
               <div class="propiedad-validado" *ngIf="elemento.propiedades[0].propiedad.precioValidado">
                 <span class="badge-validado">✓ Validado</span>
               </div>
-              <div class="propiedad-valores">
-                <div class="valor-principal">{{ formatCurrency(elemento.valorTotal) }}</div>
-                <div class="superficie">{{ formatNumber(elemento.superficieTotal, 4) }} ha</div>
-              </div>
+            </ng-container>
+
+            <!-- Valores (común para ambos) -->
+            <div class="propiedad-valores">
+              <div class="valor-principal">{{ formatCurrency(elemento.valorTotal) }}</div>
+              <div class="superficie">{{ formatNumber(elemento.superficieTotal, 4) }} ha</div>
             </div>
           </div>
-
-        </ng-container>
+        </div>
 
         <div class="mensaje-vacio" *ngIf="propiedadesDisponibles.length === 0">
           <p>✅ Todas las propiedades han sido asignadas</p>
@@ -231,12 +231,18 @@
           (cdkDropListDropped)="onDrop($event, heredero)">
 
           <!-- Iterar sobre elementos agrupados del heredero -->
-          <ng-container *ngFor="let elemento of getElementosHerederoAgrupados(heredero)">
+          <div
+            *ngFor="let elemento of getElementosHerederoAgrupados(heredero)"
+            class="card-propiedad asignada"
+            [class.card-grupo]="elemento.esGrupo"
+            cdkDrag
+            [cdkDragData]="elemento.propiedades">
 
-            <!-- Vista de GRUPO asignado -->
-            <div *ngIf="elemento.esGrupo" class="card-propiedad asignada card-grupo" cdkDrag [cdkDragData]="elemento.propiedades">
-              <div class="drag-handle" cdkDragHandle>⋮⋮</div>
-              <div class="propiedad-info">
+            <div class="drag-handle" cdkDragHandle>⋮⋮</div>
+
+            <div class="propiedad-info">
+              <!-- Vista de GRUPO -->
+              <ng-container *ngIf="elemento.esGrupo">
                 <div class="grupo-header">
                   <span class="badge-grupo-grande">🏷️ {{ elemento.codGrupo }}</span>
                   <span class="grupo-count">{{ elemento.propiedades.length }} props</span>
@@ -251,17 +257,10 @@
                     {{ p.propiedad.referencia_catastral }}{{ !last ? ', ' : '' }}
                   </span>
                 </div>
-                <div class="propiedad-valores">
-                  <div class="valor-principal">{{ formatCurrency(elemento.valorTotal) }}</div>
-                  <div class="superficie">{{ formatNumber(elemento.superficieTotal, 4) }} ha</div>
-                </div>
-              </div>
-            </div>
+              </ng-container>
 
-            <!-- Vista de PROPIEDAD INDIVIDUAL asignada -->
-            <div *ngIf="!elemento.esGrupo" class="card-propiedad asignada" cdkDrag [cdkDragData]="elemento.propiedades">
-              <div class="drag-handle" cdkDragHandle>⋮⋮</div>
-              <div class="propiedad-info">
+              <!-- Vista de PROPIEDAD INDIVIDUAL -->
+              <ng-container *ngIf="!elemento.esGrupo">
                 <div class="propiedad-ref">{{ elemento.propiedades[0].propiedad.referencia_catastral }}</div>
                 <div class="propiedad-detalle">
                   <span class="badge" [class.badge-rustico]="elemento.tipoMayoritario === 'rustico'" [class.badge-urbano]="elemento.tipoMayoritario === 'urbano'">
@@ -276,14 +275,15 @@
                 <div class="propiedad-validado" *ngIf="elemento.propiedades[0].propiedad.precioValidado">
                   <span class="badge-validado">✓ Validado</span>
                 </div>
-                <div class="propiedad-valores">
-                  <div class="valor-principal">{{ formatCurrency(elemento.valorTotal) }}</div>
-                  <div class="superficie">{{ formatNumber(elemento.superficieTotal, 4) }} ha</div>
-                </div>
+              </ng-container>
+
+              <!-- Valores (común para ambos) -->
+              <div class="propiedad-valores">
+                <div class="valor-principal">{{ formatCurrency(elemento.valorTotal) }}</div>
+                <div class="superficie">{{ formatNumber(elemento.superficieTotal, 4) }} ha</div>
               </div>
             </div>
-
-          </ng-container>
+          </div>
 
           <div class="mensaje-vacio-heredero" *ngIf="heredero.propiedades.length === 0">
             <p>👆 Arrastra propiedades aquí</p>
