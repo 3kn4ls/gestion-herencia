@@ -306,7 +306,7 @@ export class AppComponent implements OnInit {
     try {
       const headers = [
         'Referencia Catastral', 'Provincia', 'Municipio', 'Partida', 'Polígono', 'Parcela',
-        'Clase', 'Uso Principal', 'Superficie Total (m²)', 'Escritura',
+        'Clase', 'Uso Principal', 'Superficie Total (m²)', 'Escritura', 'm2 Escritura',
         'Subparcela', 'Cultivo/Aprovechamiento', 'Código Catastral', 'Intensidad', 'Superficie Cultivo (m²)',
         'Superficie Cultivo (ha)', 'Precio €/ha', 'Valor Cultivo (€)',
         'Valor Total Calculado (€)', 'Valor Catastral Oficial (€)',
@@ -331,7 +331,8 @@ export class AppComponent implements OnInit {
           propiedad.datos_inmueble?.clase || '',
           propiedad.datos_inmueble?.uso_principal || '',
           propiedad.datos_inmueble?.superficie_construida?.toString() || '0',
-          propiedad.escritura || ''
+          propiedad.escritura || '',
+          propiedad.m2Escritura?.toString() || ''
         ];
 
         if (propiedad.cultivos && propiedad.cultivos.length > 0) {
