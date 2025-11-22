@@ -431,67 +431,77 @@ export class RepartoHerenciaComponent implements OnInit {
         yPos = margin;
       }
 
-      // Título del heredero
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(13);
-      doc.setTextColor(...colorPrimario);
-      doc.text(`${heredero.nombre.toUpperCase()}`, margin, yPos);
-
-      // Indicador de porcentaje
+      // Calcular porcentaje
       const porcentaje = this.estadisticas!.valorTotal > 0
         ? (heredero.valorTotal / this.estadisticas!.valorTotal * 100)
         : 0;
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(10);
-      doc.setTextColor(100, 100, 100);
-      doc.text(`(${porcentaje.toFixed(1)}% del total)`, margin + doc.getTextWidth(heredero.nombre.toUpperCase()) + 5, yPos);
 
-      yPos += 8;
+      // Cabecera del heredero con fondo
+      doc.setFillColor(41, 128, 185);
+      doc.rect(margin, yPos - 5, pageWidth - 2 * margin, 10, 'F');
+
+      // Título del heredero (en blanco sobre fondo azul)
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.setTextColor(255, 255, 255);
+      doc.text(`${heredero.nombre.toUpperCase()}`, margin + 3, yPos + 2);
+
+      // Porcentaje a la derecha (separado del nombre)
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.text(`${porcentaje.toFixed(1)}% del total`, pageWidth - margin - 3, yPos + 2, { align: 'right' });
+
+      yPos += 12;
 
       // Resumen del heredero
-      doc.setFontSize(10);
+      doc.setFontSize(9);
       doc.setTextColor(...colorSecundario);
       const resumenHeredero = `Valor: ${this.formatCurrency(heredero.valorTotal)} | Superficie: ${heredero.superficieTotal.toFixed(4)} ha | Rústicas: ${heredero.cantidadRusticas} | Urbanas: ${heredero.cantidadUrbanas}`;
       doc.text(resumenHeredero, margin, yPos);
 
-      yPos += 8;
+      yPos += 6;
 
       // Tabla de propiedades
       if (heredero.propiedades.length > 0) {
         const tableData = heredero.propiedades.map((p, idx) => [
           (idx + 1).toString(),
-          p.propiedad.referencia_catastral.substring(0, 20),
-          p.propiedad.localizacion?.municipio || 'N/A',
-          p.tipo === 'rustico' ? 'Rústica' : 'Urbana',
-          p.superficie.toFixed(4) + ' ha',
+          p.propiedad.referencia_catastral.substring(0, 18),
+          p.propiedad.codGrupo || '-',
+          p.propiedad.localizacion?.municipio?.substring(0, 12) || 'N/A',
+          p.tipo === 'rustico' ? 'R' : 'U',
+          p.superficie.toFixed(2),
+          p.propiedad.m2Escritura ? p.propiedad.m2Escritura.toLocaleString('es-ES') : '-',
           this.formatCurrency(p.valor)
         ]);
 
         autoTable(doc, {
           startY: yPos,
-          head: [['#', 'Ref. Catastral', 'Municipio', 'Tipo', 'Superficie', 'Valor']],
+          head: [['#', 'Ref. Catastral', 'Grupo', 'Municipio', 'Tipo', 'Sup. (ha)', 'Escritura m²', 'Valor']],
           body: tableData,
           margin: { left: margin, right: margin },
           styles: {
-            fontSize: 8,
-            cellPadding: 2,
+            fontSize: 7,
+            cellPadding: 1.5,
           },
           headStyles: {
-            fillColor: colorPrimario,
+            fillColor: colorSecundario,
             textColor: [255, 255, 255],
             fontStyle: 'bold',
-            halign: 'center'
+            halign: 'center',
+            fontSize: 7
           },
           columnStyles: {
-            0: { halign: 'center', cellWidth: 10 },
-            1: { cellWidth: 35 },
-            2: { cellWidth: 35 },
-            3: { halign: 'center', cellWidth: 20 },
-            4: { halign: 'right', cellWidth: 25 },
-            5: { halign: 'right', cellWidth: 30 }
+            0: { halign: 'center', cellWidth: 8 },
+            1: { cellWidth: 32 },
+            2: { halign: 'center', cellWidth: 18 },
+            3: { cellWidth: 22 },
+            4: { halign: 'center', cellWidth: 10 },
+            5: { halign: 'right', cellWidth: 18 },
+            6: { halign: 'right', cellWidth: 22 },
+            7: { halign: 'right', cellWidth: 25 }
           },
           alternateRowStyles: {
-            fillColor: [245, 247, 250]
+            fillColor: [248, 250, 252]
           },
           didDrawPage: (data) => {
             yPos = data.cursor?.y || yPos;
@@ -499,12 +509,12 @@ export class RepartoHerenciaComponent implements OnInit {
         });
 
         // Obtener posición Y después de la tabla
-        yPos = (doc as any).lastAutoTable.finalY + 15;
+        yPos = (doc as any).lastAutoTable.finalY + 12;
       } else {
-        doc.setFontSize(9);
+        doc.setFontSize(8);
         doc.setTextColor(150, 150, 150);
         doc.text('Sin propiedades asignadas', margin, yPos);
-        yPos += 15;
+        yPos += 12;
       }
     });
 
