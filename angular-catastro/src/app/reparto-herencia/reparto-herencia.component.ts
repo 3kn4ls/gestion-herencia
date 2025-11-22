@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 import { Propiedad } from '../models/propiedad.model';
 import { Valoracion } from '../models/valoracion.model';
@@ -25,7 +24,7 @@ export interface ElementoReparto {
 @Component({
   selector: 'app-reparto-herencia',
   standalone: true,
-  imports: [CommonModule, FormsModule, DragDropModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './reparto-herencia.component.html',
   styleUrls: ['./reparto-herencia.component.css']
 })
@@ -133,45 +132,6 @@ export class RepartoHerenciaComponent implements OnInit {
       this.estadisticas = null;
       this.inicializarPropiedadesDisponibles();
     }
-  }
-
-  /**
-   * Maneja el evento de drop en drag & drop
-   * Soporta tanto propiedades individuales como grupos
-   */
-  onDrop(event: CdkDragDrop<PropiedadAsignada[]>, herederoDestino?: Heredero): void {
-    // Obtener las propiedades que se están arrastrando desde cdkDragData
-    const propiedadesArrastradas: PropiedadAsignada[] = event.item.data;
-
-    if (!propiedadesArrastradas || propiedadesArrastradas.length === 0) {
-      return;
-    }
-
-    if (event.previousContainer === event.container) {
-      // Reordenar dentro de la misma lista - no hacemos nada especial para grupos
-      return;
-    }
-
-    // Mover propiedades entre listas
-    const listaOrigen = event.previousContainer.data;
-    const listaDestino = event.container.data;
-
-    // Remover todas las propiedades del grupo de la lista origen
-    propiedadesArrastradas.forEach(prop => {
-      const index = listaOrigen.findIndex(p =>
-        p.propiedad.referencia_catastral === prop.propiedad.referencia_catastral
-      );
-      if (index !== -1) {
-        listaOrigen.splice(index, 1);
-      }
-    });
-
-    // Añadir todas las propiedades a la lista destino
-    listaDestino.push(...propiedadesArrastradas);
-
-    // Actualizar totales de herederos
-    this.actualizarTotalesHerederos();
-    this.calcularEstadisticas();
   }
 
   /**
@@ -287,13 +247,6 @@ export class RepartoHerenciaComponent implements OnInit {
       return propiedad.cultivos.reduce((sum, c) => sum + (c.superficie_m2 || 0), 0) / 10000;
     }
     return (propiedad.datos_inmueble?.superficie_construida || 0) / 10000;
-  }
-
-  /**
-   * Obtiene todas las listas conectadas para drag & drop
-   */
-  getListasConectadas(): string[] {
-    return this.listasHerederos;
   }
 
   /**
