@@ -133,27 +133,41 @@ export class RepartoHerenciaComponent implements OnInit {
 
   /**
    * Maneja el evento de drop en drag & drop
+   * Soporta tanto propiedades individuales como grupos
    */
   onDrop(event: CdkDragDrop<PropiedadAsignada[]>, herederoDestino?: Heredero): void {
-    if (event.previousContainer === event.container) {
-      // Reordenar dentro de la misma lista
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      // Mover entre listas
-      const propiedad = event.previousContainer.data[event.previousIndex];
+    // Obtener las propiedades que se están arrastrando desde cdkDragData
+    const propiedadesArrastradas: PropiedadAsignada[] = event.item.data;
 
-      // Quitar de la lista origen
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-
-      // Actualizar totales de herederos
-      this.actualizarTotalesHerederos();
-      this.calcularEstadisticas();
+    if (!propiedadesArrastradas || propiedadesArrastradas.length === 0) {
+      return;
     }
+
+    if (event.previousContainer === event.container) {
+      // Reordenar dentro de la misma lista - no hacemos nada especial para grupos
+      return;
+    }
+
+    // Mover propiedades entre listas
+    const listaOrigen = event.previousContainer.data;
+    const listaDestino = event.container.data;
+
+    // Remover todas las propiedades del grupo de la lista origen
+    propiedadesArrastradas.forEach(prop => {
+      const index = listaOrigen.findIndex(p =>
+        p.propiedad.referencia_catastral === prop.propiedad.referencia_catastral
+      );
+      if (index !== -1) {
+        listaOrigen.splice(index, 1);
+      }
+    });
+
+    // Añadir todas las propiedades a la lista destino
+    listaDestino.push(...propiedadesArrastradas);
+
+    // Actualizar totales de herederos
+    this.actualizarTotalesHerederos();
+    this.calcularEstadisticas();
   }
 
   /**
