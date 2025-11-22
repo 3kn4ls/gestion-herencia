@@ -186,6 +186,18 @@
   background: #475569;
 }
 
+.btn-pdf {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  color: white;
+  font-weight: 600;
+}
+
+.btn-pdf:hover {
+  background: linear-gradient(135deg, #b91c1c, #991b1b);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(185, 28, 28, 0.3);
+}
+
 .btn-grande {
   font-size: 18px;
   padding: 15px 40px;

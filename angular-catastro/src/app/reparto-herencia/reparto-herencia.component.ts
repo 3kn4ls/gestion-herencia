@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 import { Propiedad } from '../models/propiedad.model';
 import { Valoracion } from '../models/valoracion.model';
@@ -307,6 +309,281 @@ export class RepartoHerenciaComponent implements OnInit {
       console.error('Error al copiar:', err);
       alert('❌ Error al copiar al portapapeles');
     });
+  }
+
+  /**
+   * Genera y descarga un PDF profesional con el informe del reparto
+   */
+  exportarPDF(): void {
+    if (!this.estadisticas) {
+      alert('No hay datos para exportar');
+      return;
+    }
+
+    if (this.herederos.every(h => h.propiedades.length === 0)) {
+      alert('El reparto está vacío. Asigna propiedades antes de exportar.');
+      return;
+    }
+
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const margin = 20;
+    let yPos = margin;
+
+    // Colores corporativos
+    const colorPrimario: [number, number, number] = [41, 128, 185];
+    const colorSecundario: [number, number, number] = [52, 73, 94];
+    const colorExito: [number, number, number] = [39, 174, 96];
+    const colorAdvertencia: [number, number, number] = [243, 156, 18];
+
+    // ==================== ENCABEZADO ====================
+    // Línea decorativa superior
+    doc.setFillColor(...colorPrimario);
+    doc.rect(0, 0, pageWidth, 8, 'F');
+
+    yPos = 25;
+
+    // Título principal
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(24);
+    doc.setTextColor(...colorSecundario);
+    doc.text('INFORME DE REPARTO DE HERENCIA', pageWidth / 2, yPos, { align: 'center' });
+
+    yPos += 12;
+
+    // Fecha de generación
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+    doc.setTextColor(100, 100, 100);
+    const fechaActual = new Date().toLocaleDateString('es-ES', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    doc.text(`Generado el ${fechaActual}`, pageWidth / 2, yPos, { align: 'center' });
+
+    yPos += 15;
+
+    // Línea separadora
+    doc.setDrawColor(...colorPrimario);
+    doc.setLineWidth(0.5);
+    doc.line(margin, yPos, pageWidth - margin, yPos);
+
+    yPos += 15;
+
+    // ==================== RESUMEN EJECUTIVO ====================
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.setTextColor(...colorPrimario);
+    doc.text('RESUMEN EJECUTIVO', margin, yPos);
+
+    yPos += 10;
+
+    // Caja de resumen
+    const resumenHeight = 45;
+    doc.setFillColor(245, 247, 250);
+    doc.setDrawColor(220, 220, 220);
+    doc.roundedRect(margin, yPos, pageWidth - 2 * margin, resumenHeight, 3, 3, 'FD');
+
+    yPos += 10;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+    doc.setTextColor(...colorSecundario);
+
+    const col1X = margin + 10;
+    const col2X = pageWidth / 2 + 10;
+
+    doc.text(`Herederos: ${this.herederos.length}`, col1X, yPos);
+    doc.text(`Valor Total: ${this.formatCurrency(this.estadisticas.valorTotal)}`, col2X, yPos);
+
+    yPos += 8;
+    doc.text(`Propiedades Repartidas: ${this.herederos.reduce((sum, h) => sum + h.propiedades.length, 0)}`, col1X, yPos);
+    doc.text(`Valor Promedio/Heredero: ${this.formatCurrency(this.estadisticas.valorPromedioPorHeredero)}`, col2X, yPos);
+
+    yPos += 8;
+    const totalRusticas = this.herederos.reduce((sum, h) => sum + h.cantidadRusticas, 0);
+    const totalUrbanas = this.herederos.reduce((sum, h) => sum + h.cantidadUrbanas, 0);
+    doc.text(`Fincas Rústicas: ${totalRusticas}`, col1X, yPos);
+    doc.text(`Fincas Urbanas: ${totalUrbanas}`, col2X, yPos);
+
+    yPos += 8;
+    // Estado de equilibrio
+    doc.setFont('helvetica', 'bold');
+    if (this.estadisticas.equilibrado) {
+      doc.setTextColor(...colorExito);
+      doc.text(`Estado: EQUILIBRADO (Desv. ${this.estadisticas.desviacionPorcentual.toFixed(1)}%)`, col1X, yPos);
+    } else {
+      doc.setTextColor(...colorAdvertencia);
+      doc.text(`Estado: DESEQUILIBRADO (Desv. ${this.estadisticas.desviacionPorcentual.toFixed(1)}%)`, col1X, yPos);
+    }
+
+    yPos += 20;
+
+    // ==================== DETALLE POR HEREDERO ====================
+    this.herederos.forEach((heredero, index) => {
+      // Verificar si necesitamos nueva página
+      if (yPos > pageHeight - 80) {
+        doc.addPage();
+        yPos = margin;
+      }
+
+      // Título del heredero
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.setTextColor(...colorPrimario);
+      doc.text(`${heredero.nombre.toUpperCase()}`, margin, yPos);
+
+      // Indicador de porcentaje
+      const porcentaje = this.estadisticas!.valorTotal > 0
+        ? (heredero.valorTotal / this.estadisticas!.valorTotal * 100)
+        : 0;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.setTextColor(100, 100, 100);
+      doc.text(`(${porcentaje.toFixed(1)}% del total)`, margin + doc.getTextWidth(heredero.nombre.toUpperCase()) + 5, yPos);
+
+      yPos += 8;
+
+      // Resumen del heredero
+      doc.setFontSize(10);
+      doc.setTextColor(...colorSecundario);
+      const resumenHeredero = `Valor: ${this.formatCurrency(heredero.valorTotal)} | Superficie: ${heredero.superficieTotal.toFixed(4)} ha | Rústicas: ${heredero.cantidadRusticas} | Urbanas: ${heredero.cantidadUrbanas}`;
+      doc.text(resumenHeredero, margin, yPos);
+
+      yPos += 8;
+
+      // Tabla de propiedades
+      if (heredero.propiedades.length > 0) {
+        const tableData = heredero.propiedades.map((p, idx) => [
+          (idx + 1).toString(),
+          p.propiedad.referencia_catastral.substring(0, 20),
+          p.propiedad.localizacion?.municipio || 'N/A',
+          p.tipo === 'rustico' ? 'Rústica' : 'Urbana',
+          p.superficie.toFixed(4) + ' ha',
+          this.formatCurrency(p.valor)
+        ]);
+
+        autoTable(doc, {
+          startY: yPos,
+          head: [['#', 'Ref. Catastral', 'Municipio', 'Tipo', 'Superficie', 'Valor']],
+          body: tableData,
+          margin: { left: margin, right: margin },
+          styles: {
+            fontSize: 8,
+            cellPadding: 2,
+          },
+          headStyles: {
+            fillColor: colorPrimario,
+            textColor: [255, 255, 255],
+            fontStyle: 'bold',
+            halign: 'center'
+          },
+          columnStyles: {
+            0: { halign: 'center', cellWidth: 10 },
+            1: { cellWidth: 35 },
+            2: { cellWidth: 35 },
+            3: { halign: 'center', cellWidth: 20 },
+            4: { halign: 'right', cellWidth: 25 },
+            5: { halign: 'right', cellWidth: 30 }
+          },
+          alternateRowStyles: {
+            fillColor: [245, 247, 250]
+          },
+          didDrawPage: (data) => {
+            yPos = data.cursor?.y || yPos;
+          }
+        });
+
+        // Obtener posición Y después de la tabla
+        yPos = (doc as any).lastAutoTable.finalY + 15;
+      } else {
+        doc.setFontSize(9);
+        doc.setTextColor(150, 150, 150);
+        doc.text('Sin propiedades asignadas', margin, yPos);
+        yPos += 15;
+      }
+    });
+
+    // ==================== ESTADÍSTICAS FINALES ====================
+    // Verificar si necesitamos nueva página
+    if (yPos > pageHeight - 60) {
+      doc.addPage();
+      yPos = margin;
+    }
+
+    // Línea separadora
+    doc.setDrawColor(...colorPrimario);
+    doc.setLineWidth(0.5);
+    doc.line(margin, yPos, pageWidth - margin, yPos);
+
+    yPos += 10;
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.setTextColor(...colorPrimario);
+    doc.text('ANÁLISIS ESTADÍSTICO', margin, yPos);
+
+    yPos += 10;
+
+    // Tabla de estadísticas
+    const statsData = [
+      ['Valor Total del Reparto', this.formatCurrency(this.estadisticas.valorTotal)],
+      ['Valor Promedio por Heredero', this.formatCurrency(this.estadisticas.valorPromedioPorHeredero)],
+      ['Desviación Estándar', this.formatCurrency(this.estadisticas.desviacionEstandar)],
+      ['Desviación Porcentual', this.estadisticas.desviacionPorcentual.toFixed(2) + '%'],
+      ['Diferencia Máximo - Mínimo', this.formatCurrency(this.estadisticas.diferenciaMaxMin)],
+      ['Heredero con Mayor Valor', `Heredero ${this.estadisticas.herederoMayor.id} (${this.formatCurrency(this.estadisticas.herederoMayor.valor)})`],
+      ['Heredero con Menor Valor', `Heredero ${this.estadisticas.herederoMenor.id} (${this.formatCurrency(this.estadisticas.herederoMenor.valor)})`]
+    ];
+
+    autoTable(doc, {
+      startY: yPos,
+      body: statsData,
+      margin: { left: margin, right: margin },
+      styles: {
+        fontSize: 10,
+        cellPadding: 4,
+      },
+      columnStyles: {
+        0: { fontStyle: 'bold', cellWidth: 80 },
+        1: { halign: 'right' }
+      },
+      alternateRowStyles: {
+        fillColor: [245, 247, 250]
+      },
+      theme: 'plain'
+    });
+
+    // ==================== PIE DE PÁGINA ====================
+    const totalPages = doc.getNumberOfPages();
+    for (let i = 1; i <= totalPages; i++) {
+      doc.setPage(i);
+
+      // Línea de pie de página
+      doc.setDrawColor(200, 200, 200);
+      doc.setLineWidth(0.3);
+      doc.line(margin, pageHeight - 15, pageWidth - margin, pageHeight - 15);
+
+      // Texto del pie de página
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(150, 150, 150);
+      doc.text('Documento generado automáticamente - Gestión de Herencias', margin, pageHeight - 10);
+      doc.text(`Página ${i} de ${totalPages}`, pageWidth - margin, pageHeight - 10, { align: 'right' });
+    }
+
+    // Generar nombre del archivo
+    const fechaArchivo = new Date().toISOString().slice(0, 10);
+    const nombreArchivo = this.nombreReparto
+      ? `reparto_${this.nombreReparto.replace(/\s+/g, '_')}_${fechaArchivo}.pdf`
+      : `reparto_herencia_${fechaArchivo}.pdf`;
+
+    // Descargar PDF
+    doc.save(nombreArchivo);
   }
 
   // =====================================================
