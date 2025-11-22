@@ -632,7 +632,9 @@ export class AppComponent implements OnInit {
       precioManual: undefined,
       distanciaMar: undefined,
       codGrupo: '',
-      precioValidado: false
+      precioValidado: false,
+      m2Escritura: undefined,
+      ignorarReparto: false
     };
     this.mostrarModalPropiedad = true;
   }

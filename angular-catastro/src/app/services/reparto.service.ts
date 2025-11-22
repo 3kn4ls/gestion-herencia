@@ -282,6 +282,7 @@ export class RepartoService {
    * Realiza el reparto automático de propiedades
    * Algoritmo: Balanceo por valor y tipo usando greedy approach optimizado
    * Respeta grupos definidos por codGrupo (propiedades con mismo código se asignan juntas)
+   * Excluye propiedades con ignorarReparto=true
    */
   repartirAutomaticamente(
     propiedades: Propiedad[],
@@ -291,8 +292,10 @@ export class RepartoService {
     // Inicializar herederos
     const herederos = this.inicializarHerederos(config.numeroHerederos);
 
-    // Crear lista de propiedades asignables
+    // Crear lista de propiedades asignables (excluyendo las que tienen ignorarReparto=true)
     const propiedadesAsignables: PropiedadAsignada[] = propiedades
+      // Filtrar propiedades que deben ignorarse en el reparto
+      .filter(p => !p.ignorarReparto)
       .map(p => {
         const valoracion = valoraciones.find(v => v.referencia_catastral === p.referencia_catastral);
         if (!valoracion) return null;

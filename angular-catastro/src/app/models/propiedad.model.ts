@@ -46,4 +46,6 @@ export interface Propiedad {
   distanciaMar?: number;      // Distancia al mar en metros
   codGrupo?: string;          // Código de grupo para agrupar propiedades en reparto
   precioValidado?: boolean;   // Indica si el precio ha sido validado
+  m2Escritura?: number;       // Metros cuadrados de la escritura (manual)
+  ignorarReparto?: boolean;   // Ignorar esta propiedad en el reparto automático
 }

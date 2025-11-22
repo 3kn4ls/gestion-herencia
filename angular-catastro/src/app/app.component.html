@@ -614,6 +614,18 @@
                 name="escritura"
                 class="form-control">
             </div>
+            <div class="form-group">
+              <label for="m2Escritura">m2 Escritura</label>
+              <input
+                type="number"
+                id="m2Escritura"
+                [(ngModel)]="propiedadEditando.m2Escritura"
+                name="m2Escritura"
+                class="form-control"
+                step="0.01"
+                min="0"
+                placeholder="Superficie de la escritura">
+            </div>
           </div>
 
           <div class="form-row">
@@ -802,6 +814,22 @@
                 maxlength="20">
               <small class="help-text">
                 Propiedades con el mismo código se agruparán en el reparto automático
+              </small>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="checkbox-label">
+                <input
+                  type="checkbox"
+                  id="ignorarReparto"
+                  [(ngModel)]="propiedadEditando.ignorarReparto"
+                  name="ignorarReparto"
+                  class="form-checkbox">
+                <span class="checkbox-text">Ignorar en reparto automático</span>
+              </label>
+              <small class="help-text">
+                Si está marcado, esta propiedad no se incluirá en el reparto automático de herencias
               </small>
             </div>
           </div>

@@ -58,6 +58,16 @@ const PropiedadSchema = new mongoose.Schema({
   precioValidado: {
     type: Boolean,
     default: false
+  },
+  // Campo para m2 de la escritura (manual)
+  m2Escritura: {
+    type: Number,
+    default: null
+  },
+  // Campo para ignorar propiedad en reparto automático
+  ignorarReparto: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true,
