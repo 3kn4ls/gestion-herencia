@@ -34,14 +34,58 @@ export interface ValoresTasacion {
 }
 
 /**
+ * Interfaz para los valores personalizados de propiedades (m2_escritura, ignorarReparto)
+ */
+export interface PropiedadPersonalizada {
+  m2_escritura?: number;
+  ignorarReparto?: boolean;
+}
+
+/**
  * Servicio para carga y gestión de datos
  */
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
+  private readonly STORAGE_KEY = 'propiedades_personalizadas';
 
   constructor(private http: HttpClient) { }
+
+  /**
+   * Obtiene los valores personalizados de propiedades desde localStorage
+   */
+  getPropiedadesPersonalizadas(): { [referencia: string]: PropiedadPersonalizada } {
+    const stored = localStorage.getItem(this.STORAGE_KEY);
+    return stored ? JSON.parse(stored) : {};
+  }
+
+  /**
+   * Guarda los valores personalizados de una propiedad
+   */
+  guardarPropiedadPersonalizada(referencia: string, valores: PropiedadPersonalizada): void {
+    const personalizadas = this.getPropiedadesPersonalizadas();
+    personalizadas[referencia] = { ...personalizadas[referencia], ...valores };
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(personalizadas));
+  }
+
+  /**
+   * Aplica los valores personalizados a las propiedades cargadas
+   */
+  private aplicarValoresPersonalizados(propiedades: Propiedad[]): Propiedad[] {
+    const personalizadas = this.getPropiedadesPersonalizadas();
+    return propiedades.map(p => {
+      const ref = p.referencia_catastral;
+      if (ref && personalizadas[ref]) {
+        return {
+          ...p,
+          m2_escritura: personalizadas[ref].m2_escritura ?? p.m2_escritura,
+          ignorarReparto: personalizadas[ref].ignorarReparto ?? p.ignorarReparto
+        };
+      }
+      return p;
+    });
+  }
 
   /**
    * Carga las propiedades desde el archivo por defecto
@@ -49,7 +93,8 @@ export class DataService {
   cargarPropiedades(): Observable<Propiedad[]> {
     return this.http.get<any[]>('assets/datos_catastrales_mergeados.json').pipe(
       map(data => {
-        return data.map((p: any) => this.normalizarPropiedad(p));
+        const propiedades = data.map((p: any) => this.normalizarPropiedad(p));
+        return this.aplicarValoresPersonalizados(propiedades);
       })
     );
   }

@@ -44,9 +44,11 @@ export class RepartoHerenciaComponent implements OnInit {
 
   /**
    * Inicializa las propiedades disponibles para repartir
+   * Filtra las propiedades que tienen ignorarReparto = true
    */
   private inicializarPropiedadesDisponibles(): void {
     this.propiedadesDisponibles = this.propiedades
+      .filter(p => !p.ignorarReparto) // Excluir propiedades marcadas como ignorar
       .map(p => {
         const valoracion = this.valoraciones.find(v => v.referencia_catastral === p.referencia_catastral);
         if (!valoracion) return null;
@@ -63,6 +65,13 @@ export class RepartoHerenciaComponent implements OnInit {
         } as PropiedadAsignada;
       })
       .filter(p => p !== null) as PropiedadAsignada[];
+  }
+
+  /**
+   * Obtiene el número de propiedades ignoradas en el reparto
+   */
+  getPropiedadesIgnoradas(): number {
+    return this.propiedades.filter(p => p.ignorarReparto).length;
   }
 
   /**

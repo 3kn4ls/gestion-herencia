@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
 
-import { DataService, ValoresTasacion } from './services/data.service';
+import { DataService, ValoresTasacion, PropiedadPersonalizada } from './services/data.service';
 import { ValoracionService } from './services/valoracion.service';
 import { ConfigService } from './services/config.service';
 import { Propiedad } from './models/propiedad.model';
@@ -554,5 +554,36 @@ export class AppComponent implements OnInit {
    */
   cerrarReparto(): void {
     this.mostrarReparto = false;
+  }
+
+  /**
+   * Actualiza los m2 de escritura de una propiedad
+   */
+  actualizarM2Escritura(propiedad: Propiedad, valor: number | null): void {
+    if (!propiedad.referencia_catastral) return;
+
+    propiedad.m2_escritura = valor ?? undefined;
+    this.dataService.guardarPropiedadPersonalizada(propiedad.referencia_catastral, {
+      m2_escritura: valor ?? undefined
+    });
+  }
+
+  /**
+   * Actualiza el flag ignorarReparto de una propiedad
+   */
+  actualizarIgnorarReparto(propiedad: Propiedad, valor: boolean): void {
+    if (!propiedad.referencia_catastral) return;
+
+    propiedad.ignorarReparto = valor;
+    this.dataService.guardarPropiedadPersonalizada(propiedad.referencia_catastral, {
+      ignorarReparto: valor
+    });
+  }
+
+  /**
+   * Obtiene el conteo de propiedades ignoradas en el reparto
+   */
+  getPropiedadesIgnoradas(): number {
+    return this.propiedades.filter(p => p.ignorarReparto).length;
   }
 }

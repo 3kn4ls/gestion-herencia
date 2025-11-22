@@ -153,8 +153,11 @@ export class RepartoService {
     // Inicializar herederos
     const herederos = this.inicializarHerederos(config.numeroHerederos);
 
+    // Filtrar propiedades que no deben ser ignoradas en el reparto
+    const propiedadesParaReparto = propiedades.filter(p => !p.ignorarReparto);
+
     // Crear lista de propiedades asignables
-    const propiedadesAsignables: PropiedadAsignada[] = propiedades
+    const propiedadesAsignables: PropiedadAsignada[] = propiedadesParaReparto
       .map(p => {
         const valoracion = valoraciones.find(v => v.referencia_catastral === p.referencia_catastral);
         if (!valoracion) return null;

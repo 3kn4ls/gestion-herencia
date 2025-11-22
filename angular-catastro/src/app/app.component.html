@@ -186,6 +186,8 @@
             <th>Clase</th>
             <th>Uso</th>
             <th>Escritura</th>
+            <th title="Metros cuadrados según escritura (manual)">m² Escritura</th>
+            <th title="Ignorar esta propiedad en el reparto automático">Ignorar Reparto</th>
             <th>Subparcela</th>
             <th>Cultivo/Aprovechamiento</th>
             <th>Código</th>
@@ -221,6 +223,23 @@
                 <td>{{ propiedad.datos_inmueble?.clase }}</td>
                 <td>{{ propiedad.datos_inmueble?.uso_principal }}</td>
                 <td class="escritura">{{ propiedad.escritura }}</td>
+                <td *ngIf="i === 0" [attr.rowspan]="propiedad.cultivos!.length" class="editable-cell">
+                  <input
+                    type="number"
+                    [ngModel]="propiedad.m2_escritura"
+                    (ngModelChange)="actualizarM2Escritura(propiedad, $event)"
+                    class="input-m2"
+                    placeholder="m²"
+                    min="0"
+                    title="Metros cuadrados según escritura">
+                </td>
+                <td *ngIf="i === 0" [attr.rowspan]="propiedad.cultivos!.length" class="editable-cell checkbox-cell">
+                  <input
+                    type="checkbox"
+                    [ngModel]="propiedad.ignorarReparto"
+                    (ngModelChange)="actualizarIgnorarReparto(propiedad, $event)"
+                    title="Ignorar en reparto automático">
+                </td>
                 <td>{{ cultivo.subparcela }}</td>
                 <td class="cultivo">{{ cultivo.cultivo_aprovechamiento }}</td>
                 <ng-container *ngIf="getValoracion(propiedad.referencia_catastral) as valoracion">
@@ -278,6 +297,23 @@
                 <td>{{ propiedad.datos_inmueble?.clase }}</td>
                 <td>{{ propiedad.datos_inmueble?.uso_principal }}</td>
                 <td class="escritura">{{ propiedad.escritura }}</td>
+                <td class="editable-cell">
+                  <input
+                    type="number"
+                    [ngModel]="propiedad.m2_escritura"
+                    (ngModelChange)="actualizarM2Escritura(propiedad, $event)"
+                    class="input-m2"
+                    placeholder="m²"
+                    min="0"
+                    title="Metros cuadrados según escritura">
+                </td>
+                <td class="editable-cell checkbox-cell">
+                  <input
+                    type="checkbox"
+                    [ngModel]="propiedad.ignorarReparto"
+                    (ngModelChange)="actualizarIgnorarReparto(propiedad, $event)"
+                    title="Ignorar en reparto automático">
+                </td>
                 <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                 <ng-container *ngIf="getValoracion(propiedad.referencia_catastral) as valoracion">
                   <td class="numeric valor-calculado">{{ formatCurrency(valoracion.valor_estimado_euros) }}</td>
@@ -393,6 +429,8 @@
             <th>Municipio</th>
             <th>Partida</th>
             <th>Escritura</th>
+            <th title="Metros cuadrados según escritura (manual)">m² Escritura</th>
+            <th title="Ignorar esta propiedad en el reparto automático">Ignorar Reparto</th>
             <th>Sup. (m²)</th>
             <th>Sup. (ha)</th>
             <th>€/ha Medio</th>
@@ -401,7 +439,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of getPropiedadesResumen()" class="resumen-row">
+          <tr *ngFor="let item of getPropiedadesResumen()" class="resumen-row" [class.ignorada]="item.propiedad.ignorarReparto">
             <td class="btn-cell">
               <button class="btn-catastro" (click)="abrirCatastro(item.propiedad)" title="Ver en Catastro">
                 🔗
@@ -411,6 +449,23 @@
             <td>{{ item.municipio }}</td>
             <td>{{ item.partida }}</td>
             <td class="escritura">{{ item.escritura }}</td>
+            <td class="editable-cell">
+              <input
+                type="number"
+                [ngModel]="item.propiedad.m2_escritura"
+                (ngModelChange)="actualizarM2Escritura(item.propiedad, $event)"
+                class="input-m2"
+                placeholder="m²"
+                min="0"
+                title="Metros cuadrados según escritura">
+            </td>
+            <td class="editable-cell checkbox-cell">
+              <input
+                type="checkbox"
+                [ngModel]="item.propiedad.ignorarReparto"
+                (ngModelChange)="actualizarIgnorarReparto(item.propiedad, $event)"
+                title="Ignorar en reparto automático">
+            </td>
             <td class="numeric">{{ formatNumber(item.superficie_m2) }}</td>
             <td class="numeric">{{ item.superficie_ha.toFixed(4) }}</td>
             <td class="numeric">{{ formatNumber(item.precio_medio_ha) }}</td>

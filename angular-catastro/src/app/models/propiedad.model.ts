@@ -40,4 +40,8 @@ export interface Propiedad {
   parcela_catastral?: ParcelaCatastral;
   valor_referencia?: number | null;
   escritura?: string;
+  /** Metros cuadrados según la escritura (valor manual) */
+  m2_escritura?: number;
+  /** Si es true, esta propiedad será ignorada en el reparto automático de herencias */
+  ignorarReparto?: boolean;
 }
