@@ -58,6 +58,10 @@ export class RepartoHerenciaComponent implements OnInit {
   repartoActualId: string | null = null;
   repartosGuardados: RepartoBackend[] = [];
 
+  // Estado para selección con doble click
+  elementoSeleccionado: ElementoReparto | null = null;
+  origenSeleccionado: 'disponibles' | Heredero | null = null;
+
   constructor(
     private repartoService: RepartoService,
     private apiService: ApiService
@@ -582,6 +586,89 @@ export class RepartoHerenciaComponent implements OnInit {
       hour: '2-digit',
       minute: '2-digit'
     });
+  }
+
+  // =====================================================
+  // MÉTODOS DE SELECCIÓN CON DOBLE CLICK
+  // =====================================================
+
+  /**
+   * Selecciona un elemento con doble click para moverlo
+   */
+  seleccionarElemento(elemento: ElementoReparto, origen: 'disponibles' | Heredero): void {
+    // Si ya está seleccionado el mismo elemento, deseleccionar
+    if (this.elementoSeleccionado === elemento) {
+      this.cancelarSeleccion();
+      return;
+    }
+
+    this.elementoSeleccionado = elemento;
+    this.origenSeleccionado = origen;
+  }
+
+  /**
+   * Mueve el elemento seleccionado al destino especificado
+   */
+  moverADestino(destino: 'disponibles' | Heredero): void {
+    if (!this.elementoSeleccionado || !this.origenSeleccionado) {
+      return;
+    }
+
+    // No mover si el destino es el mismo que el origen
+    if (destino === this.origenSeleccionado) {
+      this.cancelarSeleccion();
+      return;
+    }
+
+    const propiedadesAMover = this.elementoSeleccionado.propiedades;
+
+    // Obtener lista origen
+    const listaOrigen = this.origenSeleccionado === 'disponibles'
+      ? this.propiedadesDisponibles
+      : this.origenSeleccionado.propiedades;
+
+    // Obtener lista destino
+    const listaDestino = destino === 'disponibles'
+      ? this.propiedadesDisponibles
+      : destino.propiedades;
+
+    // Remover propiedades de la lista origen
+    propiedadesAMover.forEach(prop => {
+      const index = listaOrigen.findIndex(p =>
+        p.propiedad.referencia_catastral === prop.propiedad.referencia_catastral
+      );
+      if (index !== -1) {
+        listaOrigen.splice(index, 1);
+      }
+    });
+
+    // Añadir propiedades a la lista destino
+    listaDestino.push(...propiedadesAMover);
+
+    // Actualizar totales y estadísticas
+    this.actualizarTotalesHerederos();
+    this.calcularEstadisticas();
+
+    // Limpiar selección
+    this.cancelarSeleccion();
+  }
+
+  /**
+   * Cancela la selección actual
+   */
+  cancelarSeleccion(): void {
+    this.elementoSeleccionado = null;
+    this.origenSeleccionado = null;
+  }
+
+  /**
+   * Verifica si un elemento está seleccionado
+   */
+  estaSeleccionado(elemento: ElementoReparto): boolean {
+    if (!this.elementoSeleccionado) return false;
+    // Comparar por la primera propiedad del grupo
+    return this.elementoSeleccionado.propiedades[0]?.propiedad.referencia_catastral ===
+           elemento.propiedades[0]?.propiedad.referencia_catastral;
   }
 
   // =====================================================

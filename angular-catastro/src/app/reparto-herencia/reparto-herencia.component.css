@@ -1006,3 +1006,137 @@
 .lista-heredero .card-grupo .grupo-count {
   font-size: 10px;
 }
+
+/* ===========================================
+   ESTILOS PARA SELECCIÓN CON DOBLE CLICK
+   =========================================== */
+
+/* Card seleccionada */
+.card-propiedad.seleccionado {
+  border: 3px solid #f59e0b !important;
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%) !important;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.4) !important;
+  transform: scale(1.02);
+  z-index: 10;
+  position: relative;
+}
+
+.card-propiedad.seleccionado::before {
+  content: '✓ Seleccionado';
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  background: #f59e0b;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+/* Cursor pointer para indicar que es clickeable */
+.card-propiedad {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.card-propiedad:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Header con destino activo (puede recibir elemento) */
+.header-columna.destino-activo {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  animation: pulse-destino 1.5s infinite;
+}
+
+@keyframes pulse-destino {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  50% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+}
+
+/* Botón mover aquí */
+.btn-mover-aqui {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: #1f2937;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%;
+  transition: all 0.2s ease;
+  animation: bounce-btn 0.5s ease;
+}
+
+.btn-mover-aqui:hover {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  transform: scale(1.05);
+}
+
+@keyframes bounce-btn {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* Panel de selección flotante */
+.panel-seleccion {
+  position: sticky;
+  bottom: 20px;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  border-radius: 12px;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+  margin-top: 20px;
+  z-index: 100;
+}
+
+.seleccion-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.seleccion-icono {
+  font-size: 24px;
+}
+
+.seleccion-texto {
+  color: #1f2937;
+  font-size: 14px;
+}
+
+.seleccion-texto strong {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.btn-cancelar-seleccion {
+  background: rgba(0, 0, 0, 0.2);
+  color: #1f2937;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancelar-seleccion:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Ajustes para header de disponibles */
+.header-disponibles {
+  position: relative;
+}
+
+.header-disponibles .btn-mover-aqui {
+  margin-top: 8px;
+}

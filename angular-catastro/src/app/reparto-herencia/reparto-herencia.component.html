@@ -117,29 +117,27 @@
 
     <!-- Propiedades Disponibles (Tabla Maestra) -->
     <div class="columna columna-disponibles">
-      <div class="header-columna">
+      <div class="header-columna header-disponibles" [class.destino-activo]="elementoSeleccionado && origenSeleccionado !== 'disponibles'">
         <h3>📋 Propiedades Disponibles</h3>
         <span class="contador">{{ propiedadesDisponibles.length }} propiedades</span>
+        <!-- Botón para mover aquí cuando hay selección desde heredero -->
+        <button
+          *ngIf="elementoSeleccionado && origenSeleccionado !== 'disponibles'"
+          class="btn-mover-aqui"
+          (click)="moverADestino('disponibles')">
+          ⬅️ Mover aquí
+        </button>
       </div>
 
-      <div
-        class="lista-propiedades"
-        cdkDropList
-        id="disponibles"
-        #disponiblesList="cdkDropList"
-        [cdkDropListData]="propiedadesDisponibles"
-        [cdkDropListConnectedTo]="getListasConectadas()"
-        (cdkDropListDropped)="onDrop($event)">
+      <div class="lista-propiedades">
 
         <!-- Iterar sobre elementos agrupados -->
         <div
           *ngFor="let elemento of getElementosDisponiblesAgrupados()"
           class="card-propiedad disponible"
           [class.card-grupo]="elemento.esGrupo"
-          cdkDrag
-          [cdkDragData]="elemento.propiedades">
-
-          <div class="drag-handle" cdkDragHandle>⋮⋮</div>
+          [class.seleccionado]="estaSeleccionado(elemento)"
+          (dblclick)="seleccionarElemento(elemento, 'disponibles')">
 
           <div class="propiedad-info">
             <!-- Vista de GRUPO -->
@@ -196,7 +194,9 @@
     <div class="columnas-herederos">
       <div class="columna columna-heredero" *ngFor="let heredero of herederos">
 
-        <div class="header-columna header-heredero" [class.heredero-activo]="heredero.propiedades.length > 0">
+        <div class="header-columna header-heredero"
+             [class.heredero-activo]="heredero.propiedades.length > 0"
+             [class.destino-activo]="elementoSeleccionado && origenSeleccionado !== heredero">
           <div class="heredero-titulo">
             <h3>{{ heredero.nombre }}</h3>
             <input
@@ -205,6 +205,14 @@
               class="input-nombre-heredero"
               placeholder="Nombre del heredero">
           </div>
+
+          <!-- Botón para mover aquí cuando hay selección -->
+          <button
+            *ngIf="elementoSeleccionado && origenSeleccionado !== heredero"
+            class="btn-mover-aqui"
+            (click)="moverADestino(heredero)">
+            ➡️ Mover aquí
+          </button>
 
           <div class="heredero-resumen">
             <div class="resumen-item">
@@ -222,23 +230,15 @@
           </div>
         </div>
 
-        <div
-          class="lista-propiedades lista-heredero"
-          cdkDropList
-          [id]="'heredero-' + heredero.id"
-          [cdkDropListData]="heredero.propiedades"
-          [cdkDropListConnectedTo]="getListasConectadas()"
-          (cdkDropListDropped)="onDrop($event, heredero)">
+        <div class="lista-propiedades lista-heredero">
 
           <!-- Iterar sobre elementos agrupados del heredero -->
           <div
             *ngFor="let elemento of getElementosHerederoAgrupados(heredero)"
             class="card-propiedad asignada"
             [class.card-grupo]="elemento.esGrupo"
-            cdkDrag
-            [cdkDragData]="elemento.propiedades">
-
-            <div class="drag-handle" cdkDragHandle>⋮⋮</div>
+            [class.seleccionado]="estaSeleccionado(elemento)"
+            (dblclick)="seleccionarElemento(elemento, heredero)">
 
             <div class="propiedad-info">
               <!-- Vista de GRUPO -->
@@ -299,10 +299,33 @@
     </div>
   </div>
 
+  <!-- Panel de selección activa -->
+  <div class="panel-seleccion" *ngIf="elementoSeleccionado">
+    <div class="seleccion-info">
+      <span class="seleccion-icono">✋</span>
+      <div class="seleccion-texto">
+        <strong>Elemento seleccionado:</strong>
+        <span *ngIf="elementoSeleccionado.esGrupo">
+          Grupo "{{ elementoSeleccionado.codGrupo }}" ({{ elementoSeleccionado.propiedades.length }} propiedades)
+        </span>
+        <span *ngIf="!elementoSeleccionado.esGrupo">
+          {{ elementoSeleccionado.propiedades[0].propiedad.referencia_catastral }}
+        </span>
+        - {{ formatCurrency(elementoSeleccionado.valorTotal) }}
+      </div>
+    </div>
+    <button class="btn btn-cancelar-seleccion" (click)="cancelarSeleccion()">
+      ✖ Cancelar
+    </button>
+  </div>
+
   <!-- Información de Ayuda -->
   <div class="info-ayuda">
-    <div class="ayuda-item">
-      <strong>💡 Consejo:</strong> Arrastra y suelta las propiedades entre columnas para asignarlas manualmente
+    <div class="ayuda-item" *ngIf="!elementoSeleccionado">
+      <strong>💡 Consejo:</strong> Haz doble click en una propiedad para seleccionarla y luego elige el destino
+    </div>
+    <div class="ayuda-item" *ngIf="elementoSeleccionado">
+      <strong>👆 Acción:</strong> Haz click en "Mover aquí" en el heredero destino o en "Disponibles"
     </div>
     <div class="ayuda-item">
       <strong>🤖 Reparto Automático:</strong> Distribuye las propiedades de forma equilibrada según el criterio seleccionado
