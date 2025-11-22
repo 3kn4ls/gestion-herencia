@@ -463,20 +463,24 @@ export class RepartoHerenciaComponent implements OnInit {
 
       // Tabla de propiedades
       if (heredero.propiedades.length > 0) {
-        const tableData = heredero.propiedades.map((p, idx) => [
-          (idx + 1).toString(),
-          p.propiedad.referencia_catastral.substring(0, 18),
-          p.propiedad.codGrupo || '-',
-          p.propiedad.localizacion?.municipio?.substring(0, 12) || 'N/A',
-          p.tipo === 'rustico' ? 'R' : 'U',
-          p.superficie.toFixed(2),
-          p.propiedad.m2Escritura ? p.propiedad.m2Escritura.toLocaleString('es-ES') : '-',
-          this.formatCurrency(p.valor)
-        ]);
+        const tableData = heredero.propiedades.map((p, idx) => {
+          // Construir referencia con escritura si existe
+          const refCatastral = p.propiedad.referencia_catastral.substring(0, 20);
+          const escritura = p.propiedad.m2Escritura ? ` (${p.propiedad.m2Escritura.toLocaleString('es-ES')} m²)` : '';
+
+          return [
+            (idx + 1).toString(),
+            refCatastral + escritura,
+            p.propiedad.localizacion?.partida || '-',
+            p.tipo === 'rustico' ? 'Rústica' : 'Urbana',
+            p.superficie.toFixed(4),
+            this.formatCurrency(p.valor)
+          ];
+        });
 
         autoTable(doc, {
           startY: yPos,
-          head: [['#', 'Ref. Catastral', 'Grupo', 'Municipio', 'Tipo', 'Sup. (ha)', 'Escritura m²', 'Valor']],
+          head: [['#', 'Ref. Catastral (Escritura)', 'Partida', 'Tipo', 'Sup. (ha)', 'Valor']],
           body: tableData,
           margin: { left: margin, right: margin },
           styles: {
@@ -492,13 +496,11 @@ export class RepartoHerenciaComponent implements OnInit {
           },
           columnStyles: {
             0: { halign: 'center', cellWidth: 8 },
-            1: { cellWidth: 32 },
-            2: { halign: 'center', cellWidth: 18 },
-            3: { cellWidth: 22 },
-            4: { halign: 'center', cellWidth: 10 },
-            5: { halign: 'right', cellWidth: 18 },
-            6: { halign: 'right', cellWidth: 22 },
-            7: { halign: 'right', cellWidth: 25 }
+            1: { cellWidth: 55 },
+            2: { cellWidth: 35 },
+            3: { halign: 'center', cellWidth: 18 },
+            4: { halign: 'right', cellWidth: 20 },
+            5: { halign: 'right', cellWidth: 28 }
           },
           alternateRowStyles: {
             fillColor: [248, 250, 252]
