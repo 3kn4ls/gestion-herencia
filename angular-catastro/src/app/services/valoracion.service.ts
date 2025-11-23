@@ -38,26 +38,19 @@ export class ValoracionService {
 
   /**
    * Valora una propiedad individual
+   * Nota: El valor calculado siempre refleja la valoración automática.
+   * El precioManual se aplica solo en el módulo de reparto, no aquí.
    */
   private valorarPropiedad(propiedad: Propiedad, valoresTasacion: ValoresTasacion): Valoracion | null {
     const clase = propiedad.datos_inmueble?.clase?.toLowerCase() || '';
 
-    // Calcular valoración normal primero
-    let valoracion: Valoracion | null = null;
-
     if (clase.includes('rústico') || clase.includes('rustico')) {
-      valoracion = this.valorarRustico(propiedad, valoresTasacion);
+      return this.valorarRustico(propiedad, valoresTasacion);
     } else if (clase.includes('urbano')) {
-      valoracion = this.valorarUrbano(propiedad);
+      return this.valorarUrbano(propiedad);
     }
 
-    // Si tiene precio manual, sobreescribir el valor estimado pero mantener detalles
-    if (valoracion && propiedad.precioManual !== undefined && propiedad.precioManual !== null) {
-      valoracion.valor_estimado_euros = propiedad.precioManual;
-      valoracion.metodo_valoracion = 'precio_manual';
-    }
-
-    return valoracion;
+    return null;
   }
 
   /**
