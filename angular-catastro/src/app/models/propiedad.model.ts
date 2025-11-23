@@ -48,4 +48,11 @@ export interface Propiedad {
   precioValidado?: boolean;   // Indica si el precio ha sido validado
   m2Escritura?: number;       // Metros cuadrados de la escritura (manual)
   ignorarReparto?: boolean;   // Ignorar esta propiedad en el reparto automático
+
+  // Coeficientes agronómicos para valoración de fincas rústicas
+  coefFA?: number;            // FA - Coeficiente de aptitud para la producción (default: 1)
+  coefCS?: number;            // CS - Coeficiente de superficie excesiva (default: 1)
+  coefFLS?: number;           // FLS - Coeficiente de localización y socioeconómico (default: 1)
+  coefCP?: number;            // CP - Coeficiente de concentración parcelaria (default: 1)
+  coefDE?: number;            // DE - Coeficiente de depreciación económica (default: 1)
 }
