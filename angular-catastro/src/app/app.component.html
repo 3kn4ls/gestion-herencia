@@ -383,6 +383,10 @@
             <span class="detail-label">Polígono/Parcela</span>
             <span class="detail-value">{{ propiedad.localizacion?.poligono }}/{{ propiedad.localizacion?.parcela }}</span>
           </div>
+          <div class="detail-item" *ngIf="propiedad.m2Escritura">
+            <span class="detail-label">m² Escritura</span>
+            <span class="detail-value">{{ formatNumber(propiedad.m2Escritura) }} m²</span>
+          </div>
 
           <!-- Cultivos -->
           <div *ngIf="propiedad.cultivos && propiedad.cultivos.length > 0" style="grid-column: 1 / -1; margin-top: 0.5rem;">
@@ -440,6 +444,7 @@
             <th>Municipio</th>
             <th>Partida</th>
             <th>Escritura</th>
+            <th>m² Escrit.</th>
             <th>Grupo</th>
             <th>✓ Valid.</th>
             <th>Sup. (m²)</th>
@@ -464,6 +469,7 @@
             <td>{{ item.municipio }}</td>
             <td>{{ item.partida }}</td>
             <td class="escritura">{{ item.escritura }}</td>
+            <td class="numeric">{{ item.m2Escritura ? formatNumber(item.m2Escritura) : '-' }}</td>
             <td class="cod-grupo">
               <span *ngIf="item.codGrupo" class="badge-grupo-table">{{ item.codGrupo }}</span>
             </td>

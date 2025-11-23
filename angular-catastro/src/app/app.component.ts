@@ -252,6 +252,7 @@ export class AppComponent implements OnInit {
           municipio: propiedad.localizacion?.municipio || '',
           partida: propiedad.localizacion?.partida || '',
           escritura: propiedad.escritura || '',
+          m2Escritura: propiedad.m2Escritura || null,
           codGrupo: propiedad.codGrupo || '',
           precioValidado: propiedad.precioValidado || false,
           precioManual: propiedad.precioManual || null,
