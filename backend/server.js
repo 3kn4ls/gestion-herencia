@@ -2,10 +2,20 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const connectDB = require('./config/database');
+const updateCoeficientes = require('./scripts/updateCoeficientes');
 require('dotenv').config();
 
-// Conectar a MongoDB
-connectDB();
+// Conectar a MongoDB y ejecutar scripts de inicialización
+connectDB().then(async () => {
+  // Ejecutar actualización de coeficientes agronómicos
+  try {
+    await updateCoeficientes();
+  } catch (error) {
+    console.error('Error al actualizar coeficientes:', error.message);
+  }
+}).catch(err => {
+  console.error('Error de conexión a MongoDB:', err.message);
+});
 
 const app = express();
 
