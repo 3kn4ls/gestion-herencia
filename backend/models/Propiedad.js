@@ -68,6 +68,32 @@ const PropiedadSchema = new mongoose.Schema({
   ignorarReparto: {
     type: Boolean,
     default: false
+  },
+  // Coeficientes agronómicos para valoración de fincas rústicas
+  // FA - Coeficiente de aptitud para la producción
+  coefFA: {
+    type: Number,
+    default: null
+  },
+  // CS - Coeficiente de superficie excesiva
+  coefCS: {
+    type: Number,
+    default: null
+  },
+  // FLS - Coeficiente de localización y socioeconómico
+  coefFLS: {
+    type: Number,
+    default: null
+  },
+  // CP - Coeficiente de concentración parcelaria
+  coefCP: {
+    type: Number,
+    default: null
+  },
+  // DE - Coeficiente de depreciación económica
+  coefDE: {
+    type: Number,
+    default: null
   }
 }, {
   timestamps: true,

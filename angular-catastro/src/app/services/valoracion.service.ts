@@ -55,10 +55,31 @@ export class ValoracionService {
 
   /**
    * Valoración de inmuebles rústicos basada en cultivos
+   *
+   * Fórmula: Vs/Ha = MV × FA × CS × FLS × CP × DE
+   * Donde:
+   *   MV = Valor de mercado por hectárea (del catálogo de cultivos)
+   *   FA = Coeficiente de aptitud para la producción
+   *   CS = Coeficiente de superficie excesiva
+   *   FLS = Coeficiente de localización y socioeconómico
+   *   CP = Coeficiente de concentración parcelaria
+   *   DE = Coeficiente de depreciación económica
+   *
+   * Si un coeficiente no está definido, se trata como 1.
    */
   private valorarRustico(propiedad: Propiedad, valoresTasacion: ValoresTasacion): Valoracion {
     const municipio = this.normalizarMunicipio(propiedad.localizacion?.municipio || '');
     const valoresMunicipio = this.obtenerValoresMunicipio(municipio, valoresTasacion);
+
+    // Obtener coeficientes agronómicos (default 1 si no están definidos)
+    const FA = propiedad.coefFA ?? 1;
+    const CS = propiedad.coefCS ?? 1;
+    const FLS = propiedad.coefFLS ?? 1;
+    const CP = propiedad.coefCP ?? 1;
+    const DE = propiedad.coefDE ?? 1;
+
+    // Factor multiplicador total de coeficientes
+    const factorCoeficientes = FA * CS * FLS * CP * DE;
 
     const detallesCultivos: DetalleCultivo[] = [];
     let valorTotal = 0;
@@ -70,17 +91,19 @@ export class ValoracionService {
         const codigo = this.extraerCodigoCatastral(cultivo.cultivo_aprovechamiento || '');
         const superficieHa = (cultivo.superficie_m2 || 0) / 10000;
 
-        // Buscar valor por hectárea para este código
-        const valorHa = valoresMunicipio.cultivos[codigo]?.valor_por_hectarea
+        // Buscar valor de mercado por hectárea para este código (MV)
+        const valorMercadoHa = valoresMunicipio.cultivos[codigo]?.valor_por_hectarea
                      || valoresTasacion.valores_por_defecto.valor_por_hectarea;
 
-        const valorCultivo = superficieHa * valorHa;
+        // Aplicar fórmula: Vs/Ha = MV × FA × CS × FLS × CP × DE
+        const valorAjustadoHa = valorMercadoHa * factorCoeficientes;
+        const valorCultivo = superficieHa * valorAjustadoHa;
 
         detallesCultivos.push({
           cultivo: cultivo.cultivo_aprovechamiento || '',
           codigo_catastral: codigo,
           superficie_ha: parseFloat(superficieHa.toFixed(4)),
-          precio_ha: valorHa,
+          precio_ha: parseFloat(valorAjustadoHa.toFixed(2)), // Precio ajustado con coeficientes
           valor_estimado: parseFloat(valorCultivo.toFixed(2)),
           municipio: municipio
         });
@@ -89,11 +112,12 @@ export class ValoracionService {
         superficieTotalHa += superficieHa;
       }
     } else {
-      // Sin información de cultivos, usar valor por defecto
+      // Sin información de cultivos, usar valor por defecto con coeficientes
       const superficie = propiedad.datos_inmueble?.superficie_construida || 0;
       const superficieHa = superficie / 10000;
-      const valorHa = valoresTasacion.valores_por_defecto.valor_por_hectarea;
-      valorTotal = superficieHa * valorHa;
+      const valorMercadoHa = valoresTasacion.valores_por_defecto.valor_por_hectarea;
+      const valorAjustadoHa = valorMercadoHa * factorCoeficientes;
+      valorTotal = superficieHa * valorAjustadoHa;
       superficieTotalHa = superficieHa;
     }
 
@@ -101,7 +125,7 @@ export class ValoracionService {
       referencia_catastral: propiedad.referencia_catastral || '',
       tipo_inmueble: 'rústico',
       valor_estimado_euros: parseFloat(valorTotal.toFixed(2)),
-      metodo_valoracion: 'superficie_x_precio_hectarea_catastral',
+      metodo_valoracion: 'superficie_x_precio_hectarea_catastral_con_coeficientes',
       detalles_cultivos: detallesCultivos,
       superficie_total_ha: parseFloat(superficieTotalHa.toFixed(4)),
       valor_por_ha: superficieTotalHa > 0 ? parseFloat((valorTotal / superficieTotalHa).toFixed(2)) : 0,
