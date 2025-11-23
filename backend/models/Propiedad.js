@@ -94,6 +94,11 @@ const PropiedadSchema = new mongoose.Schema({
   coefDE: {
     type: Number,
     default: null
+  },
+  // Justificación de los coeficientes agronómicos
+  coefJustificacion: {
+    type: String,
+    default: ''
   }
 }, {
   timestamps: true,
