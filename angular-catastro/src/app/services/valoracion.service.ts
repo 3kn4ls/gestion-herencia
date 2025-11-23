@@ -66,6 +66,7 @@ export class ValoracionService {
    *   DE = Coeficiente de depreciación económica
    *
    * Si un coeficiente no está definido, se trata como 1.
+   * IMPORTANTE: Si existe m2Escritura, se usa como superficie base en lugar de la catastral.
    */
   private valorarRustico(propiedad: Propiedad, valoresTasacion: ValoresTasacion): Valoracion {
     const municipio = this.normalizarMunicipio(propiedad.localizacion?.municipio || '');
@@ -85,11 +86,31 @@ export class ValoracionService {
     let valorTotal = 0;
     let superficieTotalHa = 0;
 
+    // Determinar superficie base: priorizar m2Escritura si existe
+    const usarM2Escritura = propiedad.m2Escritura != null && propiedad.m2Escritura > 0;
+
     // Si tiene cultivos definidos, valorar cada uno
     if (propiedad.cultivos && propiedad.cultivos.length > 0) {
+      // Calcular superficie catastral total para proporciones
+      const superficieCatastralTotal = propiedad.cultivos.reduce(
+        (sum, c) => sum + (c.superficie_m2 || 0), 0
+      );
+
       for (const cultivo of propiedad.cultivos) {
         const codigo = this.extraerCodigoCatastral(cultivo.cultivo_aprovechamiento || '');
-        const superficieHa = (cultivo.superficie_m2 || 0) / 10000;
+        const superficieCatastralM2 = cultivo.superficie_m2 || 0;
+
+        // Si hay m2Escritura, calcular superficie proporcional
+        let superficieM2: number;
+        if (usarM2Escritura && superficieCatastralTotal > 0) {
+          // Repartir m2Escritura proporcionalmente entre cultivos
+          const proporcion = superficieCatastralM2 / superficieCatastralTotal;
+          superficieM2 = propiedad.m2Escritura! * proporcion;
+        } else {
+          superficieM2 = superficieCatastralM2;
+        }
+
+        const superficieHa = superficieM2 / 10000;
 
         // Buscar valor de mercado por hectárea para este código (MV)
         const valorMercadoHa = valoresMunicipio.cultivos[codigo]?.valor_por_hectarea
@@ -113,19 +134,27 @@ export class ValoracionService {
       }
     } else {
       // Sin información de cultivos, usar valor por defecto con coeficientes
-      const superficie = propiedad.datos_inmueble?.superficie_construida || 0;
-      const superficieHa = superficie / 10000;
+      // Priorizar m2Escritura si existe
+      const superficieM2 = usarM2Escritura
+        ? propiedad.m2Escritura!
+        : (propiedad.datos_inmueble?.superficie_construida || 0);
+      const superficieHa = superficieM2 / 10000;
       const valorMercadoHa = valoresTasacion.valores_por_defecto.valor_por_hectarea;
       const valorAjustadoHa = valorMercadoHa * factorCoeficientes;
       valorTotal = superficieHa * valorAjustadoHa;
       superficieTotalHa = superficieHa;
     }
 
+    // Determinar método de valoración usado
+    const metodo = usarM2Escritura
+      ? 'superficie_escritura_x_precio_hectarea_con_coeficientes'
+      : 'superficie_catastral_x_precio_hectarea_con_coeficientes';
+
     return {
       referencia_catastral: propiedad.referencia_catastral || '',
       tipo_inmueble: 'rústico',
       valor_estimado_euros: parseFloat(valorTotal.toFixed(2)),
-      metodo_valoracion: 'superficie_x_precio_hectarea_catastral_con_coeficientes',
+      metodo_valoracion: metodo,
       detalles_cultivos: detallesCultivos,
       superficie_total_ha: parseFloat(superficieTotalHa.toFixed(4)),
       valor_por_ha: superficieTotalHa > 0 ? parseFloat((valorTotal / superficieTotalHa).toFixed(2)) : 0,
