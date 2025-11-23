@@ -55,4 +55,5 @@ export interface Propiedad {
   coefFLS?: number;           // FLS - Coeficiente de localización y socioeconómico (default: 1)
   coefCP?: number;            // CP - Coeficiente de concentración parcelaria (default: 1)
   coefDE?: number;            // DE - Coeficiente de depreciación económica (default: 1)
+  coefJustificacion?: string; // Justificación de los coeficientes aplicados
 }
