@@ -462,6 +462,50 @@
   margin-top: 4px;
 }
 
+/* Tres valores (Calculado, Catastral, Manual) */
+.propiedad-tres-valores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 6px;
+  background: #f8fafc;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.valor-item {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+}
+
+.valor-label {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.valor-dato {
+  color: #334155;
+  font-weight: 500;
+}
+
+.valor-manual-activo {
+  background: #dbeafe;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.valor-manual-activo .valor-label {
+  color: #1d4ed8;
+}
+
+.valor-manual-activo .valor-dato {
+  color: #1e40af;
+  font-weight: 700;
+}
+
 .badge-validado {
   display: inline-block;
   background: linear-gradient(135deg, #10b981 0%, #059669 100%);
