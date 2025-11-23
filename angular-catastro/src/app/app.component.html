@@ -198,6 +198,11 @@
             <th>Escritura</th>
             <th>Grupo</th>
             <th>✓ Valid.</th>
+            <th title="Coef. Aptitud Producción">FA</th>
+            <th title="Coef. Superficie Excesiva">CS</th>
+            <th title="Coef. Localización">FLS</th>
+            <th title="Coef. Concentración Parcelaria">CP</th>
+            <th title="Coef. Depreciación Económica">DE</th>
             <th>Subparcela</th>
             <th>Cultivo/Aprovechamiento</th>
             <th>Código</th>
@@ -247,6 +252,11 @@
                 <td class="precio-validado">
                   <span *ngIf="propiedad.precioValidado" class="check-validado">✓</span>
                 </td>
+                <td class="coef-cell">{{ propiedad.coefFA ?? '-' }}</td>
+                <td class="coef-cell">{{ propiedad.coefCS ?? '-' }}</td>
+                <td class="coef-cell">{{ propiedad.coefFLS ?? '-' }}</td>
+                <td class="coef-cell">{{ propiedad.coefCP ?? '-' }}</td>
+                <td class="coef-cell">{{ propiedad.coefDE ?? '-' }}</td>
                 <td>{{ cultivo.subparcela }}</td>
                 <td class="cultivo">{{ cultivo.cultivo_aprovechamiento }}</td>
                 <ng-container *ngIf="getValoracion(propiedad.referencia_catastral) as valoracion">
@@ -318,6 +328,11 @@
                 <td class="precio-validado">
                   <span *ngIf="propiedad.precioValidado" class="check-validado">✓</span>
                 </td>
+                <td class="coef-cell">{{ propiedad.coefFA ?? '-' }}</td>
+                <td class="coef-cell">{{ propiedad.coefCS ?? '-' }}</td>
+                <td class="coef-cell">{{ propiedad.coefFLS ?? '-' }}</td>
+                <td class="coef-cell">{{ propiedad.coefCP ?? '-' }}</td>
+                <td class="coef-cell">{{ propiedad.coefDE ?? '-' }}</td>
                 <td></td><td></td><td></td><td></td><td></td><td></td>
                 <ng-container *ngIf="getValoracion(propiedad.referencia_catastral) as valoracion">
                   <td class="numeric valor-calculado">{{ formatCurrency(valoracion.valor_estimado_euros) }}</td>
@@ -851,6 +866,102 @@
               <small class="help-text">
                 Si está marcado, esta propiedad no se incluirá en el reparto automático de herencias
               </small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección: Coeficientes Agronómicos (solo para rústicos) -->
+        <div class="form-section">
+          <h3 class="section-title">🌿 Coeficientes Agronómicos</h3>
+          <p class="section-hint">Coeficientes para ajustar la valoración de fincas rústicas. Si no se especifican, se usan valores de 1.</p>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="coefFA">
+                FA - Aptitud Producción
+                <span class="label-hint">Factor productivo</span>
+              </label>
+              <input
+                type="number"
+                id="coefFA"
+                [(ngModel)]="propiedadEditando.coefFA"
+                name="coefFA"
+                class="form-control"
+                step="0.01"
+                min="0"
+                max="2"
+                placeholder="1.0">
+            </div>
+            <div class="form-group">
+              <label for="coefCS">
+                CS - Superficie Excesiva
+                <span class="label-hint">Factor tamaño</span>
+              </label>
+              <input
+                type="number"
+                id="coefCS"
+                [(ngModel)]="propiedadEditando.coefCS"
+                name="coefCS"
+                class="form-control"
+                step="0.01"
+                min="0"
+                max="2"
+                placeholder="1.0">
+            </div>
+            <div class="form-group">
+              <label for="coefFLS">
+                FLS - Localización
+                <span class="label-hint">Factor socioeconómico</span>
+              </label>
+              <input
+                type="number"
+                id="coefFLS"
+                [(ngModel)]="propiedadEditando.coefFLS"
+                name="coefFLS"
+                class="form-control"
+                step="0.01"
+                min="0"
+                max="2"
+                placeholder="1.0">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="coefCP">
+                CP - Concentración Parcelaria
+                <span class="label-hint">Factor agrupación</span>
+              </label>
+              <input
+                type="number"
+                id="coefCP"
+                [(ngModel)]="propiedadEditando.coefCP"
+                name="coefCP"
+                class="form-control"
+                step="0.01"
+                min="0"
+                max="2"
+                placeholder="1.0">
+            </div>
+            <div class="form-group">
+              <label for="coefDE">
+                DE - Depreciación Económica
+                <span class="label-hint">Factor depreciación</span>
+              </label>
+              <input
+                type="number"
+                id="coefDE"
+                [(ngModel)]="propiedadEditando.coefDE"
+                name="coefDE"
+                class="form-control"
+                step="0.01"
+                min="0"
+                max="2"
+                placeholder="1.0">
+            </div>
+            <div class="form-group coef-info">
+              <label>Fórmula</label>
+              <div class="formula-display">
+                Vs/Ha = MV × FA × CS × FLS × CP × DE
+              </div>
             </div>
           </div>
         </div>
