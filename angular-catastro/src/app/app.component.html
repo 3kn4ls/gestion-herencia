@@ -410,15 +410,22 @@
                 <div style="font-weight: bold; color: #6b7280;">Sin datos</div>
               </div>
             </div>
-            <!-- Diferencia -->
-            <div *ngIf="propiedad.valor_referencia as valorOficial"
-                 style="grid-column: 1 / -1; text-align: center; font-size: 0.85rem; margin-top: 0.5rem; padding: 0.5rem; border-radius: 4px;"
-                 [style.background]="valoracion.valor_estimado_euros >= valorOficial ? '#d1fae5' : '#fee2e2'"
-                 [style.color]="valoracion.valor_estimado_euros >= valorOficial ? '#065f46' : '#991b1b'">
-              <strong>Diferencia:</strong> {{ valoracion.valor_estimado_euros >= valorOficial ? '+' : '' }}{{ formatCurrency((valoracion.valor_estimado_euros || 0) - valorOficial) }}
-              ({{ (((valoracion.valor_estimado_euros || 0) - valorOficial) / valorOficial * 100).toFixed(1) }}%)
+            <!-- Precio Manual -->
+            <div *ngIf="propiedad.precioManual"
+                 style="grid-column: 1 / -1; text-align: center; font-size: 0.85rem; margin-top: 0.5rem; padding: 0.5rem; border-radius: 4px; background: #fef3c7; color: #92400e;">
+              <strong>💵 Precio Manual:</strong> {{ formatCurrency(propiedad.precioManual) }}
+            </div>
+            <div *ngIf="!propiedad.precioManual"
+                 style="grid-column: 1 / -1; text-align: center; font-size: 0.85rem; margin-top: 0.5rem; padding: 0.5rem; border-radius: 4px; background: #f3f4f6; color: #6b7280;">
+              <strong>💵 Precio Manual:</strong> Sin definir
             </div>
           </ng-container>
+          <!-- Botón Editar -->
+          <div style="grid-column: 1 / -1; margin-top: 0.75rem; text-align: center;">
+            <button class="btn-editar-card" (click)="editarPropiedad(propiedad)" title="Editar propiedad">
+              ✏️ Editar
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -428,7 +435,7 @@
       <table class="properties-data-table table-resumen">
         <thead>
           <tr>
-            <th>Catastro</th>
+            <th>Acciones</th>
             <th>Ref. Catastral</th>
             <th>Municipio</th>
             <th>Partida</th>
@@ -438,15 +445,19 @@
             <th>Sup. (m²)</th>
             <th>Sup. (ha)</th>
             <th>€/ha Medio</th>
-            <th>Valor Total Calculado €</th>
-            <th>Valor Catastral Oficial €</th>
+            <th>Valor Calculado €</th>
+            <th>Valor Catastral €</th>
+            <th>Precio Manual €</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of getPropiedadesResumen()" class="resumen-row">
-            <td class="btn-cell">
+            <td class="btn-cell acciones-cell">
               <button class="btn-catastro" (click)="abrirCatastro(item.propiedad)" title="Ver en Catastro">
                 🔗
+              </button>
+              <button class="btn-editar-tabla" (click)="editarPropiedad(item.propiedad)" title="Editar propiedad">
+                ✏️
               </button>
             </td>
             <td class="ref-catastral">{{ item.referencia_catastral }}</td>
@@ -464,6 +475,9 @@
             <td class="numeric">{{ formatNumber(item.precio_medio_ha) }}</td>
             <td class="numeric valor-calculado">{{ formatCurrency(item.valor_calculado) }}</td>
             <td class="numeric valor-oficial">{{ formatCurrency(item.valor_oficial) }}</td>
+            <td class="numeric precio-manual" [class.tiene-precio-manual]="item.precioManual">
+              {{ item.precioManual ? formatCurrency(item.precioManual) : '-' }}
+            </td>
           </tr>
         </tbody>
       </table>

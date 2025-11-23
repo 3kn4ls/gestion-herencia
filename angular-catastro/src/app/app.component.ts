@@ -254,6 +254,7 @@ export class AppComponent implements OnInit {
           escritura: propiedad.escritura || '',
           codGrupo: propiedad.codGrupo || '',
           precioValidado: propiedad.precioValidado || false,
+          precioManual: propiedad.precioManual || null,
           superficie_m2: superficieTotalM2,
           superficie_ha: superficieTotalHa,
           precio_medio_ha: precioMedioHa,

@@ -44,6 +44,61 @@
   box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
 }
 
+/* Botón de Editar en tarjetas */
+.btn-editar-card {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.btn-editar-card:hover {
+  background: linear-gradient(135deg, #d97706, #b45309);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
+}
+
+/* Botón de Editar en tabla */
+.btn-editar-tabla {
+  background: #f59e0b;
+  color: white;
+  border: none;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s;
+  margin-left: 4px;
+}
+
+.btn-editar-tabla:hover {
+  background: #d97706;
+  transform: scale(1.1);
+}
+
+/* Celda de acciones con múltiples botones */
+.acciones-cell {
+  white-space: nowrap;
+  min-width: 80px;
+}
+
+/* Columna de precio manual en tabla resumen */
+.precio-manual {
+  color: #6b7280;
+}
+
+.precio-manual.tiene-precio-manual {
+  background: #fef3c7 !important;
+  color: #92400e;
+  font-weight: 600;
+}
+
 /* Botón de configuración */
 .btn-config {
   background: #3b82f6;
