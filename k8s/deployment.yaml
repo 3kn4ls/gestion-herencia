@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: gestion-herencia-frontend:latest
+        image: gestion-herencia-frontend:v1.0.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80

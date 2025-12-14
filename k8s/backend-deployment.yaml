@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gestion-herencia-backend:latest
+        image: gestion-herencia-backend:v1.0.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3000
