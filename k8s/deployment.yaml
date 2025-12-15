@@ -17,8 +17,8 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: gestion-herencia-frontend:v1.0.0
-        imagePullPolicy: IfNotPresent
+        image: ghcr.io/3kn4ls/gestion-herencia-frontend:v1.0.0
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
           name: http
